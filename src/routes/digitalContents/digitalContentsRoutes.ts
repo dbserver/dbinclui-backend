@@ -10,13 +10,15 @@ import { getByIdDigitalContentController } from "../../controllers/digitalConten
 import { updateDigitalContentController } from "../../controllers/digitalContents/UpdateDigitalContentController.js";
 import { updateDigitalContentMiddleware } from "../../middlewares/digitalContents/updateDigitalContentMiddleware.js";
 import { getByCategoryIdDigitalContentController } from "../../controllers/digitalContents/GetByCategoryIdDigitalContentController.js";
+import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/getByCategoryIdDigitalContentRequestMiddleware.js";
+import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 
 const digitalContentsRouter = Router();
 
 digitalContentsRouter.post(
   "/",
   uploadCloudinary.array("files"),
-  // bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
+  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("post"),
   createDigitalContentRequestMiddleware,
   createDigitalContentController.handler,
@@ -34,13 +36,16 @@ digitalContentsRouter.get("/", getAllDigitalContentsController.handler);
 digitalContentsRouter.put(
   "/:id",
   uploadCloudinary.array("files"),
+  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("put"),
   updateDigitalContentMiddleware,
   updateDigitalContentController.handler,
 );
 
 digitalContentsRouter.get(
-  "/categoriesAndContent/:id",
+  "/category/:id",
+  getByCategoryIdDigitalContentRequestMiddleware,
+  digitalContentRequestValidator("get"),
   getByCategoryIdDigitalContentController.handler,
 );
 

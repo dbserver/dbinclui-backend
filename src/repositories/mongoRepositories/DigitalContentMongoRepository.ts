@@ -7,17 +7,27 @@ import { DigitalContentRepository } from "../DigitalContentRepository.js";
 export class DigitalContentMongoRepository implements DigitalContentRepository {
   database = DigitalContentModel;
 
-  async create(guide: DigitalContentEntity): Promise<DigitalContentEntity> {
-    return this.database.create(guide);
+  async create(content: DigitalContentEntity): Promise<DigitalContentEntity> {
+    return this.database.create(content);
   }
 
-  async update(id: string, guide: DigitalContentEntity): Promise<number> {
-    const result = await this.database.updateOne({ _id: id }, guide);
-    return result.modifiedCount;
+  async update(content: DigitalContentEntity): Promise<DigitalContentEntity | null> {
+    return this.database.findOneAndUpdate({ _id: content._id }, content);
   }
 
   async findById(id: string): Promise<DigitalContentEntity | null> {
-    return this.database.findById(id);
+    return this.database.findById(id).populate([
+      {
+        path: "guide",
+        model: GuideModel,
+        strictPopulate: true,
+      },
+      {
+        path: "category",
+        model: CategoryModel,
+        strictPopulate: true,
+      },
+    ]);
   }
 
   async findByGuideId(id: string): Promise<DigitalContentEntity[]> {
@@ -77,8 +87,7 @@ export class DigitalContentMongoRepository implements DigitalContentRepository {
     ]);
   }
 
-  async delete(id: string): Promise<number> {
-    const result = await this.database.deleteOne({ _id: id });
-    return result.deletedCount;
+  async delete(id: string): Promise<DigitalContentEntity | null> {
+    return this.database.findOneAndDelete({ _id: id });
   }
 }

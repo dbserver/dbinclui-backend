@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { DigitalContentMongoRepository } from "../../repositories/mongoRepositories/DigitalContentMongoRepository.js";
 import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses.js";
 import { CreateDigitalContentService } from "../../services/digitalContents/CreateDigitalContentService.js";
-import { RequestFileProps } from "./interfaces/RequestProps.js";
+import { RequestFileProps } from "../interfaces/RequestProps.js";
 
 class CreateDigitalContentController {
   async handler(req: Request, res: Response) {

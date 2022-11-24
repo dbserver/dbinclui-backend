@@ -1,10 +1,6 @@
 import { CategoryEntity } from "./CategoryEntity.js";
 import { GuideEntity } from "./GuideEntity.js";
-
-export interface FileProps {
-  filePath: string;
-  publicId: string;
-}
+import { FileProps } from "../interfaces/FilePropsInterface.js";
 
 export interface DigitalContentEntity {
   _id?: string;

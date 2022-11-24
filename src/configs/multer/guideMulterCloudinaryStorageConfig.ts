@@ -8,18 +8,9 @@ const storage = database.storage();
 
 const multerCloudinaryConfig: multer.Options = {
   fileFilter: (_, file, callback) => {
-    const allowedMimes = [
-      "image/jpeg",
-      "image/pjpeg",
-      "image/jpg",
-      "image/png",
-      "image/gif",
-      "video",
-    ];
+    const allowedMimes = ["image/jpeg", "image/pjpeg", "image/jpg", "image/png"];
 
-    const allowedVideos = /video/;
-
-    if (allowedMimes.includes(file.mimetype) || allowedVideos.test(file.mimetype)) {
+    if (allowedMimes.includes(file.mimetype)) {
       callback(null, true);
     } else {
       callback(new Error("Invalid file type"));
@@ -31,4 +22,4 @@ const multerCloudinaryConfig: multer.Options = {
   },
 };
 
-export const uploadCloudinary = multer(multerCloudinaryConfig);
+export const guideUploadCloudinary = multer(multerCloudinaryConfig);

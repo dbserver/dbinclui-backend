@@ -6,16 +6,7 @@ import { clientErrorResponse } from "../../responses/appResponses.js";
 import { GetByIdCategoryService } from "../../services/categories/GetByIdCategoryService.js";
 import { GetByIdGuideService } from "../../services/guides/GetByIdGuideService.js";
 import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
-
-export interface FileRequest {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  path: string;
-  size: number;
-  filename: string;
-}
+import { FileRequest } from "../../interfaces/FileRequest.js";
 
 export const createDigitalContentRequestMiddleware = async (
   req: Request,
@@ -29,7 +20,7 @@ export const createDigitalContentRequestMiddleware = async (
     );
   }
 
-  const filesRequest = req.files as FileRequest[];
+  const filesRequest = (req.files as FileRequest[]) ?? [];
 
   let files = [];
   for (let file of filesRequest) {

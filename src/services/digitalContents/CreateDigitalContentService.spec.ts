@@ -15,6 +15,10 @@ describe("CreateDigitalContentService", () => {
         _id: String(repository.database.length),
         title: `Título do guia ${repository.database.length}`,
         content: `Conteúdo do guia ${repository.database.length}`,
+        filePaths: {
+          filePath: `www.image${repository.database.length}.com.br`,
+          publicId: `uploads/image${repository.database.length}`,
+        },
       },
       category: {
         _id: String(repository.database.length),
@@ -24,6 +28,10 @@ describe("CreateDigitalContentService", () => {
           _id: String(repository.database.length),
           title: `Título do guia ${repository.database.length}`,
           content: `Conteúdo do guia ${repository.database.length}`,
+          filePaths: {
+            filePath: `www.image${repository.database.length}.com.br`,
+            publicId: `uploads/image${repository.database.length}`,
+          },
         },
       },
       filePaths: [

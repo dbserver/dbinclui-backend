@@ -21,6 +21,10 @@ describe("UpdateCategoryService", () => {
         _id: "1122",
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       },
     };
 
@@ -28,7 +32,7 @@ describe("UpdateCategoryService", () => {
     expect(result).toBeInstanceOf(Error);
   });
 
-  it("Should update and return update count", async () => {
+  it("Should update and return a CategoryEntity", async () => {
     const categoryExample: CategoryEntity = {
       _id: "0",
       title: "Título da categoria",
@@ -37,10 +41,17 @@ describe("UpdateCategoryService", () => {
         _id: "1122",
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       },
     };
 
-    const result = await categoryService.execute(categoryExample._id as string, categoryExample);
-    expect(result).toEqual(1);
+    const result = (await categoryService.execute(
+      categoryExample._id as string,
+      categoryExample,
+    )) as CategoryEntity;
+    expect(result.title).toBe("Título da categoria");
   });
 });

@@ -8,4 +8,11 @@ export const guideSchemaSettings = {
     type: String,
     required: true,
   },
+  filePaths: {
+    type: {
+      filePath: String,
+      publicId: String,
+    },
+    required: true,
+  },
 };

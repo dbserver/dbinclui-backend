@@ -10,9 +10,9 @@ export class DeleteCategoryService {
         return new Error("Category with this ID does not exists");
       }
 
-      const result = await this.repository.delete(id);
+      await this.repository.delete(id);
 
-      return result;
+      return category;
     } catch (error) {
       throw new Error(error as string);
     }

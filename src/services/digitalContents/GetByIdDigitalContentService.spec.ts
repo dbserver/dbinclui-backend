@@ -1,4 +1,3 @@
-import { DigitalContentEntity } from "../../entities/DigitalContentEntity";
 import { InMemoryDigitalContentRepository } from "../../helpers/inMemoryRepositories/InMemoryDigitalContentRepository";
 import { GetByIdDigitalContentService } from "./GetByIdDigitalContentService";
 

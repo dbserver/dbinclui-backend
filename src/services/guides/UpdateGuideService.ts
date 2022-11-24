@@ -1,10 +1,11 @@
 import { GuideEntity } from "../../entities/GuideEntity.js";
+import { FileProps } from "../../interfaces/FilePropsInterface.js";
 import { GuideRepository } from "../../repositories/GuideRepository.js";
 
 export class UpdateGuideService {
   constructor(private readonly repository: GuideRepository) {}
 
-  async execute(id: string, guideRequest: GuideEntity) {
+  async execute(id: string, guideRequest: GuideEntity, file?: FileProps) {
     try {
       const guide = await this.repository.findById(id);
 
@@ -12,10 +13,20 @@ export class UpdateGuideService {
         return new Error("Guide does not exists");
       }
 
-      guideRequest._id = guide._id;
-      const result = await this.repository.update(guideRequest);
+      let oldFile: FileProps[] = [];
+      if (file) {
+        oldFile.push(guide.filePaths);
+      }
 
-      return result;
+      guide.title = guideRequest.title ?? guide.title;
+      guide.content = guideRequest.content ?? guide.content;
+      guide.filePaths = file ?? guide.filePaths;
+
+      await this.repository.update(guide);
+
+      const guideUpdated = await this.repository.findById(id);
+
+      return { guideUpdated, oldFile };
     } catch (error) {
       throw new Error(error as string);
     }

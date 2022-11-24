@@ -21,6 +21,10 @@ describe("description", () => {
           _id: String(repository.database.length),
           title: `Título do guia ${repository.database.length}`,
           content: `Conteúdo do guia ${repository.database.length}`,
+          filePaths: {
+            publicId: `arquivo${repository.database.length}`,
+            filePath: `link.com/arquivo${repository.database.length}`,
+          },
         },
         category: {
           _id: String(repository.database.length),
@@ -30,6 +34,10 @@ describe("description", () => {
             _id: String(repository.database.length),
             title: `Título do guia ${repository.database.length}`,
             content: `Conteúdo do guia ${repository.database.length}`,
+            filePaths: {
+              publicId: `arquivo${repository.database.length}`,
+              filePath: `link.com/arquivo${repository.database.length}`,
+            },
           },
         },
         filePaths: [
@@ -49,7 +57,7 @@ describe("description", () => {
   });
 
   describe("update", () => {
-    it("Should return 0 if DigitalContent ID not found", async () => {
+    it("Should throw an Error if DigitalContent ID not exists", async () => {
       const contentExample = {
         id: "1290-1",
         title: `Título do conteúdo digital ${repository.database.length}`,
@@ -58,6 +66,10 @@ describe("description", () => {
           _id: String(repository.database.length),
           title: `Título do guia ${repository.database.length}`,
           content: `Conteúdo do guia ${repository.database.length}`,
+          filePaths: {
+            publicId: `arquivo${repository.database.length}`,
+            filePath: `link.com/arquivo${repository.database.length}`,
+          },
         },
         category: {
           _id: String(repository.database.length),
@@ -67,6 +79,10 @@ describe("description", () => {
             _id: String(repository.database.length),
             title: `Título do guia ${repository.database.length}`,
             content: `Conteúdo do guia ${repository.database.length}`,
+            filePaths: {
+              publicId: `arquivo${repository.database.length}`,
+              filePath: `link.com/arquivo${repository.database.length}`,
+            },
           },
         },
         filePaths: [
@@ -77,12 +93,12 @@ describe("description", () => {
         ],
       };
 
-      const result = await repository.update("1290-1", contentExample);
-
-      expect(result).toEqual(0);
+      await expect(async () => await repository.update(contentExample)).rejects.toThrowError(
+        "Digital Content does not exists",
+      );
     });
 
-    it("Should update and return 1 like an updateCount", async () => {
+    it("Should update and return a DigitalContentEntity", async () => {
       const contentExample = {
         _id: "0",
         title: `Título do conteúdo digital ${repository.database.length}`,
@@ -91,6 +107,10 @@ describe("description", () => {
           _id: String(repository.database.length),
           title: `Título do guia ${repository.database.length}`,
           content: `Conteúdo do guia ${repository.database.length}`,
+          filePaths: {
+            publicId: `arquivo${repository.database.length}`,
+            filePath: `link.com/arquivo${repository.database.length}`,
+          },
         },
         category: {
           _id: String(repository.database.length),
@@ -100,6 +120,10 @@ describe("description", () => {
             _id: String(repository.database.length),
             title: `Título do guia ${repository.database.length}`,
             content: `Conteúdo do guia ${repository.database.length}`,
+            filePaths: {
+              publicId: `arquivo${repository.database.length}`,
+              filePath: `link.com/arquivo${repository.database.length}`,
+            },
           },
         },
         filePaths: [
@@ -110,9 +134,11 @@ describe("description", () => {
         ],
       };
 
-      const result = await repository.update("0", contentExample);
+      const result = await repository.update(contentExample);
 
-      expect(result).toEqual(1);
+      expect(result._id).toBe("0");
+      expect(result.title).toBe(`Título do conteúdo digital 3`);
+      expect(typeof result).toBe("object");
     });
   });
 
@@ -155,17 +181,26 @@ describe("description", () => {
     });
   });
 
-  describe("delete", () => {
-    it("Should return a delete count like 0 if ID not found", async () => {
-      const result = await repository.delete("092022");
+  describe("findByCategoryId", () => {
+    it("Should return an array with 1 digital Content", async () => {
+      const result = await repository.findByCategoryId("0");
 
-      expect(result).toEqual(0);
+      expect(result.length).toEqual(1);
+      expect(result[0]._id).toBe("0");
+    });
+  });
+
+  describe("delete", () => {
+    it("Should throw an Error if ID not exists", async () => {
+      await expect(async () => await repository.delete("092022")).rejects.toThrowError(
+        "Digital Content does not exists",
+      );
     });
 
-    it("Should return a delete count like 1 if ID exists", async () => {
+    it("Should delete and return a DigitalCotent deleted", async () => {
       const result = await repository.delete("0");
 
-      expect(result).toEqual(1);
+      expect(result._id).toBe("0");
     });
   });
 });

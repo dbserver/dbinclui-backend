@@ -15,6 +15,10 @@ describe("CreateGuideService", () => {
     const guideExample: GuideEntity = {
       title: "Título do guia",
       content: "Conteúdo do guia",
+      filePaths: {
+        filePath: `wwww.image${1}.com.br`,
+        publicId: `uploads/${1}`,
+      },
     };
 
     const result = await guideService.execute(guideExample);

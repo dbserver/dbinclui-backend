@@ -1,20 +1,27 @@
 import { Router } from "express";
+import { guideUploadCloudinary } from "../../configs/multer/guideMulterCloudinaryStorageConfig.js";
+import { uploadCloudinary } from "../../configs/multer/multerCloudinaryStorageConfig.js";
 import { createGuideController } from "../../controllers/guides/CreateGuideController.js";
 import { deleteGuideController } from "../../controllers/guides/DeleteGuideController.js";
 import { getAllGuidesController } from "../../controllers/guides/GetAllGuidesController.js";
 import { getByIdGuideController } from "../../controllers/guides/GetByIdGuideController.js";
 import { getCategoriesAndContentController } from "../../controllers/guides/GetCategoriesAndContentController.js";
 import { updateGuideController } from "../../controllers/guides/UpdateGuideController.js";
+import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
+import { createGuideRequestMiddleware } from "../../middlewares/guides/createGuideRequestMiddleware.js";
 import { deleteGuideRequestMiddleware } from "../../middlewares/guides/deleteGuideRequestMiddleware.js";
 import { guideRequestMiddleware } from "../../middlewares/guides/guideRequestMiddleware.js";
+import { updateGuideRequestMiddleware } from "../../middlewares/guides/updateGuideRequestMiddleware.js";
 import { guideRequestValidator } from "../../middlewares/guides/validators/guideRequestValidator.js";
 
 const guidesRouter = Router();
 
 guidesRouter.post(
   "/",
+  guideUploadCloudinary.single("file"),
+  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   guideRequestValidator("post"),
-  guideRequestMiddleware,
+  createGuideRequestMiddleware,
   createGuideController.handler,
 );
 
@@ -31,8 +38,10 @@ guidesRouter.get("/categoriesAndContent/:id", getCategoriesAndContentController.
 
 guidesRouter.put(
   "/:id",
+  uploadCloudinary.single("file"),
+  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   guideRequestValidator("put"),
-  guideRequestMiddleware,
+  updateGuideRequestMiddleware,
   updateGuideController.handler,
 );
 

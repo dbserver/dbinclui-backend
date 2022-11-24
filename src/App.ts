@@ -18,7 +18,6 @@ export class App {
   private setVariables() {
     this.port = process.env.PORT ?? "3000";
     this.environment = process.env.NODE_ENV ?? "development";
-
     this.express.set("port", this.port);
     this.express.set("env", this.environment);
   }

@@ -17,14 +17,18 @@ describe("DeleteGuideService", () => {
       _id: "inexistente",
       title: "Título inexistente",
       content: "Conteúdo inexistente",
+      filePaths: {
+        filePath: `wwww.image${1}.com.br`,
+        publicId: `uploads/${1}`,
+      },
     };
 
     const result = await guideService.execute(guideExample._id as string);
     expect(result).toBeInstanceOf(Error);
   });
 
-  it("SShould delete a category by ID and return a delete count", async () => {
-    const result = await guideService.execute("0");
-    expect(result).toEqual(1);
+  it("Should delete a category by ID and return a delete count", async () => {
+    const result = (await guideService.execute("0")) as GuideEntity;
+    expect(result._id).toBe("0");
   });
 });

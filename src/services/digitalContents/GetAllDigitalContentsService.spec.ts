@@ -15,7 +15,7 @@ describe("GetAllDigitalContents", () => {
     expect(result.length).toEqual(0);
   });
 
-  it("Sholud return 2 digital contents", async () => {
+  it("Should return 2 digital contents", async () => {
     await repository.loadData(2);
 
     const result = await contentService.execute();

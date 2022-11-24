@@ -20,6 +20,10 @@ describe("DeleteCategoryService", () => {
         _id: "1122",
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       },
     };
 
@@ -27,8 +31,11 @@ describe("DeleteCategoryService", () => {
     expect(result).toBeInstanceOf(Error);
   });
 
-  it("Should delete a category by ID and return a delete count", async () => {
-    const result = await categoryService.execute("0");
-    expect(result).toEqual(1);
+  it("Should delete a category by ID and return a CategoryEntity deleted", async () => {
+    const result = (await categoryService.execute("0")) as CategoryEntity;
+
+    expect(result._id).toHaveProperty("0");
+    expect(result).toHaveProperty("title");
+    expect(result).toHaveProperty("shortDescription");
   });
 });

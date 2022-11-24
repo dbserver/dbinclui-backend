@@ -16,9 +16,10 @@ export class UpdateCategoryService {
       category.shortDescription = categoryRequest.shortDescription ?? category.shortDescription;
       category.guide = categoryRequest.guide ?? category.guide;
 
-      const result = await this.repository.update(category);
+      await this.repository.update(category);
 
-      return result;
+      const categoryUpdated = await this.repository.findById(id);
+      return categoryUpdated;
     } catch (error) {
       throw new Error(error as string);
     }

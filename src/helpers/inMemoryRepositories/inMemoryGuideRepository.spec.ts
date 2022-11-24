@@ -14,6 +14,10 @@ describe("InMemoryGuidesRepository", () => {
     let guideExample: GuideEntity = {
       title: "Título do guia",
       content: "Conteúdo do guia",
+      filePaths: {
+        filePath: `www.image.com.br`,
+        publicId: `uploads/image`,
+      },
     };
 
     const result = await repository.create(guideExample);
@@ -23,30 +27,40 @@ describe("InMemoryGuidesRepository", () => {
   });
 
   describe("Update", () => {
-    it("Should return 0 if ID not found", async () => {
+    it("Should throw an Error if ID not exists", async () => {
       let guideExample2: GuideEntity = {
         _id: "0asd",
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       };
 
       guideExample2.title = "Título do guia modificado";
-      const result = await repository.update(guideExample2);
 
-      expect(result).toEqual(0);
+      await expect(async () => await repository.update(guideExample2)).rejects.toThrowError(
+        "Guide does not exists",
+      );
     });
 
-    it("Should update and return update count", async () => {
+    it("Should update and return a GuideEntity", async () => {
       let guideExample2: GuideEntity = {
         _id: "0",
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       };
 
       guideExample2.title = "Título do guia modificado";
       const result = await repository.update(guideExample2);
 
-      expect(result).toEqual(1);
+      expect(result._id).toBe("0");
+      expect(result.title).toBe("Título do guia");
     });
   });
 
@@ -56,10 +70,10 @@ describe("InMemoryGuidesRepository", () => {
     expect(result.length).toEqual(2);
   });
 
-  it("Should delete an Guide entity and return delete count", async () => {
+  it("Should delete an Guide entity and return a GuideEntity deleted", async () => {
     const result = await repository.delete("1");
 
-    expect(result).toEqual(1);
+    expect(result._id).toBe("1");
     expect(repository.database.length).toEqual(1);
   });
 

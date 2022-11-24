@@ -11,9 +11,8 @@ export class GuideMongoRepository implements GuideRepository {
     return this.database.create(guide);
   }
 
-  async update(guide: GuideEntity): Promise<number> {
-    const result = await this.database.updateOne({ _id: guide._id }, guide);
-    return result.modifiedCount;
+  async update(guide: GuideEntity): Promise<GuideEntity | null> {
+    return this.database.findOneAndUpdate({ _id: guide._id }, guide);
   }
 
   async findById(id: string): Promise<GuideEntity | null> {
@@ -24,9 +23,8 @@ export class GuideMongoRepository implements GuideRepository {
     return this.database.find();
   }
 
-  async delete(id: string): Promise<number> {
-    const result = await this.database.deleteOne({ _id: id });
-    return result.deletedCount;
+  async delete(id: string): Promise<GuideEntity | null> {
+    return this.database.findOneAndDelete({ _id: id });
   }
 
   async findCategoriesAndContentsByGuideId(

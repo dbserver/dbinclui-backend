@@ -12,18 +12,18 @@ export class InMemoryGuideRepository implements GuideRepository {
     return this.database[this.database.length - 1];
   }
 
-  async update(guide: GuideEntity): Promise<number> {
+  async update(guide: GuideEntity): Promise<GuideEntity> {
     const result = await this.findById(guide._id as string);
 
     if (!result) {
-      return 0;
+      throw new Error("Guide does not exists");
     }
 
     const index = this.database.indexOf(result);
 
     this.database[index] = guide;
 
-    return 1;
+    return result;
   }
 
   async findAll(): Promise<GuideEntity[]> {
@@ -43,18 +43,18 @@ export class InMemoryGuideRepository implements GuideRepository {
     return result ?? null;
   }
 
-  async delete(id: string): Promise<number> {
+  async delete(id: string): Promise<GuideEntity> {
     const result = await this.findById(id);
 
     if (!result) {
-      return 0;
+      throw new Error("Guide does not exists");
     }
 
     const index = this.database.indexOf(result);
 
     this.database.splice(index, 1);
 
-    return 1;
+    return result;
   }
 
   async loadData(amount: number) {
@@ -63,6 +63,10 @@ export class InMemoryGuideRepository implements GuideRepository {
         _id: String(this.database.length),
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `wwww.image${i}.com.br`,
+          publicId: `uploads/${i}`,
+        },
       };
 
       this.database.push(guideExample);
@@ -75,6 +79,11 @@ export class InMemoryGuideRepository implements GuideRepository {
         _id: i.toString(),
         title: `Título do guia ${i}`,
         content: `Conteúdo do guia ${i}`,
+        filePaths: {
+          filePath: `wwww.image${i}.com.br`,
+          publicId: `uploads/${i}`,
+        },
+
         categories: [
           {
             _id: i.toString(),
@@ -84,6 +93,10 @@ export class InMemoryGuideRepository implements GuideRepository {
               _id: i.toString(),
               title: `Título do guia ${i}`,
               content: `Conteúdo do guia ${i}`,
+              filePaths: {
+                filePath: `wwww.image${i}.com.br`,
+                publicId: `uploads/${i}`,
+              },
             },
             digitalContents: [
               {
@@ -98,12 +111,20 @@ export class InMemoryGuideRepository implements GuideRepository {
                     _id: i.toString(),
                     title: `Título do guia ${i}`,
                     content: `Conteúdo do guia ${i}`,
+                    filePaths: {
+                      filePath: `wwww.image${i}.com.br`,
+                      publicId: `uploads/${i}`,
+                    },
                   },
                 },
                 guide: {
                   _id: i.toString(),
                   title: `Título do guia ${i}`,
                   content: `Conteúdo do guia ${i}`,
+                  filePaths: {
+                    filePath: `wwww.image${i}.com.br`,
+                    publicId: `uploads/${i}`,
+                  },
                 },
                 filePaths: [
                   {

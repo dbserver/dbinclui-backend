@@ -10,9 +10,9 @@ export class DeleteGuideService {
         return new Error("Guide does not exists");
       }
 
-      const result = await this.repository.delete(id);
+      await this.repository.delete(id);
 
-      return result;
+      return guide;
     } catch (error) {
       throw new Error(error as string);
     }

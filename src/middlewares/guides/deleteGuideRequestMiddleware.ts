@@ -3,6 +3,8 @@ import { validationResult } from "express-validator";
 import { CategoryMongoRepository } from "../../repositories/mongoRepositories/CategoryMongoRepository.js";
 import { DigitalContentMongoRepository } from "../../repositories/mongoRepositories/DigitalContentMongoRepository.js";
 import { clientErrorResponse } from "../../responses/appResponses.js";
+import { GetByGuideIdCategoryService } from "../../services/categories/GetByGuideIdCategoryService.js";
+import { GetByGuideIdDigitalContentService } from "../../services/digitalContents/GetByGuideIdDigitalContentService.js";
 
 export const deleteGuideRequestMiddleware = async (
   req: Request,
@@ -18,10 +20,12 @@ export const deleteGuideRequestMiddleware = async (
   const id = req.params["id"];
 
   const categoryRepository = new CategoryMongoRepository();
-  const categoryResult = await categoryRepository.findByGuideId(id);
+  const categoryService = new GetByGuideIdCategoryService(categoryRepository);
+  const categoryResult = await categoryService.execute(id);
 
   const contentRepository = new DigitalContentMongoRepository();
-  const contentResult = await contentRepository.findByGuideId(id);
+  const contentService = new GetByGuideIdDigitalContentService(contentRepository);
+  const contentResult = await contentService.execute(id);
 
   if (categoryResult.length > 0 || contentResult.length > 0) {
     return clientErrorResponse(

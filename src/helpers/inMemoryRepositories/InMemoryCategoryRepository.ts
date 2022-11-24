@@ -10,18 +10,18 @@ export class InMemoryCategoryRepository implements CategoryRepository {
     return this.database[this.database.length - 1];
   }
 
-  async update(category: CategoryEntity): Promise<number> {
+  async update(category: CategoryEntity): Promise<CategoryEntity> {
     const result = await this.findById(category._id as unknown as string);
 
     if (!result) {
-      return 0;
+      throw new Error("Category does not exists");
     }
 
     const index = this.database.indexOf(result);
 
     this.database[index] = category;
 
-    return 1;
+    return this.database[index];
   }
 
   async findById(id: string): Promise<CategoryEntity | null> {
@@ -33,18 +33,18 @@ export class InMemoryCategoryRepository implements CategoryRepository {
     return this.database;
   }
 
-  async delete(id: string): Promise<number> {
+  async delete(id: string): Promise<CategoryEntity> {
     const result = await this.findById(id);
 
     if (!result) {
-      return 0;
+      throw new Error("Category does not exists");
     }
 
     const index = this.database.indexOf(result);
 
     this.database.splice(index, 1);
 
-    return 1;
+    return result;
   }
 
   async findByGuideId(guideId: string): Promise<CategoryEntity[]> {
@@ -62,6 +62,10 @@ export class InMemoryCategoryRepository implements CategoryRepository {
         _id: "0",
         title: `Título do guia 0`,
         content: "Conteúdo do guia 0",
+        filePaths: {
+          filePath: `www.image0.com.br`,
+          publicId: `uploads/image0`,
+        },
       },
     };
 
@@ -78,6 +82,10 @@ export class InMemoryCategoryRepository implements CategoryRepository {
           _id: `${i}`,
           title: `Título do guia ${i}`,
           content: `Conteúdo do guia ${i}`,
+          filePaths: {
+            filePath: `www.image${i}.com.br`,
+            publicId: `uploads/image${i}`,
+          },
         },
       };
 

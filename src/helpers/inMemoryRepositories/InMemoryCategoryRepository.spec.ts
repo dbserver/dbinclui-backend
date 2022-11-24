@@ -18,6 +18,10 @@ describe("InMemoryCategoryRepository", () => {
         _id: "123456",
         title: "Acessibilidade",
         content: "Sem conteúdo",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       },
     };
 
@@ -31,7 +35,7 @@ describe("InMemoryCategoryRepository", () => {
   });
 
   describe("Update", () => {
-    it("Should return 0 if category ID not found", async () => {
+    it("Should throw an Error if category ID not exists", async () => {
       const categoryExample: CategoryEntity = {
         _id: "InexistenteID",
         title: "Título da categoria alterado",
@@ -40,15 +44,19 @@ describe("InMemoryCategoryRepository", () => {
           _id: "123456",
           title: "Acessibilidade",
           content: "Sem conteúdo",
+          filePaths: {
+            filePath: `www.image.com.br`,
+            publicId: `uploads/image`,
+          },
         },
       };
 
-      const result = await repository.update(categoryExample);
-
-      expect(result).toEqual(0);
+      await expect(async () => await repository.update(categoryExample)).rejects.toThrowError(
+        "Category does not exists",
+      );
     });
 
-    it("Should update and return a updateCount", async () => {
+    it("Should update and return a CategoryEntity", async () => {
       const categoryExample: CategoryEntity = {
         _id: "5",
         title: "Título da categoria alterado",
@@ -57,12 +65,18 @@ describe("InMemoryCategoryRepository", () => {
           _id: "123456",
           title: "Acessibilidade",
           content: "Sem conteúdo",
+          filePaths: {
+            filePath: `www.image.com.br`,
+            publicId: `uploads/image`,
+          },
         },
       };
 
       const result = await repository.update(categoryExample);
 
-      expect(result).toEqual(1);
+      expect(result._id).toBe("5");
+      expect(result.title).toBe("Título da categoria alterado");
+      expect(typeof result).toBe("object");
     });
   });
 
@@ -81,16 +95,17 @@ describe("InMemoryCategoryRepository", () => {
   });
 
   describe("Delete", () => {
-    it("Should return 0 if category ID not found", async () => {
-      const result = await repository.delete("12345674897");
-
-      expect(result).toEqual(0);
+    it("Should throw an Error if category ID not found", async () => {
+      await expect(async () => await repository.delete("12345674897")).rejects.toThrowError(
+        "Category does not exists",
+      );
     });
 
     it("Should delete and return 1", async () => {
       const result = await repository.delete("5");
 
-      expect(result).toEqual(1);
+      expect(result._id).toBe("5");
+      expect(typeof result.title).toBe("string");
     });
   });
 

@@ -1,15 +1,10 @@
-import { DigitalContentEntity, FileProps } from "../../entities/DigitalContentEntity.js";
+import { DigitalContentEntity } from "../../entities/DigitalContentEntity.js";
+import { FileProps } from "../../interfaces/FilePropsInterface.js";
 import { DigitalContentRepository } from "../../repositories/DigitalContentRepository.js";
-
-interface File {
-  filePath: string;
-  publicId: string;
-}
-
 export class UpdateDigitalContentService {
   constructor(private readonly repository: DigitalContentRepository) {}
 
-  async execute(id: string, contentRequest: DigitalContentEntity, files?: File[]) {
+  async execute(id: string, contentRequest: DigitalContentEntity, files: FileProps[]) {
     try {
       const content = await this.repository.findById(id);
 
@@ -17,19 +12,20 @@ export class UpdateDigitalContentService {
         return new Error("Digital Content does not exists");
       }
 
-      let oldPublicIDs: string[] = [];
-      if (files) {
-        content.filePaths.forEach((file) => oldPublicIDs.push(file.publicId));
+      let oldFiles: FileProps[] = [];
+      if (files.length > 0) {
+        content.filePaths.forEach((file) => oldFiles.push(file));
       }
 
       content.title = contentRequest?.title ?? content.title;
       content.guide = contentRequest?.guide ?? content.guide;
       content.shortDescription = contentRequest?.shortDescription ?? content.shortDescription;
-      content.filePaths = files ?? content.filePaths;
+      content.filePaths = files.length > 0 ? files : content.filePaths;
 
-      const result = await this.repository.update(id, content);
+      await this.repository.update(content);
 
-      return { result, oldPublic_ids: oldPublicIDs };
+      const contentUpdated = await this.repository.findById(id);
+      return { contentUpdated, oldFiles };
     } catch (error) {
       throw new Error(error as string);
     }

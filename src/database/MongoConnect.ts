@@ -10,7 +10,7 @@ export class MongoDB {
 
       console.log("Conectado ao banco de dados com sucesso!");
     } catch (error) {
-      console.log("Ocorreu um problema ao iniciar a conexão com o banco de dados");
+      throw new Error("Ocorreu um problema ao iniciar a conexão com o banco de dados");
     }
   }
 

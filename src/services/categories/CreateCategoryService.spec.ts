@@ -19,6 +19,10 @@ describe("CreateCategoryService", () => {
         _id: "1122",
         title: "Título do guia",
         content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `www.image.com.br`,
+          publicId: `uploads/image`,
+        },
       },
     };
 

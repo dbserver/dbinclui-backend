@@ -6,13 +6,12 @@ import { CategoryRepository } from "../CategoryRepository.js";
 export class CategoryMongoRepository implements CategoryRepository {
   database = CategoryModel;
 
-  async create(guide: CategoryEntity): Promise<CategoryEntity> {
-    return this.database.create(guide);
+  async create(category: CategoryEntity): Promise<CategoryEntity> {
+    return this.database.create(category);
   }
 
-  async update(guide: CategoryEntity): Promise<number> {
-    const result = await this.database.updateOne({ _id: guide._id }, guide);
-    return result.modifiedCount;
+  async update(category: CategoryEntity): Promise<CategoryEntity | null> {
+    return this.database.findOneAndUpdate({ _id: category._id }, category);
   }
 
   async findById(id: string): Promise<CategoryEntity | null> {
@@ -26,9 +25,8 @@ export class CategoryMongoRepository implements CategoryRepository {
     });
   }
 
-  async delete(id: string): Promise<number> {
-    const result = await this.database.deleteOne({ _id: id });
-    return result.deletedCount;
+  async delete(id: string): Promise<CategoryEntity | null> {
+    return await this.database.findByIdAndDelete({ _id: id });
   }
 
   async findByGuideId(guideId: string): Promise<CategoryEntity[]> {

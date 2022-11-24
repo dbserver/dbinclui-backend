@@ -23,9 +23,9 @@ class DeleteDigitalContentController {
       }
 
       // <--- Remove content from the database (Cloudinary) --->
-      await deleteContentCloudinary(result.filePaths);
+      deleteContentCloudinary(result.filePaths);
 
-      return sucessfulResponse(res, { data: 1 });
+      return sucessfulResponse(res, { data: result });
     } catch (error) {
       return serverErrorResponse(res, error as Error);
     }

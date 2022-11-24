@@ -6,6 +6,7 @@ import {
   sucessfulResponse,
 } from "../../responses/appResponses.js";
 import { DeleteGuideService } from "../../services/guides/DeleteGuideService.js";
+import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
 
 class DeleteGuideController {
   async handler(req: Request, res: Response) {
@@ -16,9 +17,13 @@ class DeleteGuideController {
       const guideService = new DeleteGuideService(guideRepository);
 
       const result = await guideService.execute(id);
+
       if (result instanceof Error) {
         return clientErrorResponse(res, result);
       }
+
+      // <--- Remove content from the database (Cloudinary) --->
+      deleteContentCloudinary([result.filePaths]);
 
       return sucessfulResponse(res, { data: result });
     } catch (error) {

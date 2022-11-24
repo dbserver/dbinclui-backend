@@ -10,18 +10,18 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
     return this.database[this.database.length - 1];
   }
 
-  async update(id: string, content: DigitalContentEntity): Promise<number> {
+  async update(content: DigitalContentEntity): Promise<DigitalContentEntity> {
     const result = await this.findById(content._id as string);
 
     if (!result) {
-      return 0;
+      throw new Error("Digital Content does not exists");
     }
 
     const index = this.database.indexOf(result);
 
     this.database[index] = content;
 
-    return 1;
+    return this.database[index];
   }
 
   async findById(id: string): Promise<DigitalContentEntity | null> {
@@ -33,18 +33,17 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
     return this.database;
   }
 
-  async delete(id: string): Promise<number> {
+  async delete(id: string): Promise<DigitalContentEntity> {
     const result = await this.findById(id);
 
     if (!result) {
-      return 0;
+      throw new Error("Digital Content does not exists");
     }
-
     const index = this.database.indexOf(result);
 
     this.database.splice(index, 1);
 
-    return 1;
+    return result;
   }
 
   async findByGuideId(id: string): Promise<DigitalContentEntity[]> {
@@ -63,6 +62,10 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
           _id: String(this.database.length),
           title: `Título do guia ${this.database.length}`,
           content: `Conteúdo do guia ${this.database.length}`,
+          filePaths: {
+            filePath: `www.image${this.database.length}.com.br`,
+            publicId: `uploads/image${this.database.length}`,
+          },
         },
         category: {
           _id: String(this.database.length),
@@ -72,6 +75,10 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
             _id: String(this.database.length),
             title: `Título do guia ${this.database.length}`,
             content: `Conteúdo do guia ${this.database.length}`,
+            filePaths: {
+              filePath: `www.image${this.database.length}.com.br`,
+              publicId: `uploads/image${this.database.length}`,
+            },
           },
         },
         filePaths: [

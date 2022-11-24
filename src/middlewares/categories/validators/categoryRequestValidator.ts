@@ -13,7 +13,7 @@ export const categoryRequestValidator = (method: "post" | "put" | "get" | "delet
 
       body("guide")
         .notEmpty()
-        .withMessage("O título da categoria não pode está vazio")
+        .withMessage("É necessário passar um guia para criar uma categoria")
         .isMongoId()
         .withMessage("Formato do ID inválido"),
 
