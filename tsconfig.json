@@ -97,14 +97,12 @@
   "ts-node": {
     "esm": true
   },
-  "include": [
-    "src/**/*.ts",
-  ],
   "exclude": [
     "node_modules",
     "src/helpers/inMemoryRepositories/*.ts",
     "src/helpers/inMemoryRepositories/*.test.ts",
     "src/helpers/inMemoryRepositories/*.spec.ts",
+    "jest.config.ts",
     "**/*.test.ts",
     "**/*.spec.ts",
   ]

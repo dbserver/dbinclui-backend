@@ -7,7 +7,7 @@ export class CreateCategoryService {
   async execute(category: CategoryEntity) {
     try {
       const result = await this.repository.create(category);
-
+      
       return result;
     } catch (error) {
       throw new Error(error as string);
