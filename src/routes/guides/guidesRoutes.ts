@@ -13,6 +13,7 @@ import { deleteGuideRequestMiddleware } from "../../middlewares/guides/deleteGui
 import { guideRequestMiddleware } from "../../middlewares/guides/guideRequestMiddleware.js";
 import { updateGuideRequestMiddleware } from "../../middlewares/guides/updateGuideRequestMiddleware.js";
 import { guideRequestValidator } from "../../middlewares/guides/validators/guideRequestValidator.js";
+import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
 
 const guidesRouter = Router();
 
@@ -23,6 +24,7 @@ guidesRouter.post(
   guideRequestValidator("post"),
   createGuideRequestMiddleware,
   createGuideController.handler,
+  uploadErrorMiddleware,
 );
 
 guidesRouter.get("/", getAllGuidesController.handler);
@@ -43,6 +45,7 @@ guidesRouter.put(
   guideRequestValidator("put"),
   updateGuideRequestMiddleware,
   updateGuideController.handler,
+  uploadErrorMiddleware,
 );
 
 guidesRouter.delete(

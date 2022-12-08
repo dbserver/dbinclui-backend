@@ -12,6 +12,7 @@ import { updateDigitalContentMiddleware } from "../../middlewares/digitalContent
 import { getByCategoryIdDigitalContentController } from "../../controllers/digitalContents/GetByCategoryIdDigitalContentController.js";
 import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/getByCategoryIdDigitalContentRequestMiddleware.js";
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
+import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
 
 const digitalContentsRouter = Router();
 
@@ -22,6 +23,7 @@ digitalContentsRouter.post(
   digitalContentRequestValidator("post"),
   createDigitalContentRequestMiddleware,
   createDigitalContentController.handler,
+  uploadErrorMiddleware,
 );
 
 digitalContentsRouter.get(
@@ -40,6 +42,7 @@ digitalContentsRouter.put(
   digitalContentRequestValidator("put"),
   updateDigitalContentMiddleware,
   updateDigitalContentController.handler,
+  uploadErrorMiddleware,
 );
 
 digitalContentsRouter.get(
