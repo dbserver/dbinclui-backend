@@ -2,7 +2,7 @@ import request from "supertest";
 import { App } from "../../App";
 import { mongoInMemoryDatabase } from "./../../helpers/tests/mongoInMemoryDatabase";
 
-describe("Delete Post Controller", () => {
+describe("GetAllCategoriesController", () => {
   beforeAll(async () => {
     await mongoInMemoryDatabase.open();
   });
