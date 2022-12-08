@@ -39,7 +39,7 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
-
+  
   public async clear() {
     try {
       const collections = mongoose.connection.collections;
@@ -49,6 +49,37 @@ class MongoInMemoryDatabase {
       }
     } catch (error) {
       console.log("Failed to clean the collections in memory.");
+      console.log(error);
+      throw error;
+    }
+  }
+  
+  public async createGuide () {
+    try{
+      const guide = mongoose.connection.collection("guides")
+      const res = await guide.insertOne({
+        title: "Título do guia",
+        content: "Conteúdo do guia",
+        filePaths: {
+          filePath: `wwww.image${1}.com.br`,
+          publicId: `uploads/${1}`,
+        },
+    });
+    }catch(error){
+      console.log("Failed to launch database collections.");
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async getGuide () {
+    try {
+      const guide = mongoose.connection.collection("guides");
+      const allGuides = await guide.find().toArray();
+
+      return allGuides[0];
+    } catch (error) {
+      console.log("Something went wrong finding the posts.");
       console.log(error);
       throw error;
     }
