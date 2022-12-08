@@ -33,4 +33,13 @@ describe("CreateCategoryController", () => {
     expect(200)
     })
 
+    it("Must not allow the registration of a category without a guide", async () => {
+      const response = await request(app.getExpress).post("/categories").send({
+        title: "Título da categoria",
+        shortDescription: "Descrição da categoria",
+      });
+      const { msg } = response.body.message[0];
+      expect(response.status).toBe(400);
+      expect(msg).toEqual("É necessário passar um guia para criar uma categoria");
+    });
 });

@@ -85,6 +85,38 @@ class MongoInMemoryDatabase {
     }
   }
 
+  public async createCategory() {
+    try {
+      const category = mongoose.connection.collection("categories");
+      await mongoInMemoryDatabase.createGuide()
+      const guides = mongoose.connection.collection("guides")
+      const allGuides = await guides.find().toArray();
+
+      await category.insertOne({
+        title: "Título da categoria",
+        shortDescription: "Descrição da categoria",
+        guide: allGuides[0]._id
+      });
+    } catch (error) {
+      console.log("Failed to launch database collections.");
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async getCategory() {
+    try {
+      const category = mongoose.connection.collection("categories");
+      const allCategories = await category.find().toArray();
+
+      return allCategories[0];
+    } catch (error) {
+      console.log("Something went wrong finding the categories.");
+      console.log(error);
+      throw error;
+    }
+  }
+
 }
 
 export const mongoInMemoryDatabase = MongoInMemoryDatabase.getInstance();
