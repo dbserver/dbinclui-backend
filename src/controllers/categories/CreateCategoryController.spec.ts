@@ -32,6 +32,18 @@ describe("CreateCategoryController", () => {
         })
     expect(200)
     })
+    
+  it("Must not be able to create a new category with title longer than 32 characters", async () => {
+      const guide = await mongoInMemoryDatabase.getGuide()
+      await request(app.getExpress)
+      .post("/categories")
+      .send({
+        title: "Título da categoria maior do que o esperado",
+        shortDescription: "Descrição da categoria",
+        guide: guide._id
+        })
+    expect(400)
+    })
 
     it("Must not allow the registration of a category without a guide", async () => {
       const response = await request(app.getExpress).post("/categories").send({
