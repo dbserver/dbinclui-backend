@@ -8,8 +8,8 @@ export class App {
   private port?: string;
   private environment?: string;
 
-  get getExpress() : express.Express {
-    return this.express
+  get getExpress(): express.Express {
+    return this.express;
   }
 
   constructor() {
