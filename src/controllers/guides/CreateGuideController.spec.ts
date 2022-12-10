@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 const filePath = path.resolve(__dirname, "..", "..", "..", "temps", "uploads");
 const fileMock = path.resolve(__dirname, "..", "..", "..", "temps", "tests", "4495.jpg");
 
-describe("CreateCategoryController", () => {
+describe("CreateGuideController", () => {
   beforeAll(async () => {
     await mongoInMemoryDatabase.open();
   }, 60_000);
