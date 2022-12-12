@@ -57,7 +57,7 @@ class MongoInMemoryDatabase {
   public async createGuide () {
     try{
       const guide = mongoose.connection.collection("guides")
-      const res = await guide.insertOne({
+      await guide.insertOne({
         title: "Título do guia",
         content: "Conteúdo do guia",
         filePaths: {
@@ -110,6 +110,46 @@ class MongoInMemoryDatabase {
       const allCategories = await category.find().toArray();
 
       return allCategories[0];
+    } catch (error) {
+      console.log("Something went wrong finding the categories.");
+      console.log(error);
+      throw error;
+    }
+  }
+  
+  public async createDigitalContent() {
+    try {
+      const digitalContent = mongoose.connection.collection("digitalContents");
+      await mongoInMemoryDatabase.createCategory()
+      const categories = mongoose.connection.collection("categories");
+      const allCategories = await categories.find().toArray();
+      await mongoInMemoryDatabase.createGuide()
+      const guides = mongoose.connection.collection("guides")
+      const allGuides = await guides.find().toArray();
+
+      await digitalContent.insertOne({
+        title: "Título da categoria",
+        shortDescription: "Descrição da categoria",
+        guide: allGuides[0]._id,
+        category: allCategories[0]._id,
+        filePaths: [{
+          filePath: `wwww.image${1}.com.br`,
+          publicId: `uploads/${1}`,
+        }],
+      });
+    } catch (error) {
+      console.log("Failed to launch database collections.");
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async getDigitalContent() {
+    try {
+      const DigitalContents = mongoose.connection.collection("digitalContents");
+      const allDigitalContents = await DigitalContents.find().toArray();
+
+      return allDigitalContents[0];
     } catch (error) {
       console.log("Something went wrong finding the categories.");
       console.log(error);
