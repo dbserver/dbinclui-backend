@@ -22,7 +22,7 @@ describe("GetByIdCategoryController", () => {
     await request(app.getExpress).get(`/categories/${firstCategory._id}1`).expect(400);
   });
 
-  it("Should return a status of 200 if category no exists", async () => {
+  it("Should return a status of 200 if category exists", async () => {
     const firstCategory = await mongoInMemoryDatabase.getCategory();
     await request(app.getExpress).get(`/categories/${firstCategory._id}`).expect(200);
   });
