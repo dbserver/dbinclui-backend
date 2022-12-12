@@ -31,7 +31,6 @@ describe("GetAllCategoriesController", () => {
 
   it("Should return 'Route not found' if the url is not valid", async () => {
     const response = await request(app.getExpress).get("/categoriessa")
-    const {message} = response.body
-    expect(message).toEqual("Rota não encontrada");
+    expect(response.body.message).toEqual("Rota não encontrada");
   });
 });
