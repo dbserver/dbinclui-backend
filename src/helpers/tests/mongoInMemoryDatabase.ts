@@ -128,8 +128,8 @@ class MongoInMemoryDatabase {
       const allGuides = await guides.find().toArray();
 
       await digitalContent.insertOne({
-        title: "Título da categoria",
-        shortDescription: "Descrição da categoria",
+        title: "Título do conteúdo digital",
+        shortDescription: "Descrição do conteúdo digital",
         guide: allGuides[0]._id,
         category: allCategories[0]._id,
         filePaths: [{

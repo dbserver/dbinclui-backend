@@ -3,10 +3,12 @@ import { fileURLToPath } from "url";
 import { App } from "../../App";
 import request from "supertest";
 import path from "path";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+const filePath = path.resolve(__dirname, "..", "..", "..", "temps", "uploads");
 const fileMock = path.resolve(__dirname, "..", "..", "..", "temps", "tests", "4495.jpg");
 
 describe("CreateDigitalContent", () => {
@@ -21,6 +23,10 @@ describe("CreateDigitalContent", () => {
   beforeEach(async () => {
     await mongoInMemoryDatabase.createCategory();
   })
+
+  afterEach(() => {
+    fs.rmSync(filePath, { recursive: true, force: true });
+  });
 
   const app = new App();
 
