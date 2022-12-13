@@ -20,17 +20,14 @@ describe("DeleteCategoryController", () => {
   it("Should return a status 200 if delete is success", async () => {
     const firstCategory = await mongoInMemoryDatabase.getCategory();
 
-    await request(app.getExpress)
-      .delete(`/categories/${firstCategory._id}`)
-      expect(200)
+    await request(app.getExpress).delete(`/categories/${firstCategory._id}`);
+    expect(200);
   });
 
   it("Should return 400 if category does not exist", async () => {
     const firstCategory = await mongoInMemoryDatabase.getCategory();
 
-    await request(app.getExpress)
-      .delete(`/categories/${firstCategory._id}1`)
-      expect(400)
+    await request(app.getExpress).delete(`/categories/${firstCategory._id}1`);
+    expect(400);
   });
-
 });

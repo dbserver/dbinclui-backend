@@ -22,7 +22,7 @@ describe("CreateDigitalContent", () => {
 
   beforeEach(async () => {
     await mongoInMemoryDatabase.createCategory();
-  })
+  });
 
   afterEach(() => {
     fs.rmSync(filePath, { recursive: true, force: true });
@@ -31,34 +31,40 @@ describe("CreateDigitalContent", () => {
   const app = new App();
 
   it("Should be able to create a new digital content", async () => {
-    const category = await mongoInMemoryDatabase.getCategory()
-    const {guide} = category;
+    const category = await mongoInMemoryDatabase.getCategory();
+    const { guide } = category;
 
     await request(app.getExpress)
-        .post("/digital-contents")
-        .field("data", JSON.stringify({ 
-            title: `Título do conteúdo digital`,
-            shortDescription: `Descrição do conteúdo digital`,
-            guide: guide._id,
-            category: category._id,
-        }))
-        .attach('files', fileMock)
-        .expect(200);
-    });
+      .post("/digital-contents")
+      .field(
+        "data",
+        JSON.stringify({
+          title: `Título do conteúdo digital`,
+          shortDescription: `Descrição do conteúdo digital`,
+          guide: guide._id,
+          category: category._id,
+        }),
+      )
+      .attach("files", fileMock)
+      .expect(200);
+  });
 
   it("Must not create new digital content without a media file", async () => {
-    const category = await mongoInMemoryDatabase.getCategory()
-    const {guide} = category;
+    const category = await mongoInMemoryDatabase.getCategory();
+    const { guide } = category;
 
     const response = await request(app.getExpress)
-        .post("/digital-contents")
-        .field("data", JSON.stringify({ 
-            title: `Título do conteúdo digital`,
-            shortDescription: `Descrição do conteúdo digital`,
-            guide: guide._id,
-            category: category._id,
-        }))
-        expect(400)
-        expect(response.body.message).toEqual('Você precisa enviar alguma mídia (imagem ou vídeo)')
-    });
-})
+      .post("/digital-contents")
+      .field(
+        "data",
+        JSON.stringify({
+          title: `Título do conteúdo digital`,
+          shortDescription: `Descrição do conteúdo digital`,
+          guide: guide._id,
+          category: category._id,
+        }),
+      );
+    expect(400);
+    expect(response.body.message).toEqual("Você precisa enviar alguma mídia (imagem ou vídeo)");
+  });
+});

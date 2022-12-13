@@ -20,15 +20,10 @@ describe("DeleteGuideController", () => {
 
   it("Should be able to delete a guide and return 200 OK", async () => {
     guide = await mongoInMemoryDatabase.getGuide();
-    await request(app.getExpress)
-    .delete(`/guides/${guide._id}`)
-    .expect(200)
+    await request(app.getExpress).delete(`/guides/${guide._id}`).expect(200);
   });
 
   it(`Should return 400 Bad request to trying delete ${guide._id} guide id`, async () => {
-    await request(app.getExpress)
-    .delete(`/guides/${guide._id}`)
-    .expect(400)   
+    await request(app.getExpress).delete(`/guides/${guide._id}`).expect(400);
   });
 });
-

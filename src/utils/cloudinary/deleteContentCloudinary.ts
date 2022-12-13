@@ -15,8 +15,5 @@ export const deleteContentCloudinary = async (images: FileProps[]) => {
       // <--- Delete videos --->
       await cloudinary.api.delete_resources(paths, { resource_type: "video" });
     }
-  } catch (error) {
-    console.log("Error ao deletar o arquivo");
-    console.log(error);
-  }
+  } catch (error) {}
 };

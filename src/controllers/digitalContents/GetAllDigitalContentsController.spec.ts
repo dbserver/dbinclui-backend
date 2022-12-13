@@ -25,12 +25,12 @@ describe("GetAllDigitalContentsController", () => {
     await mongoInMemoryDatabase.clear();
 
     const response = await request(app.getExpress).get("/digital-contents").expect(200);
-    const {data} = response.body
+    const { data } = response.body;
     expect(data.length).toBe(0);
   });
 
   it("Should return 'Route not found' if the url is not valid", async () => {
-    const response = await request(app.getExpress).get("/digital-contentsEsa")
+    const response = await request(app.getExpress).get("/digital-contentsEsa");
     expect(response.body.message).toEqual("Rota não encontrada");
   });
 });

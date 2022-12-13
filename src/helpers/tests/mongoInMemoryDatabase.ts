@@ -39,7 +39,7 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
-  
+
   public async clear() {
     try {
       const collections = mongoose.connection.collections;
@@ -53,10 +53,10 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
-  
-  public async createGuide () {
-    try{
-      const guide = mongoose.connection.collection("guides")
+
+  public async createGuide() {
+    try {
+      const guide = mongoose.connection.collection("guides");
       await guide.insertOne({
         title: "Título do guia",
         content: "Conteúdo do guia",
@@ -64,15 +64,15 @@ class MongoInMemoryDatabase {
           filePath: `wwww.image${1}.com.br`,
           publicId: `uploads/${1}`,
         },
-    });
-    }catch(error){
+      });
+    } catch (error) {
       console.log("Failed to launch database collections.");
       console.log(error);
       throw error;
     }
   }
 
-  public async getGuide () {
+  public async getGuide() {
     try {
       const guide = mongoose.connection.collection("guides");
       const allGuides = await guide.find().toArray();
@@ -88,14 +88,14 @@ class MongoInMemoryDatabase {
   public async createCategory() {
     try {
       const category = mongoose.connection.collection("categories");
-      await mongoInMemoryDatabase.createGuide()
-      const guides = mongoose.connection.collection("guides")
+      await mongoInMemoryDatabase.createGuide();
+      const guides = mongoose.connection.collection("guides");
       const allGuides = await guides.find().toArray();
 
       await category.insertOne({
         title: "Título da categoria",
         shortDescription: "Descrição da categoria",
-        guide: allGuides[0]._id
+        guide: allGuides[0]._id,
       });
     } catch (error) {
       console.log("Failed to launch database collections.");
@@ -116,15 +116,15 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
-  
+
   public async createDigitalContent() {
     try {
       const digitalContent = mongoose.connection.collection("digitalContents");
-      await mongoInMemoryDatabase.createCategory()
+      await mongoInMemoryDatabase.createCategory();
       const categories = mongoose.connection.collection("categories");
       const allCategories = await categories.find().toArray();
-      await mongoInMemoryDatabase.createGuide()
-      const guides = mongoose.connection.collection("guides")
+      await mongoInMemoryDatabase.createGuide();
+      const guides = mongoose.connection.collection("guides");
       const allGuides = await guides.find().toArray();
 
       await digitalContent.insertOne({
@@ -132,10 +132,12 @@ class MongoInMemoryDatabase {
         shortDescription: "Descrição do conteúdo digital",
         guide: allGuides[0]._id,
         category: allCategories[0]._id,
-        filePaths: [{
-          filePath: `wwww.image${1}.com.br`,
-          publicId: `uploads/${1}`,
-        }],
+        filePaths: [
+          {
+            filePath: `wwww.image${1}.com.br`,
+            publicId: `uploads/${1}`,
+          },
+        ],
       });
     } catch (error) {
       console.log("Failed to launch database collections.");
@@ -156,7 +158,6 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
-
 }
 
 export const mongoInMemoryDatabase = MongoInMemoryDatabase.getInstance();

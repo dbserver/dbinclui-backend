@@ -20,17 +20,14 @@ describe("DeleteDigitalContentController", () => {
   it("Should return a status 200 if delete is success", async () => {
     const firstDigitalContent = await mongoInMemoryDatabase.getDigitalContent();
 
-    await request(app.getExpress)
-      .delete(`/digital-contents/${firstDigitalContent._id}`)
-      expect(200)
+    await request(app.getExpress).delete(`/digital-contents/${firstDigitalContent._id}`);
+    expect(200);
   });
 
   it("Should return 400 if digital contents does not exist", async () => {
     const firstDigitalContent = await mongoInMemoryDatabase.getDigitalContent();
 
-    await request(app.getExpress)
-      .delete(`/digital-contents/${firstDigitalContent._id}1`)
-      expect(400)
+    await request(app.getExpress).delete(`/digital-contents/${firstDigitalContent._id}1`);
+    expect(400);
   });
-
 });

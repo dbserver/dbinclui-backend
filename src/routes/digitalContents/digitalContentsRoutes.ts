@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { uploadCloudinary } from "../../configs/multer/cloudinary/multerCloudinaryStorageConfig.js";
 import { createDigitalContentController } from "../../controllers/digitalContents/CreateDigitalContentController.js";
 import { createDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/createDigitalContentRequestMiddleware.js";
 import { digitalContentRequestValidator } from "../../middlewares/digitalContents/validators/digitalContentRequestValidator.js";
@@ -12,13 +11,9 @@ import { updateDigitalContentMiddleware } from "../../middlewares/digitalContent
 import { getByCategoryIdDigitalContentController } from "../../controllers/digitalContents/GetByCategoryIdDigitalContentController.js";
 import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/getByCategoryIdDigitalContentRequestMiddleware.js";
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
-import { uploadLocal } from "../../configs/multer/local/multerLocalStorageConfig.js";
+import { uploadFile } from "../../configs/multer/index.js";
 
 const digitalContentsRouter = Router();
-const uploadFile =
-  process.env.HOST_UPLOAD === "local"
-    ? uploadLocal.array("files")
-    : uploadCloudinary.array("files");
 
 digitalContentsRouter.post(
   "/",

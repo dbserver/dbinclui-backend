@@ -20,7 +20,7 @@ describe("GetAllGuidesController", () => {
 
   it(`Should return 400 Bad request to requisition if there are no guides in database`, async () => {
     await mongoInMemoryDatabase.clear();
-    const { body } = await request(app.getExpress).get("/guides")
+    const { body } = await request(app.getExpress).get("/guides");
     expect(body.data.length).toBe(0);
   });
 });

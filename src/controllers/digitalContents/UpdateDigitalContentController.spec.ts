@@ -41,15 +41,15 @@ describe("UpdateDigitalContent", () => {
       .field(
         "data",
         JSON.stringify({
-          title: `Título do conteúdo digital atualizado`,
-          shortDescription: `Descrição do conteúdo digital atualizado`,
+          title: `Título atualizado`,
+          shortDescription: `Descrição atualizado`,
           guide: guide._id,
           category: category._id,
         }),
       );
     expect(response.statusCode).toBe(200);
     const { title } = response.body.data;
-    expect(title).toEqual("Título do conteúdo digital atualizado");
+    expect(title).toEqual("Título atualizado");
   });
 
   it("Must not update a guide without its id", async () => {
