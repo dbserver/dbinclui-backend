@@ -26,6 +26,13 @@ export const guideRequestValidator = (method: "post" | "put" | "get" | "delete")
         .withMessage("Um ID do guia é necessário para esse método")
         .isMongoId()
         .withMessage("Formato de ID inválido"),
+
+      body("title")
+        .optional()
+        .isLength({ min: 1, max: 32 })
+        .withMessage("O título deve ter entre 1 a 32 caracteres")
+        .isString()
+        .withMessage("O formato deve ser uma string"),
     ];
   }
 

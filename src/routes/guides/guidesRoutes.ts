@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { guideUploadCloudinary } from "../../configs/multer/guideMulterCloudinaryStorageConfig.js";
-import { uploadCloudinary } from "../../configs/multer/multerCloudinaryStorageConfig.js";
+import { uploadGuideFile } from "../../configs/multer/index.js";
 import { createGuideController } from "../../controllers/guides/CreateGuideController.js";
 import { deleteGuideController } from "../../controllers/guides/DeleteGuideController.js";
 import { getAllGuidesController } from "../../controllers/guides/GetAllGuidesController.js";
@@ -19,7 +18,7 @@ const guidesRouter = Router();
 
 guidesRouter.post(
   "/",
-  guideUploadCloudinary.single("file"),
+  uploadGuideFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   guideRequestValidator("post"),
   createGuideRequestMiddleware,
@@ -40,7 +39,7 @@ guidesRouter.get("/categoriesAndContent/:id", getCategoriesAndContentController.
 
 guidesRouter.put(
   "/:id",
-  uploadCloudinary.single("file"),
+  uploadGuideFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   guideRequestValidator("put"),
   updateGuideRequestMiddleware,

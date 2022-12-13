@@ -2,11 +2,16 @@ import multer from "multer";
 import path from "path";
 import crypto from "crypto";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const pathDest = path.resolve(__dirname, "..", "..", "..", "temps", "uploads");
+const pathDest = path.resolve(__dirname, "..", "..", "..", "..", "temps", "uploads");
+
+if (!fs.existsSync(pathDest)) {
+  fs.mkdirSync(pathDest, { recursive: true });
+}
 
 const multerLocalStorageConfig: multer.Options = {
   dest: pathDest,
@@ -25,14 +30,7 @@ const multerLocalStorageConfig: multer.Options = {
     fileSize: 2 * 1024 * 1024, //2mb
   },
   fileFilter: (_, file, callback) => {
-    const allowedMimes = [
-      "image/jpeg",
-      "image/pjpeg",
-      "image/jpg",
-      "image/png",
-      "image/gif",
-      "video",
-    ];
+    const allowedMimes = ["image/jpeg", "image/pjpeg", "image/jpg", "image/png"];
 
     if (allowedMimes.includes(file.mimetype)) {
       callback(null, true);
@@ -42,4 +40,4 @@ const multerLocalStorageConfig: multer.Options = {
   },
 };
 
-export const uploadLocal = multer(multerLocalStorageConfig);
+export const guideUploadLocal = multer(multerLocalStorageConfig);

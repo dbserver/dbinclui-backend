@@ -27,6 +27,12 @@ export const categoryRequestValidator = (method: "post" | "put" | "get" | "delet
 
   if (method === "put" || method === "get" || method === "delete") {
     return [
+      body("title")
+        .optional()
+        .isLength({ min: 1, max: 32 })
+        .withMessage("O título deve ter entre 1 a 32 caracteres")
+        .isString()
+        .withMessage("O formato deve ser uma string"),
       body("guide").optional().isMongoId().withMessage("Formato de ID inválido"),
       param("id")
         .notEmpty()

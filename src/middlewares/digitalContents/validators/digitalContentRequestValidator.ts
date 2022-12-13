@@ -33,6 +33,12 @@ export const digitalContentRequestValidator = (method: "post" | "put" | "get" | 
 
   if (method === "put" || method === "get" || method === "delete") {
     return [
+      body("title")
+        .optional()
+        .isLength({ min: 1, max: 32 })
+        .withMessage("O título deve ter entre 1 a 32 caracteres")
+        .isString()
+        .withMessage("O formato deve ser uma string"),
       body("guide").optional().isMongoId().withMessage("Formato do ID do guia inválido"),
       body("category").optional().isMongoId().withMessage("Formato do ID da categoria inválido"),
       param("id")

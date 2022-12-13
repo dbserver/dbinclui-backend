@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { uploadCloudinary } from "../../configs/multer/multerCloudinaryStorageConfig.js";
 import { createDigitalContentController } from "../../controllers/digitalContents/CreateDigitalContentController.js";
 import { createDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/createDigitalContentRequestMiddleware.js";
 import { digitalContentRequestValidator } from "../../middlewares/digitalContents/validators/digitalContentRequestValidator.js";
@@ -12,18 +11,17 @@ import { updateDigitalContentMiddleware } from "../../middlewares/digitalContent
 import { getByCategoryIdDigitalContentController } from "../../controllers/digitalContents/GetByCategoryIdDigitalContentController.js";
 import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/getByCategoryIdDigitalContentRequestMiddleware.js";
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
-import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
+import { uploadFile } from "../../configs/multer/index.js";
 
 const digitalContentsRouter = Router();
 
 digitalContentsRouter.post(
   "/",
-  uploadCloudinary.array("files"),
+  uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("post"),
   createDigitalContentRequestMiddleware,
   createDigitalContentController.handler,
-  uploadErrorMiddleware,
 );
 
 digitalContentsRouter.get(
@@ -37,12 +35,11 @@ digitalContentsRouter.get("/", getAllDigitalContentsController.handler);
 
 digitalContentsRouter.put(
   "/:id",
-  uploadCloudinary.array("files"),
+  uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("put"),
   updateDigitalContentMiddleware,
   updateDigitalContentController.handler,
-  uploadErrorMiddleware,
 );
 
 digitalContentsRouter.get(

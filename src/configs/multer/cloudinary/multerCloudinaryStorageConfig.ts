@@ -1,6 +1,6 @@
 import multer from "multer";
 
-import { Cloudinary } from "../../database/Cloudinary.js";
+import { Cloudinary } from "../../../database/Cloudinary.js";
 
 const database = new Cloudinary();
 
