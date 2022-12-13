@@ -22,7 +22,6 @@ digitalContentsRouter.post(
   digitalContentRequestValidator("post"),
   createDigitalContentRequestMiddleware,
   createDigitalContentController.handler,
-  uploadErrorMiddleware,
 );
 
 digitalContentsRouter.get(
@@ -41,7 +40,6 @@ digitalContentsRouter.put(
   digitalContentRequestValidator("put"),
   updateDigitalContentMiddleware,
   updateDigitalContentController.handler,
-  uploadErrorMiddleware,
 );
 
 digitalContentsRouter.get(
