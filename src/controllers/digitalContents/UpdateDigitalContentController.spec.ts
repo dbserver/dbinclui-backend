@@ -18,6 +18,7 @@ describe("UpdateDigitalContent", () => {
 
   afterAll(async () => {
     await mongoInMemoryDatabase.close();
+    fs.rmSync(filePath, { recursive: true, force: true });
   });
 
   beforeEach(async () => {
@@ -27,7 +28,6 @@ describe("UpdateDigitalContent", () => {
 
   afterEach(async () => {
     await mongoInMemoryDatabase.clear();
-    fs.rmSync(filePath, { recursive: true, force: true });
   });
 
   const app = new App();
@@ -75,7 +75,7 @@ describe("UpdateDigitalContent", () => {
     const category = await mongoInMemoryDatabase.getCategory();
     const { guide } = category;
     const response = await request(app.getExpress)
-      .put(`/digital-contents/${digitalContent._id}232`)
+      .put(`/digital-contents/232ine`)
       .field(
         "data",
         JSON.stringify({
@@ -86,6 +86,7 @@ describe("UpdateDigitalContent", () => {
         }),
       )
       .attach("files", fileMock);
-    expect(response.statusCode).toBe(500);
+
+    expect(response.statusCode).toBe(400);
   });
 });
