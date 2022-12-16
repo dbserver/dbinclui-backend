@@ -6,7 +6,6 @@ import {
   sucessfulResponse,
 } from "../../responses/appResponses.js";
 import { UpdateDigitalContentService } from "../../services/digitalContents/UpdateDigitalContentService.js";
-import { v2 as cloudinary } from "cloudinary";
 import { RequestFileProps } from "../interfaces/RequestProps.js";
 import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
 
