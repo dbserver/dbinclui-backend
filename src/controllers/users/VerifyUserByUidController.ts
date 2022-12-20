@@ -9,12 +9,12 @@ class VerifyUserByUidController {
 
   async handler(req: Request, res: Response) {
     try {
-      const body = req.body.decoded as UserEntity;
+      const { uid } = req.body.decoded as UserEntity;
 
       const userRepository = new UserMongoRepository();
       const userService = new VerifyUserByUidService(userRepository);
 
-      const result = await userService.execute(body);
+      const result = await userService.execute(uid);
 
       return sucessfulResponse(res, result);
     } catch (error) {

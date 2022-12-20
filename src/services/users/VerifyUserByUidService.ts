@@ -3,9 +3,9 @@ import { UserRepository } from "../../repositories/UserRepository";
 
 export class VerifyUserByUidService {
   constructor(private readonly repository: UserRepository) {}
-  async execute(user: UserEntity) {
+  async execute(uid: string) {
     try {
-      const userFinded = await this.repository.findByUid(user.uid);
+      const userFinded = await this.repository.findByUid(uid);
 
       if (userFinded) {
         return true;
