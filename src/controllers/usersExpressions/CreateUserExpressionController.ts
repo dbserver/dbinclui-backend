@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { UsersExpressionsMongoRepository } from "../../repositories/mongoRepositories/UsersExpressionsMongoRepository";
 import { CreateUserExpressionService } from "../../services/usersExpressions/CreateUserExpressionService";
-import { sucessfulResponse, serverErrorResponse  } from "../../responses/appResponses";
+import { sucessfulResponse, serverErrorResponse, clientErrorResponse  } from "../../responses/appResponses";
 
 class CreateUserExpressionController {
    async handler(req: Request, res: Response)  {
@@ -11,7 +11,12 @@ class CreateUserExpressionController {
         const usersExpressionsRepository = new UsersExpressionsMongoRepository()
         const userExpressionService = new CreateUserExpressionService(usersExpressionsRepository)
         
-        const result = await userExpressionService.execute({...body})
+        const result = await userExpressionService.execute(body)
+
+        if (result instanceof Error) {
+            return clientErrorResponse(res, result);
+          }
+
         return sucessfulResponse(res, { data: result });
     
     } catch (error) {
