@@ -5,6 +5,6 @@ import { userSchemaSettings } from "./settings/userSchemaSettings";
 
 const UserSchema = new Schema<UserEntity>(userSchemaSettings, defaultSchemaSettings);
 
-const UserModel = model<UserEntity>("user", UserSchema, "users")
+const UserModel = model<UserEntity>("user", UserSchema, "users");
 
-export {UserModel}
+export { UserModel };
