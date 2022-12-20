@@ -1,7 +1,7 @@
 import { UserEntity } from "../../entities/UserEntity";
 import { UserRepository } from "../../repositories/UserRepository";
 
-export class GetUserByUidService {
+export class VerifyUserByUidService {
   constructor(private readonly repository: UserRepository) {}
   async execute(user: UserEntity) {
     try {
