@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { UserEntity } from "../../entities/UserEntity";
 import { UserMongoRepository } from "../../repositories/mongoRepositories/UserMongoRepository";
-import { UserRepository } from "../../repositories/UserRepository";
 import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses";
 import { CreateUserService } from "../../services/users/CreateUserService";
 
@@ -21,8 +20,8 @@ class CreateUserController {
   }
 }
 
-const userRepository = new UserMongoRepository()
+const userRepository = new UserMongoRepository();
 
-const userService = new CreateUserService(userRepository)
+const userService = new CreateUserService(userRepository);
 
-export const createUserController = new CreateUserController(userService)
+export const createUserController = new CreateUserController(userService);
