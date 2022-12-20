@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
 
-export const expressionSchemaSettings = {
+export const userExpressionSchemaSettings = {
   expression: {
     type: String,
     required: true,
