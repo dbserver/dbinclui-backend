@@ -3,11 +3,11 @@ import { ExpressionEntity } from "../entities/ExpressionEntity.js";
 import { defaultSchemaSettings } from "./settings/defaultSchemaSettings.js";
 import { usersExpressionSchemaSettings } from "./settings/usersExpressionSchemaSettings.js";
 
-const UsersExpressionSchema = new Schema<ExpressionEntity>(
+const UsersExpressionsSchema = new Schema<ExpressionEntity>(
   usersExpressionSchemaSettings,
   defaultSchemaSettings,
 );
 
-const UsersExpressionModel = model<ExpressionEntity>("expression", UsersExpressionSchema, "usersExpressions");
+const UsersExpressionsModel = model<ExpressionEntity>("userExpression", UsersExpressionsSchema, "usersExpressions");
 
-export { UsersExpressionModel };
+export { UsersExpressionsModel };
