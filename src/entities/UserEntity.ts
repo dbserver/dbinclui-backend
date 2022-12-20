@@ -3,4 +3,5 @@ export interface UserEntity {
   uid: string;
   name: string;
   email: string;
+  admin?: boolean;
 }

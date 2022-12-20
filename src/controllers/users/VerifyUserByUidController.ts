@@ -5,8 +5,6 @@ import { serverErrorResponse, sucessfulResponse } from "../../responses/appRespo
 import { VerifyUserByUidService } from "../../services/users/VerifyUserByUidService.js";
 
 class VerifyUserByUidController {
-  constructor() {}
-
   async handler(req: Request, res: Response) {
     try {
       const { uid } = req.body.decoded as UserEntity;
