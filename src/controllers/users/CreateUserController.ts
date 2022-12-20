@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { UserEntity } from "../../entities/UserEntity";
 import { UserMongoRepository } from "../../repositories/mongoRepositories/UserMongoRepository.js";
-import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses.js";
+import {
+  clientErrorResponse,
+  serverErrorResponse,
+  sucessfulResponse,
+} from "../../responses/appResponses.js";
 import { CreateUserService } from "../../services/users/CreateUserService.js";
 
 class CreateUserController {
@@ -15,6 +19,10 @@ class CreateUserController {
       const userService = new CreateUserService(userRepository);
 
       const result = await userService.execute(body);
+
+      if (result instanceof Error) {
+        return clientErrorResponse(res, result);
+      }
 
       return sucessfulResponse(res, result);
     } catch (error) {
