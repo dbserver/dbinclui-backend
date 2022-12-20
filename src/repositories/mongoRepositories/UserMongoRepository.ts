@@ -1,6 +1,6 @@
-import { UserEntity } from "../../entities/UserEntity";
-import { UserModel } from "../../models/UserModel";
-import { UserRepository } from "../UserRepository";
+import { UserEntity } from "../../entities/UserEntity.js";
+import { UserModel } from "../../models/UserModel.js";
+import { UserRepository } from "../UserRepository.js";
 
 export class UserMongoRepository implements UserRepository {
   database = UserModel;

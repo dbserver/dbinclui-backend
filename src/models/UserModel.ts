@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { UserEntity } from "../entities/UserEntity";
-import { defaultSchemaSettings } from "./settings/defaultSchemaSettings";
-import { userSchemaSettings } from "./settings/userSchemaSettings";
+import { UserEntity } from "../entities/UserEntity.js";
+import { defaultSchemaSettings } from "./settings/defaultSchemaSettings.js";
+import { userSchemaSettings } from "./settings/userSchemaSettings.js";
 
 const UserSchema = new Schema<UserEntity>(userSchemaSettings, defaultSchemaSettings);
 
