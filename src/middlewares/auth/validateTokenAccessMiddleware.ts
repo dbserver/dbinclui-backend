@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { firebaseAuth } from "../../database/Firebase.js";
 import { clientErrorResponse } from "../../responses/appResponses.js";
 import { FirebaseError } from "firebase-admin";
+import { FirebaseApplication } from "../../database/Firebase.js";
 
 export const validateTokenAccessMiddleware = async (
   req: Request,
@@ -10,15 +10,17 @@ export const validateTokenAccessMiddleware = async (
 ) => {
   try {
     const token = req.header("Authorization")?.substring(7);
-   
+
     if (!token) {
       return clientErrorResponse(res, new Error("Nenhum token foi passado, acesso negado."), 403);
     }
 
-    const decoded = await firebaseAuth.verifyIdToken(token);
+    const { auth } = new FirebaseApplication();
+
+    const decoded = await auth.verifyIdToken(token);
 
     req.body.decoded = decoded;
-    
+
     next();
   } catch (e) {
     const error = e as FirebaseError;
