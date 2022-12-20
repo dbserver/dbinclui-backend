@@ -9,8 +9,6 @@ import {
 import { CreateUserService } from "../../services/users/CreateUserService.js";
 
 class CreateUserController {
-  constructor() {}
-
   async handler(req: Request, res: Response) {
     try {
       const body = req.body.decoded as UserEntity;
