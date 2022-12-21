@@ -1,5 +1,5 @@
-import { ExpressionEntity } from "../entities/ExpressionEntity";
+import { ExpressionEntity } from "../entities/ExpressionEntity.js";
 
 export interface UsersExpressionsRepository {
-    create(content:ExpressionEntity):Promise<ExpressionEntity>;
+  create(content: ExpressionEntity): Promise<ExpressionEntity>;
 }

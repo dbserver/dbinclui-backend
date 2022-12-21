@@ -1,4 +1,4 @@
-import { UserEntity } from "./UserEntity";
+import { UserEntity } from "./UserEntity.js";
 
 export interface ExpressionEntity {
   _id?: string;

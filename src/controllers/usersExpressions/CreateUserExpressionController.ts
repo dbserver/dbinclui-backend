@@ -1,28 +1,33 @@
 import { Request, Response } from "express";
-import { UsersExpressionsMongoRepository } from "../../repositories/mongoRepositories/UsersExpressionsMongoRepository";
-import { CreateUserExpressionService } from "../../services/usersExpressions/CreateUserExpressionService";
-import { sucessfulResponse, serverErrorResponse, clientErrorResponse  } from "../../responses/appResponses";
+import { UserEntity } from "../../entities/UserEntity.js";
+import { UsersExpressionsMongoRepository } from "../../repositories/mongoRepositories/UsersExpressionsMongoRepository.js";
+import {
+  clientErrorResponse,
+  serverErrorResponse,
+  sucessfulResponse,
+} from "../../responses/appResponses.js";
+import { CreateUserExpressionService } from "../../services/usersExpressions/CreateUserExpressionService.js";
 
 class CreateUserExpressionController {
-   async handler(req: Request, res: Response)  {
+  async handler(req: Request, res: Response) {
     try {
-        const body = req.body;
-        
-        const usersExpressionsRepository = new UsersExpressionsMongoRepository()
-        const userExpressionService = new CreateUserExpressionService(usersExpressionsRepository)
-        
-        const result = await userExpressionService.execute(body)
+      const expression = req.body.expression;
+      const author = req.body.user as UserEntity;
 
-        if (result instanceof Error) {
-            return clientErrorResponse(res, result);
-          }
+      const usersExpressionsRepository = new UsersExpressionsMongoRepository();
+      const userExpressionService = new CreateUserExpressionService(usersExpressionsRepository);
 
-        return sucessfulResponse(res, { data: result });
-    
+      const result = await userExpressionService.execute({ expression, author });
+
+      if (result instanceof Error) {
+        return clientErrorResponse(res, result);
+      }
+      console.log(result)
+      return sucessfulResponse(res, result );
     } catch (error) {
-        return serverErrorResponse(res, error as Error);   
+      return serverErrorResponse(res, error as Error);
     }
-   }
+  }
 }
 
 export const createUserExpressionController = new CreateUserExpressionController();

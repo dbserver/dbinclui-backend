@@ -1,6 +1,7 @@
-import { ExpressionEntity } from "../../entities/ExpressionEntity";
-import { UsersExpressionsModel } from "../../models/UsersExpressionsModel";
-import { UsersExpressionsRepository } from "../UsersExpressionsRepository";
+import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
+import { UsersExpressionsModel } from "../../models/UsersExpressionsModel.js";
+import { UsersExpressionsRepository } from "../UsersExpressionsRepository.js";
+
 
 export class UsersExpressionsMongoRepository implements UsersExpressionsRepository {
   database = UsersExpressionsModel;
