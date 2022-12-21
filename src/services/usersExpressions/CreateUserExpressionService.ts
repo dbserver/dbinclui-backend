@@ -1,5 +1,5 @@
-import { ExpressionEntity } from "../../entities/ExpressionEntity";
-import { UsersExpressionsRepository } from "../../repositories/UsersExpressionsRepository";
+import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
+import { UsersExpressionsRepository } from "../../repositories/UsersExpressionsRepository.js";
 
 export class CreateUserExpressionService {
   constructor(private usersExpressionRepository: UsersExpressionsRepository) {}

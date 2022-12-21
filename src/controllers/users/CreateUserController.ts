@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { UserEntity } from "../../entities/UserEntity";
+import { UserEntity } from "../../entities/UserEntity.js";
 import { UserMongoRepository } from "../../repositories/mongoRepositories/UserMongoRepository.js";
 import {
   clientErrorResponse,

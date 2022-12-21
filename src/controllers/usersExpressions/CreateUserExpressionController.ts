@@ -22,7 +22,6 @@ class CreateUserExpressionController {
       if (result instanceof Error) {
         return clientErrorResponse(res, result);
       }
-      console.log(result)
       return sucessfulResponse(res, result );
     } catch (error) {
       return serverErrorResponse(res, error as Error);

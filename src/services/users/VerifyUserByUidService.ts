@@ -1,4 +1,4 @@
-import { UserRepository } from "../../repositories/UserRepository";
+import { UserRepository } from "../../repositories/UserRepository.js";
 
 export class VerifyUserByUidService {
   constructor(private readonly repository: UserRepository) {}

@@ -10,6 +10,7 @@ export const validateTokenAccessMiddleware = async (
 ) => {
   try {
     const token = req.header("Authorization")?.substring(7);
+    console.log(token);
 
     if (!token) {
       return clientErrorResponse(res, new Error("Nenhum token foi passado, acesso negado."), 403);

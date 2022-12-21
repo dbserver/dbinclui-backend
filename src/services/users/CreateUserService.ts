@@ -1,5 +1,5 @@
-import { UserEntity } from "../../entities/UserEntity";
-import { UserRepository } from "../../repositories/UserRepository";
+import { UserEntity } from "../../entities/UserEntity.js";
+import { UserRepository } from "../../repositories/UserRepository.js";
 
 export class CreateUserService {
   constructor(private readonly repository: UserRepository) {}
