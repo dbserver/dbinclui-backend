@@ -1,7 +1,8 @@
-import { App } from "../../App";
 import { jest } from "@jest/globals";
 import firebase from "firebase-admin";
 import request from "supertest";
+
+import { App } from "../../App";
 import { mongoInMemoryDatabase } from "../../helpers/tests/mongoInMemoryDatabase";
 import { ErrorFirebaseHelper } from "../../helpers/errors/ErrorFirebase";
 
@@ -29,6 +30,7 @@ describe("CreateUserController", () => {
   });
 
   afterAll(async () => {
+    await firebase.app().delete();
     await mongoInMemoryDatabase.close();
   });
 
