@@ -1,4 +1,3 @@
-import { UserEntity } from "../../entities/UserEntity";
 import { UserRepository } from "../../repositories/UserRepository";
 
 export class VerifyUserByUidService {
