@@ -85,21 +85,6 @@ class MongoInMemoryDatabase {
     }
   }
 
-  public async createUser() {
-    try {
-      const user = mongoose.connection.collection("users");
-      user.insertOne({
-        uid: "123",
-        name: "Joao",
-        email: "Joao@email.com",
-      });
-    } catch (error) {
-      console.log("Failed to launch database collections.");
-      console.log(error);
-      throw error;
-    }
-  }
-
   public async createCategory() {
     try {
       const category = mongoose.connection.collection("categories");
@@ -169,6 +154,21 @@ class MongoInMemoryDatabase {
       return allDigitalContents[0];
     } catch (error) {
       console.log("Something went wrong finding the categories.");
+      console.log(error);
+      throw error;
+    }
+  }
+
+  public async createUser() {
+    try {
+      const user = mongoose.connection.collection("users");
+      user.insertOne({
+        uid: "123",
+        name: "Joao",
+        email: "Joao@email.com",
+      });
+    } catch (error) {
+      console.log("Failed to launch database collections.");
       console.log(error);
       throw error;
     }
