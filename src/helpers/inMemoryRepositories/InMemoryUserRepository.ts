@@ -12,6 +12,7 @@ export class InMemoryUserRepository implements UserRepository {
     }
 
     user._id = String(this.database.length);
+    user.admin = false;
 
     this.database.push(user);
 

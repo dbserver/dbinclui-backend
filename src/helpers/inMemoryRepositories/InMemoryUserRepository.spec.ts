@@ -2,18 +2,18 @@ import { UserEntity } from "../../entities/UserEntity";
 import { InMemoryUserRepository } from "./InMemoryUserRepository";
 
 describe("InMemoryUserRepository", () => {
-  let inMemoryRepository: InMemoryUserRepository;
+  let inMemoryUserRepository: InMemoryUserRepository;
 
   beforeAll(() => {
-    inMemoryRepository = new InMemoryUserRepository();
+    inMemoryUserRepository = new InMemoryUserRepository();
   });
 
   beforeEach(() => {
-    inMemoryRepository.loadDefaultData(2);
+    inMemoryUserRepository.loadDefaultData(2);
   });
 
   afterEach(() => {
-    inMemoryRepository.clearDatabase();
+    inMemoryUserRepository.clearDatabase();
   });
 
   it("Should an Exception if uid already exists", async () => {
@@ -24,7 +24,7 @@ describe("InMemoryUserRepository", () => {
       admin: false,
     };
 
-    await expect(async () => await inMemoryRepository.create(user)).rejects.toThrowError(
+    await expect(async () => await inMemoryUserRepository.create(user)).rejects.toThrowError(
       "User with this uid already exists",
     );
   });
@@ -37,7 +37,7 @@ describe("InMemoryUserRepository", () => {
       admin: false,
     };
 
-    const result = await inMemoryRepository.create(user);
+    const result = await inMemoryUserRepository.create(user);
 
     expect(result.uid).toBe("123456");
     expect(result.name).toBe("Joazinho");
@@ -45,13 +45,13 @@ describe("InMemoryUserRepository", () => {
   });
 
   it("Should return null if uid does not exists in database", async () => {
-    const result = await inMemoryRepository.findByUid("inexistente");
+    const result = await inMemoryUserRepository.findByUid("inexistente");
 
     expect(result).toBeNull();
   });
 
   it("Should return an User Entity by uid", async () => {
-    const result = await inMemoryRepository.findByUid("0");
+    const result = await inMemoryUserRepository.findByUid("0");
 
     expect(result).not.toBeNull();
   });
