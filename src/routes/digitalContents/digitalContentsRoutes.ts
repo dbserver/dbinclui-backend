@@ -13,11 +13,13 @@ import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middleware
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 import { uploadFile } from "../../configs/multer/index.js";
 import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
+import { validateTokenAccessMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
 
 const digitalContentsRouter = Router();
 
 digitalContentsRouter.post(
   "/",
+  validateTokenAccessMiddleware,
   uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("post"),
@@ -37,6 +39,7 @@ digitalContentsRouter.get("/", getAllDigitalContentsController.handler);
 
 digitalContentsRouter.put(
   "/:id",
+  validateTokenAccessMiddleware,
   uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("put"),
@@ -54,6 +57,7 @@ digitalContentsRouter.get(
 
 digitalContentsRouter.delete(
   "/:id",
+  validateTokenAccessMiddleware,
   digitalContentRequestValidator("delete"),
   deleteContentRequestMiddleware,
   deleteDigitalContentController.handler,
