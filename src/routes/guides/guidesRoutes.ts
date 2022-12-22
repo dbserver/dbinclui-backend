@@ -6,6 +6,7 @@ import { getAllGuidesController } from "../../controllers/guides/GetAllGuidesCon
 import { getByIdGuideController } from "../../controllers/guides/GetByIdGuideController.js";
 import { getCategoriesAndContentController } from "../../controllers/guides/GetCategoriesAndContentController.js";
 import { updateGuideController } from "../../controllers/guides/UpdateGuideController.js";
+import { validateTokenAccessMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 import { createGuideRequestMiddleware } from "../../middlewares/guides/createGuideRequestMiddleware.js";
 import { deleteGuideRequestMiddleware } from "../../middlewares/guides/deleteGuideRequestMiddleware.js";
@@ -18,6 +19,7 @@ const guidesRouter = Router();
 
 guidesRouter.post(
   "/",
+  validateTokenAccessMiddleware,
   uploadGuideFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   guideRequestValidator("post"),
@@ -39,6 +41,7 @@ guidesRouter.get("/categoriesAndContent/:id", getCategoriesAndContentController.
 
 guidesRouter.put(
   "/:id",
+  validateTokenAccessMiddleware,
   uploadGuideFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   guideRequestValidator("put"),
@@ -49,6 +52,7 @@ guidesRouter.put(
 
 guidesRouter.delete(
   "/:id",
+  validateTokenAccessMiddleware,
   guideRequestValidator("delete"),
   deleteGuideRequestMiddleware,
   deleteGuideController.handler,
