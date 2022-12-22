@@ -2,12 +2,12 @@ import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
 import { UsersExpressionsRepository } from "../../repositories/UsersExpressionsRepository.js";
 import { UserEntity } from "../../entities/UserEntity";
 
-export class inMemoryUsersExpressionRepository implements UsersExpressionsRepository {
+export class inMemoryUsersExpressionsRepository implements UsersExpressionsRepository {
   database: ExpressionEntity[] = [];
 
   userDatabase: UserEntity[] = [];
 
-  async create(expression: ExpressionEntity): Promise<ExpressionEntity> {
+ async create(expression: ExpressionEntity): Promise<ExpressionEntity> {
     expression._id = String(this.database.length);
 
     this.database.push(expression);
