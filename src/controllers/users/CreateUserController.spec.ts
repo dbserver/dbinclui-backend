@@ -79,11 +79,11 @@ describe("CreateUserController", () => {
       .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .then((data) => {
-        expect(data.body._id).not.toBeNull();
-        expect(data.body.uid).toBe("123456");
-        expect(data.body.name).toBe("Joaozinho");
-        expect(data.body.email).toBe("Joaozinho@email.com");
-        expect(data.body.admin).toBeFalsy();
+        expect(data.body.data._id).not.toBeNull();
+        expect(data.body.data.uid).toBe("123456");
+        expect(data.body.data.name).toBe("Joaozinho");
+        expect(data.body.data.email).toBe("Joaozinho@email.com");
+        expect(data.body.data.admin).toBeFalsy();
       });
   });
 
