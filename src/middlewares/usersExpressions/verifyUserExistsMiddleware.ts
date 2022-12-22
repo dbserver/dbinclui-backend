@@ -12,7 +12,7 @@ export const verifyUserExistsMiddleware = async (
     const result = await repository.findByUid(req.body.decoded.uid);
 
     if (!result) {
-      return clientErrorResponse(res, new Error("O usuário com este uid não existe."));
+      return clientErrorResponse(res, new Error("User with this uid already exists."));
     }
 
   
