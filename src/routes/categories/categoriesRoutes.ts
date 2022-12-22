@@ -5,6 +5,7 @@ import { getAllCategoriesController } from "../../controllers/categories/GetAllC
 import { getByGuideIdCategoryController } from "../../controllers/categories/GetByGuideIdCategoryController.js";
 import { getByIdCategoryController } from "../../controllers/categories/GetByIdCategoryController.js";
 import { updateCategoryController } from "../../controllers/categories/UpdateCategoryController.js";
+import { validateTokenAccessMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
 import { categoryRequestMiddleware } from "../../middlewares/categories/categoryRequestMiddleware.js";
 import { deleteCategoryRequestMiddleware } from "../../middlewares/categories/deleteCategoryRequestMiddleware.js";
 import { categoryRequestValidator } from "../../middlewares/categories/validators/categoryRequestValidator.js";
@@ -13,6 +14,7 @@ const categoriesRouter = Router();
 
 categoriesRouter.post(
   "/",
+  validateTokenAccessMiddleware,
   categoryRequestValidator("post"),
   categoryRequestMiddleware,
   createCategoryController.handler,
@@ -20,6 +22,7 @@ categoriesRouter.post(
 
 categoriesRouter.put(
   "/:id",
+  validateTokenAccessMiddleware,
   categoryRequestValidator("put"),
   categoryRequestMiddleware,
   updateCategoryController.handler,
@@ -43,6 +46,7 @@ categoriesRouter.get(
 
 categoriesRouter.delete(
   "/:id",
+  validateTokenAccessMiddleware,
   categoryRequestValidator("delete"),
   deleteCategoryRequestMiddleware,
   deleteCategoryController.handler,
