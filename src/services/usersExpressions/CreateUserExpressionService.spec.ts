@@ -1,5 +1,4 @@
 import { inMemoryUsersExpressionsRepository } from "../../helpers/inMemoryRepositories/inMemoryUsersExpressionsRepository.js";
-import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
 import { UserEntity } from "../../entities/UserEntity.js";
 import { CreateUserExpressionService } from "../usersExpressions/CreateUserExpressionService.js";
 

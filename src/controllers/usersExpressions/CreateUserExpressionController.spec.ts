@@ -54,8 +54,8 @@ describe("CreateUsersExpressions", () => {
       .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .then((data) => {
-        expect(data.body._id).not.toBeNull();
-        expect(data.body.expression).toBe("Olá, tudo bem?");
+        expect(data.body.data._id).not.toBeNull();
+        expect(data.body.data.expression).toBe("Olá, tudo bem?");
       });
   });
 
