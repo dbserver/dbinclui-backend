@@ -1,5 +1,5 @@
-import { inMemoryUsersExpressionsRepository } from "./inMemoryUsersExpressionsRepository";
-import { ExpressionEntity } from "../../entities/ExpressionEntity";
+import { inMemoryUsersExpressionsRepository } from "./inMemoryUsersExpressionsRepository.js";
+import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
 
 describe("inMemoruUsersExpressionsRepository", () => {
   let repository: inMemoryUsersExpressionsRepository;
