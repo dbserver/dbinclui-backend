@@ -158,6 +158,34 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
+
+  public async createUserExpression() {
+    try {
+      const userExpression = mongoose.connection.collection("usersExpressions")
+      userExpression.insertOne({
+        expression: "Expressão de test",
+        author: {
+        _id: "1",
+        uid: "1",
+        name: "Usuario 1",
+        email: "emailUm@email.com",
+        admin: false,
+      }
+      })
+
+    } catch (error) {
+      console.log("Something went wrong creating the User Expressions.");
+      console.log(error);
+      throw error;
+      
+    }
+
+  }
+
+
+
+
+
 }
 
 export const mongoInMemoryDatabase = MongoInMemoryDatabase.getInstance();
