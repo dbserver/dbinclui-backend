@@ -3,6 +3,7 @@ import firebase from "firebase-admin";
 import request from "supertest";
 import { App } from "../../App";
 import { mongoInMemoryDatabase } from "./../../helpers/tests/mongoInMemoryDatabase";
+import { ErrorFirebaseHelper } from "../../helpers/errors/ErrorFirebase";
 
 const verifyIdTokenMock = jest.fn();
 
@@ -35,6 +36,22 @@ describe("CreateCategoryController", () => {
   });
 
   const app = new App();
+
+  it("Should return status 403 and a message id token expired", async () => {
+    verifyIdTokenMock.mockImplementation(() => {
+      throw new ErrorFirebaseHelper("auth/id-token-expired");
+    });
+
+    const token = "tokenExpired";
+
+    await request(app.getExpress)
+      .post("/categories")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(403)
+      .then((data) => {
+        expect(data.body.message).toBe("Este token já foi expirado, acesso negado.");
+      });
+  });
 
   it("Should be able to create a new category", async () => {
     const token = "validToken";
