@@ -32,6 +32,7 @@ describe("CreateGuideController", () => {
   }, 60_000);
 
   afterAll(async () => {
+    await firebase.app().delete();
     await mongoInMemoryDatabase.close();
     fs.rmSync(filePath, { recursive: true, force: true });
   });
