@@ -47,7 +47,7 @@ describe("CreateGuideController", () => {
     const token = "tokenExpired";
 
     await request(app.getExpress)
-      .delete("/categories/123456")
+      .delete("/guides/123456")
       .set("Authorization", `Bearer ${token}`)
       .expect(403)
       .then((data) => {
