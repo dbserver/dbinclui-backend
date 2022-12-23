@@ -3,7 +3,7 @@ import { createDigitalContentController } from "../../controllers/digitalContent
 import { createDigitalContentRequestMiddleware } from "../../middlewares/digitalContents/createDigitalContentRequestMiddleware.js";
 import { digitalContentRequestValidator } from "../../middlewares/digitalContents/validators/digitalContentRequestValidator.js";
 import { deleteContentRequestMiddleware } from "../../middlewares/digitalContents/deleteDigitalContentRequestMiddleware.js";
-import { deleteDigitalContentController } from "../../controllers/digitalContents/DeleteDigitaContentController.js";
+import { deleteDigitalContentController } from "../../controllers/digitalContents/DeleteDigitalContentController.js";
 import { getAllDigitalContentsController } from "../../controllers/digitalContents/GetAllDigitalContentsController.js";
 import { getByIdDigitalContentController } from "../../controllers/digitalContents/GetByIdDigitalContentController.js";
 import { updateDigitalContentController } from "../../controllers/digitalContents/UpdateDigitalContentController.js";
