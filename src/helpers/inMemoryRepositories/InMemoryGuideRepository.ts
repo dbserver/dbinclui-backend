@@ -53,7 +53,7 @@ export class InMemoryGuideRepository implements GuideRepository {
 
     const index = this.database.indexOf(result);
 
-    result.deleted = !result.deleted;
+    result.deleted = true;
 
     this.database[index] = result;
 

@@ -56,7 +56,9 @@ describe("CreateCategoryController", () => {
   it("Should be able to create a new category", async () => {
     const token = "validToken";
 
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
 
     const guide = await mongoInMemoryDatabase.getGuide();
     await request(app.getExpress)
@@ -72,7 +74,9 @@ describe("CreateCategoryController", () => {
 
   it("Must not be able to create a new category with title longer than 32 characters", async () => {
     const token = "validToken";
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
 
     const guide = await mongoInMemoryDatabase.getGuide();
     await request(app.getExpress)
@@ -89,7 +93,9 @@ describe("CreateCategoryController", () => {
   it("Must not allow the registration of a category without a guide", async () => {
     const token = "validToken";
 
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
 
     const response = await request(app.getExpress)
       .post("/categories")

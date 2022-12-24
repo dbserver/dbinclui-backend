@@ -29,7 +29,7 @@ describe("CreateGuideService", () => {
     };
 
     const result = await guideService.execute(guideExample);
-    console.log(result);
+    
     expect(result._id).toBe("0");
   });
 });

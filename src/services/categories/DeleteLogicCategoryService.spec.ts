@@ -1,18 +1,19 @@
-import { CreateCategoryService } from "./CreateCategoryService";
-import { InMemoryCategoryRepository } from "../../helpers/inMemoryRepositories/InMemoryCategoryRepository";
 import { CategoryEntity } from "../../entities/CategoryEntity";
-
-describe("CreateCategoryService", () => {
+import { InMemoryCategoryRepository } from "../../helpers/inMemoryRepositories/InMemoryCategoryRepository";
+import { DeleteLogicCategoryService } from "./DeleteLogicCategoryService";
+describe("DeleteCategoryService", () => {
   let inMemoryCategoryRepository: InMemoryCategoryRepository;
-  let categoryService: CreateCategoryService;
+  let categoryService: DeleteLogicCategoryService;
 
   beforeAll(async () => {
     inMemoryCategoryRepository = new InMemoryCategoryRepository();
-    categoryService = new CreateCategoryService(inMemoryCategoryRepository);
+    await inMemoryCategoryRepository.loadData(1);
+    categoryService = new DeleteLogicCategoryService(inMemoryCategoryRepository);
   });
 
-  it("Should create and return a category entity", async () => {
+  it("Should be an error if guide does not exists", async () => {
     const categoryExample: CategoryEntity = {
+      _id: "213",
       title: "Título da categoria",
       shortDescription: "Descrição da categoria",
       guide: {
@@ -40,9 +41,15 @@ describe("CreateCategoryService", () => {
       },
     };
 
-    const result = await categoryService.execute(categoryExample);
+    const result = await categoryService.execute(categoryExample._id!, "1");
+    expect(result).toBeInstanceOf(Error);
+  });
 
-    expect(result._id).toBe("0");
-    expect(result.guide._id).toBe("1122");
+  it("Should delete a category by ID and return a CategoryEntity deleted", async () => {
+    const result = (await categoryService.execute("0", "1")) as CategoryEntity;
+
+    expect(result._id).toHaveProperty("0");
+    expect(result).toHaveProperty("title");
+    expect(result).toHaveProperty("shortDescription");
   });
 });

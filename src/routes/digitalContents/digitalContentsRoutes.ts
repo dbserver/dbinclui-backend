@@ -13,7 +13,7 @@ import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middleware
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 import { uploadFile } from "../../configs/multer/index.js";
 import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
-import { authMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
+import { authMiddleware } from "../../middlewares/auth/authMiddleware.js";
 import { verifyUserExistsMiddleware } from "../../middlewares/auth/verifyUserExistsMiddleware.js";
 import { verifyUserPermissionDigitalContentMiddleware } from "../../middlewares/digitalContents/verifyUserPermissionsDigitalContentMiddleware.js";
 import { deleteLogicDigitalContentController } from "../../controllers/digitalContents/DeleteLogicDigitalContentController.js";
@@ -45,6 +45,7 @@ digitalContentsRouter.get("/", getAllDigitalContentsController.handler);
 digitalContentsRouter.put(
   "/:id",
   authMiddleware,
+  verifyUserExistsMiddleware,
   uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("put"),
@@ -63,9 +64,9 @@ digitalContentsRouter.get(
 digitalContentsRouter.patch(
   "/delete/:id",
   authMiddleware,
-  verifyUserPermissionDigitalContentMiddleware,
   digitalContentRequestValidator("delete"),
   deleteContentRequestMiddleware,
+  verifyUserPermissionDigitalContentMiddleware,
   deleteLogicDigitalContentController.handler,
 );
 

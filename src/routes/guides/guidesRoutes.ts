@@ -6,7 +6,7 @@ import { getAllGuidesController } from "../../controllers/guides/GetAllGuidesCon
 import { getByIdGuideController } from "../../controllers/guides/GetByIdGuideController.js";
 import { getCategoriesAndContentController } from "../../controllers/guides/GetCategoriesAndContentController.js";
 import { updateGuideController } from "../../controllers/guides/UpdateGuideController.js";
-import { authMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
+import { authMiddleware } from "../../middlewares/auth/authMiddleware.js";
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 import { createGuideRequestMiddleware } from "../../middlewares/guides/createGuideRequestMiddleware.js";
 import { deleteGuideRequestMiddleware } from "../../middlewares/guides/deleteGuideRequestMiddleware.js";
@@ -59,9 +59,9 @@ guidesRouter.put(
 guidesRouter.patch(
   "/delete/:id",
   authMiddleware,
-  verifyUserPermissionGuideMiddleware,
   guideRequestValidator("delete"),
   deleteGuideRequestMiddleware,
+  verifyUserPermissionGuideMiddleware,
   deleteLogicGuideController.handler,
 );
 

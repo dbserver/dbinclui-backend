@@ -16,10 +16,24 @@ describe("UpdateDigitalContentService", () => {
     const contentExample = {
       title: `Título do conteúdo digital ${repository.database.length}`,
       shortDescription: `Descrição do conteúdo digital ${repository.database.length}`,
+      author: {
+        _id: String(repository.database.length),
+        uid: String(repository.database.length),
+        name: `User ${repository.database.length}`,
+        email: `user${repository.database.length}@email.com`,
+        admin: false,
+      },
       category: {
         _id: String(repository.database.length),
         title: `Título da categoria ${repository.database.length}`,
         shortDescription: `Descrição da categoria ${repository.database.length}`,
+        author: {
+          _id: String(repository.database.length),
+          uid: String(repository.database.length),
+          name: `User ${repository.database.length}`,
+          email: `user${repository.database.length}@email.com`,
+          admin: false,
+        },
         guide: {
           _id: String(repository.database.length),
           title: `Título do guia ${repository.database.length}`,
@@ -27,6 +41,13 @@ describe("UpdateDigitalContentService", () => {
           filePaths: {
             filePath: `www.image${repository.database.length}.com.br`,
             publicId: `uploads/image${repository.database.length}`,
+          },
+          author: {
+            _id: String(repository.database.length),
+            uid: String(repository.database.length),
+            name: `User ${repository.database.length}`,
+            email: `user${repository.database.length}@email.com`,
+            admin: false,
           },
         },
       },
@@ -37,6 +58,13 @@ describe("UpdateDigitalContentService", () => {
         filePaths: {
           filePath: `www.image${repository.database.length}.com.br`,
           publicId: `uploads/image${repository.database.length}`,
+        },
+        author: {
+          _id: String(repository.database.length),
+          uid: String(repository.database.length),
+          name: `User ${repository.database.length}`,
+          email: `user${repository.database.length}@email.com`,
+          admin: false,
         },
       },
       filePaths: [
@@ -55,6 +83,13 @@ describe("UpdateDigitalContentService", () => {
     const contentExample = {
       title: `Título do conteúdo digital 0 atualizado`,
       shortDescription: `Descrição do conteúdo digital 0 atualizado`,
+      author: {
+        _id: "0",
+        uid: "0",
+        name: `User 0`,
+        email: `user0@email.com`,
+        admin: false,
+      },
       guide: {
         _id: String(repository.database.length),
         title: `Título do guia 0`,
@@ -62,6 +97,13 @@ describe("UpdateDigitalContentService", () => {
         filePaths: {
           filePath: `www.image0.com.br`,
           publicId: `uploads/image0`,
+        },
+        author: {
+          _id: "0",
+          uid: "0",
+          name: `User 0`,
+          email: `user0@email.com`,
+          admin: false,
         },
       },
       category: {
@@ -76,6 +118,20 @@ describe("UpdateDigitalContentService", () => {
             filePath: `www.image0.com.br`,
             publicId: `uploads/image0`,
           },
+          author: {
+            _id: "0",
+            uid: "0",
+            name: `User 0`,
+            email: `user0@email.com`,
+            admin: false,
+          },
+        },
+        author: {
+          _id: "0",
+          uid: "0",
+          name: `User 0`,
+          email: `user0@email.com`,
+          admin: false,
         },
       },
       filePaths: [

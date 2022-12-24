@@ -13,7 +13,7 @@ export const verifyUserPermissionGuideMiddleware = async (
     const userResult = await repository.findByUid(req.body.decoded.uid);
 
     if (!userResult) {
-      return clientErrorResponse(res, new Error("User with this uid already exists."));
+      return clientErrorResponse(res, new Error("User with this uid does not exists."));
     }
 
     const guideRepository = new GuideMongoRepository();
@@ -27,7 +27,7 @@ export const verifyUserPermissionGuideMiddleware = async (
     }
 
     req.currentUser = userResult;
-    
+
     next();
   } catch (error) {
     return serverErrorResponse(res, error as Error);

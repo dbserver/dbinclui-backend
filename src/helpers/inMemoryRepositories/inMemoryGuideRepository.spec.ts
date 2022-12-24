@@ -106,6 +106,12 @@ describe("InMemoryGuidesRepository", () => {
     expect(repository.database.length).toEqual(2);
   });
 
+  it("Should update deleted to true", async () => {
+    const result = await repository.deleteLogic("2");
+
+    expect(result?.deleted).toBeTruthy();
+  });
+
   it("Should return a guide with categories and contents associate", async () => {
     const result = await repository.findCategoriesAndContentsByGuideId("1");
 

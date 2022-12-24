@@ -16,7 +16,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     const decoded = await auth.verifyIdToken(token);
 
     req.body.decoded = decoded;
-
+    
     next();
   } catch (e) {
     const error = e as FirebaseError;

@@ -65,13 +65,15 @@ describe("UpdateDigitalContent", () => {
   });
 
   it("Should be able to update a digital content", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     const digitalContent = await mongoInMemoryDatabase.getDigitalContent();
     const category = await mongoInMemoryDatabase.getCategory();
     const { guide } = category;
-    const response = await request(app.getExpress)
+    await request(app.getExpress)
       .put(`/digital-contents/${digitalContent._id}`)
       .set("Authorization", `Bearer ${token}`)
       .field(
@@ -82,14 +84,17 @@ describe("UpdateDigitalContent", () => {
           guide: guide._id,
           category: category._id,
         }),
-      );
-    expect(response.statusCode).toBe(200);
-    const { title } = response.body.data;
-    expect(title).toEqual("Título atualizado");
+      )
+      .expect(200)
+      .then((data) => {
+        expect(data.body.data.title).toEqual("Título atualizado");
+      });
   });
 
   it("Must not update a guide without its id", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     const category = await mongoInMemoryDatabase.getCategory();
@@ -111,7 +116,9 @@ describe("UpdateDigitalContent", () => {
   });
 
   it("Must not update a digital content with invalid id", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     const category = await mongoInMemoryDatabase.getCategory();

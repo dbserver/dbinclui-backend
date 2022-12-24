@@ -42,7 +42,7 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
 
     const index = this.database.indexOf(result);
 
-    result.deleted = !result.deleted;
+    result.deleted = true;
 
     this.database[index] = result;
 

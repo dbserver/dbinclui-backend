@@ -28,7 +28,7 @@ export class GuideMongoRepository implements GuideRepository {
         model: UserModel,
         strictPopulate: true,
       },
-    ]);
+    ]).exec();
   }
 
   async findAll(): Promise<GuideEntity[]> {

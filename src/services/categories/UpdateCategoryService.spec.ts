@@ -25,6 +25,20 @@ describe("UpdateCategoryService", () => {
           filePath: `www.image.com.br`,
           publicId: `uploads/image`,
         },
+        author: {
+          _id: String(inMemoryCategoryRepository.database.length),
+          uid: String(inMemoryCategoryRepository.database.length),
+          name: `User ${inMemoryCategoryRepository.database.length}`,
+          email: `user${inMemoryCategoryRepository.database.length}@email.com`,
+          admin: false,
+        },
+      },
+      author: {
+        _id: String(inMemoryCategoryRepository.database.length),
+        uid: String(inMemoryCategoryRepository.database.length),
+        name: `User ${inMemoryCategoryRepository.database.length}`,
+        email: `user${inMemoryCategoryRepository.database.length}@email.com`,
+        admin: false,
       },
     };
 
@@ -45,6 +59,20 @@ describe("UpdateCategoryService", () => {
           filePath: `www.image.com.br`,
           publicId: `uploads/image`,
         },
+        author: {
+          _id: String(inMemoryCategoryRepository.database.length),
+          uid: String(inMemoryCategoryRepository.database.length),
+          name: `User ${inMemoryCategoryRepository.database.length}`,
+          email: `user${inMemoryCategoryRepository.database.length}@email.com`,
+          admin: false,
+        },
+      },
+      author: {
+        _id: String(inMemoryCategoryRepository.database.length),
+        uid: String(inMemoryCategoryRepository.database.length),
+        name: `User ${inMemoryCategoryRepository.database.length}`,
+        email: `user${inMemoryCategoryRepository.database.length}@email.com`,
+        admin: false,
       },
     };
 

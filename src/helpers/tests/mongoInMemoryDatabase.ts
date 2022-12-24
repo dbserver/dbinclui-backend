@@ -1,5 +1,6 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+import { GuideEntity } from "../../entities/GuideEntity";
 
 class MongoInMemoryDatabase {
   private mongoServer?: MongoMemoryServer;
@@ -56,6 +57,10 @@ class MongoInMemoryDatabase {
 
   public async createGuide() {
     try {
+      const user = mongoose.connection.collection("users");
+      await mongoInMemoryDatabase.createUser();
+      const allUsers = await user.find().toArray();
+
       const guide = mongoose.connection.collection("guides");
       await guide.insertOne({
         title: "Título do guia",
@@ -64,6 +69,8 @@ class MongoInMemoryDatabase {
           filePath: `wwww.image${1}.com.br`,
           publicId: `uploads/${1}`,
         },
+        author: allUsers[0]._id,
+        deleted: false,
       });
     } catch (error) {
       console.log("Failed to launch database collections.");
@@ -91,11 +98,16 @@ class MongoInMemoryDatabase {
       await mongoInMemoryDatabase.createGuide();
       const guides = mongoose.connection.collection("guides");
       const allGuides = await guides.find().toArray();
+      const user = mongoose.connection.collection("users");
+      await mongoInMemoryDatabase.createUser();
+      const allUsers = await user.find().toArray();
 
       await category.insertOne({
         title: "Título da categoria",
         shortDescription: "Descrição da categoria",
         guide: allGuides[0]._id,
+        author: allUsers[0]._id,
+        deleted: false,
       });
     } catch (error) {
       console.log("Failed to launch database collections.");
@@ -126,6 +138,9 @@ class MongoInMemoryDatabase {
       await mongoInMemoryDatabase.createGuide();
       const guides = mongoose.connection.collection("guides");
       const allGuides = await guides.find().toArray();
+      const user = mongoose.connection.collection("users");
+      await mongoInMemoryDatabase.createUser();
+      const allUsers = await user.find().toArray();
 
       await digitalContent.insertOne({
         title: "Título do conteúdo digital",
@@ -138,6 +153,8 @@ class MongoInMemoryDatabase {
             publicId: `uploads/${1}`,
           },
         ],
+        author: allUsers[0]._id,
+        deleted: false,
       });
     } catch (error) {
       console.log("Failed to launch database collections.");
@@ -162,16 +179,24 @@ class MongoInMemoryDatabase {
   public async createUser() {
     try {
       const user = mongoose.connection.collection("users");
-      user.insertOne({
+      await user.insertOne({
         uid: "123",
         name: "Joao",
         email: "Joao@email.com",
+        admin: true,
       });
     } catch (error) {
       console.log("Failed to launch database collections.");
       console.log(error);
       throw error;
     }
+  }
+
+  public async getUser() {
+    const user = mongoose.connection.collection("users");
+    const userFinded = await user.find().toArray();
+
+    return userFinded[0];
   }
 }
 

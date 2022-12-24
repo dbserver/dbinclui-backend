@@ -50,7 +50,9 @@ describe("DeleteCategoryController", () => {
   });
 
   it("Should return a status 200 if delete is success", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123"
+    });
 
     const token = "tokenValid";
     const firstCategory = await mongoInMemoryDatabase.getCategory();

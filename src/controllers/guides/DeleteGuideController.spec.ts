@@ -27,6 +27,7 @@ describe("DeleteGuideController", () => {
   beforeAll(async () => {
     firebase.initializeApp();
     await mongoInMemoryDatabase.open();
+    await mongoInMemoryDatabase.createUser();
   }, 60_000);
 
   afterAll(async () => {
@@ -59,8 +60,10 @@ describe("DeleteGuideController", () => {
   });
 
   it("Should be able to delete a guide and return 200 OK", async () => {
-    verifyIdTokenMock.mockReturnValue({});
-    const token = "tokenExpired";
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
+    const token = "tokenValid";
 
     guide = await mongoInMemoryDatabase.getGuide();
     await request(app.getExpress)

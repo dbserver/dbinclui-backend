@@ -2,7 +2,7 @@ import { GuideEntity } from "../../entities/GuideEntity";
 import { InMemoryGuideRepository } from "../../helpers/inMemoryRepositories/InMemoryGuideRepository.js";
 import { DeleteLogicGuideService } from "./DeleteLogicGuideService";
 
-describe("DeleteGuideService", () => {
+describe("DeleteLogicGuideService", () => {
   let inMemoryGuidesRepository: InMemoryGuideRepository;
   let guideService: DeleteLogicGuideService;
 
@@ -30,12 +30,12 @@ describe("DeleteGuideService", () => {
       deleted: false,
     };
 
-    const result = await guideService.execute(guideExample._id as string);
+    const result = await guideService.execute(guideExample._id as string, "1");
     expect(result).toBeInstanceOf(Error);
   });
 
   it("Should delete a category by ID and return a delete count", async () => {
-    const result = (await guideService.execute("0")) as GuideEntity;
+    const result = (await guideService.execute("0", "1")) as GuideEntity;
 
     expect(result._id).toBe("0");
     expect(result.deleted).toBeTruthy();

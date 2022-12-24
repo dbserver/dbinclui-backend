@@ -15,6 +15,6 @@ describe("GetAllGuidesService", () => {
     const result = await guideService.execute();
 
     expect(result).toBeInstanceOf(Array);
-    expect(result.length).toBe(3);
+    expect(result.length).toBe(2);
   });
 });

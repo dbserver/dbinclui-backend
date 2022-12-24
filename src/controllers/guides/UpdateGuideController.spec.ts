@@ -60,7 +60,9 @@ describe("UpdateGuideController", () => {
   });
 
   it("Should be able to update a guide", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     guide = await mongoInMemoryDatabase.getGuide();

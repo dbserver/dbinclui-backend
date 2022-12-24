@@ -27,12 +27,12 @@ describe("CreateCategoryController", () => {
     await mongoInMemoryDatabase.close();
   });
 
-  afterEach(async () => {
-    await mongoInMemoryDatabase.clear();
-  });
-
   beforeEach(async () => {
     await mongoInMemoryDatabase.createCategory();
+  });
+
+  afterEach(async () => {
+    await mongoInMemoryDatabase.clear();
   });
 
   const app = new App();
@@ -54,13 +54,16 @@ describe("CreateCategoryController", () => {
   });
 
   it("Should be able to update a category", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
 
     const token = "tokenValid";
 
     const category = await mongoInMemoryDatabase.getCategory();
+    const user = await mongoInMemoryDatabase.getUser();
     const { guide } = category;
-    const response = await request(app.getExpress)
+    await request(app.getExpress)
       .put(`/categories/${category._id}`)
       .set("Authorization", `Bearer ${token}`)
       .send({
@@ -68,8 +71,11 @@ describe("CreateCategoryController", () => {
         title: "Novo título da categoria",
         shortDescription: "Descrição da categoria",
         guide: guide._id,
+      })
+      .expect(200)
+      .then((data) => {
+        expect(data.body.data.updatedBy).toBe(user._id.toString());
       });
-    expect(response.statusCode).toBe(200);
   });
 
   it("Must not update a category with invalid id", async () => {

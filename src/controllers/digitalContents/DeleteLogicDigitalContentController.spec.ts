@@ -1,10 +1,17 @@
 import { jest } from "@jest/globals";
-import firebase from "firebase-admin";
 import request from "supertest";
+import firebase from "firebase-admin";
+import { fileURLToPath } from "url";
+import path from "path";
+import fs from "fs";
 
 import { App } from "../../App";
-import { mongoInMemoryDatabase } from "../../helpers/tests/mongoInMemoryDatabase";
+import { mongoInMemoryDatabase } from "./../../helpers/tests/mongoInMemoryDatabase";
 import { ErrorFirebaseHelper } from "../../helpers/errors/ErrorFirebase";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const filePath = path.resolve(__dirname, "..", "..", "..", "temps", "uploads");
 
 const verifyIdTokenMock = jest.fn();
 
@@ -16,22 +23,25 @@ jest.mock("firebase-admin/auth", () => ({
   }),
 }));
 
-describe("DeleteDigitalContentController", () => {
+describe("DeleteLogicCategoryController", () => {
   beforeAll(async () => {
     firebase.initializeApp();
     await mongoInMemoryDatabase.open();
-  });
+    await mongoInMemoryDatabase.createCategory();
+  }, 60_000);
 
   afterAll(async () => {
-    await firebase.app().delete();
+    firebase.app().delete();
     await mongoInMemoryDatabase.close();
+    fs.rmSync(filePath, { recursive: true, force: true });
   });
 
-  beforeEach(async () => {
-    await mongoInMemoryDatabase.createDigitalContent();
+  afterEach(() => {
+    verifyIdTokenMock.mockClear();
   });
 
   const app = new App();
+  let category = {} as any;
 
   it("Should return status 403 and a message id token expired", async () => {
     verifyIdTokenMock.mockImplementation(() => {
@@ -41,7 +51,7 @@ describe("DeleteDigitalContentController", () => {
     const token = "tokenExpired";
 
     await request(app.getExpress)
-      .delete("/digital-contents/123456")
+      .patch("/categories/delete/123456")
       .set("Authorization", `Bearer ${token}`)
       .expect(403)
       .then((data) => {
@@ -49,29 +59,30 @@ describe("DeleteDigitalContentController", () => {
       });
   });
 
-  it("Should return a status 200 if delete is success", async () => {
-    verifyIdTokenMock.mockReturnValue({
-      uid: "123",
-    });
+  it(`Should return 400 Bad request to trying delete a category with id invalid`, async () => {
+    verifyIdTokenMock.mockReturnValue({});
     const token = "tokenValid";
-    const firstDigitalContent = await mongoInMemoryDatabase.getDigitalContent();
 
     await request(app.getExpress)
-      .delete(`/digital-contents/${firstDigitalContent._id}`)
-      .set("Authorization", `Bearer ${token}`)
-      .expect(200);
-  });
-
-  it("Should return 400 if digital contents does not exist", async () => {
-    verifyIdTokenMock.mockReturnValue({
-      uid: "123",
-    });
-    const token = "tokenValid";
-    const firstDigitalContent = await mongoInMemoryDatabase.getDigitalContent();
-
-    await request(app.getExpress)
-      .delete(`/digital-contents/${firstDigitalContent._id}1`)
+      .patch(`/categories/delete/123`)
       .set("Authorization", `Bearer ${token}`)
       .expect(400);
+  });
+  it("Should be delete logic and return 200 OK", async () => {
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
+
+    const token = "tokenValid";
+
+    category = await mongoInMemoryDatabase.getCategory();
+
+    await request(app.getExpress)
+      .patch(`/categories/delete/${category._id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200)
+      .then((data) => {
+        expect(data.body.data.deleted).toBeTruthy();
+      });
   });
 });

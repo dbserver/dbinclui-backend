@@ -60,8 +60,9 @@ describe("CreateDigitalContent", () => {
   });
 
   it("Should be able to create a new digital content", async () => {
-    verifyIdTokenMock.mockReturnValue({});
-
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     const category = await mongoInMemoryDatabase.getCategory();
@@ -84,7 +85,9 @@ describe("CreateDigitalContent", () => {
   });
 
   it("Must not create new digital content without a media file", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
     const category = await mongoInMemoryDatabase.getCategory();
     const { guide } = category;
