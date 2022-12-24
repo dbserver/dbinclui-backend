@@ -1,4 +1,4 @@
-import { InMemoryDigitalContentRepository } from "../../helpers/inMemoryRepositories/InMemoryDigitalContentRepository";
+import { InMemoryDigitalContentRepository } from "../../../helpers/inMemoryRepositories/InMemoryDigitalContentRepository";
 import { GetByCategoryIdDigitalContentService } from "./GetByCategoryIdDigitalContentService";
 
 describe("GetByIdDigitalContentService", () => {

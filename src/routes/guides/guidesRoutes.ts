@@ -6,7 +6,7 @@ import { getAllGuidesController } from "../../controllers/guides/GetAllGuidesCon
 import { getByIdGuideController } from "../../controllers/guides/GetByIdGuideController.js";
 import { getCategoriesAndContentController } from "../../controllers/guides/GetCategoriesAndContentController.js";
 import { updateGuideController } from "../../controllers/guides/UpdateGuideController.js";
-import { validateTokenAccessMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
+import { authMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 import { createGuideRequestMiddleware } from "../../middlewares/guides/createGuideRequestMiddleware.js";
 import { deleteGuideRequestMiddleware } from "../../middlewares/guides/deleteGuideRequestMiddleware.js";
@@ -14,14 +14,19 @@ import { guideRequestMiddleware } from "../../middlewares/guides/guideRequestMid
 import { updateGuideRequestMiddleware } from "../../middlewares/guides/updateGuideRequestMiddleware.js";
 import { guideRequestValidator } from "../../middlewares/guides/validators/guideRequestValidator.js";
 import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
+import { verifyUserExistsMiddleware } from "../../middlewares/auth/verifyUserExistsMiddleware.js";
+import { deleteLogicGuideController } from "../../controllers/guides/DeleteLogicGuideController.js";
+import { verifyUserPermissionGuideMiddleware } from "../../middlewares/guides/verifyUserPermissionGuideMiddleware.js";
+import { adminPermissionsMiddleware } from "../../middlewares/auth/adminPermissionsMiddleware.js";
 
 const guidesRouter = Router();
 
 guidesRouter.post(
   "/",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  verifyUserExistsMiddleware,
   uploadGuideFile,
-  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
+  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no body da requisição.
   guideRequestValidator("post"),
   createGuideRequestMiddleware,
   createGuideController.handler,
@@ -41,18 +46,29 @@ guidesRouter.get("/categoriesAndContent/:id", getCategoriesAndContentController.
 
 guidesRouter.put(
   "/:id",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  verifyUserExistsMiddleware,
   uploadGuideFile,
-  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
+  bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no body da requisição.
   guideRequestValidator("put"),
   updateGuideRequestMiddleware,
   updateGuideController.handler,
   uploadErrorMiddleware,
 );
 
+guidesRouter.patch(
+  "/delete/:id",
+  authMiddleware,
+  verifyUserPermissionGuideMiddleware,
+  guideRequestValidator("delete"),
+  deleteGuideRequestMiddleware,
+  deleteLogicGuideController.handler,
+);
+
 guidesRouter.delete(
   "/:id",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  adminPermissionsMiddleware,
   guideRequestValidator("delete"),
   deleteGuideRequestMiddleware,
   deleteGuideController.handler,

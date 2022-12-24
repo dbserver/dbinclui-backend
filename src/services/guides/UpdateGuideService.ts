@@ -21,10 +21,9 @@ export class UpdateGuideService {
       guide.title = guideRequest.title ?? guide.title;
       guide.content = guideRequest.content ?? guide.content;
       guide.filePaths = file ?? guide.filePaths;
+      guide.updatedBy = guideRequest.updatedBy;
 
-      await this.repository.update(guide);
-
-      const guideUpdated = await this.repository.findById(id);
+      const guideUpdated = await this.repository.update(guide);
 
       return { guideUpdated, oldFile };
     } catch (error) {

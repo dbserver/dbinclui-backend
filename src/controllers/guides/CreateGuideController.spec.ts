@@ -29,6 +29,7 @@ describe("CreateGuideController", () => {
   beforeAll(async () => {
     firebase.initializeApp();
     await mongoInMemoryDatabase.open();
+    await mongoInMemoryDatabase.createUser();
   }, 60_000);
 
   afterAll(async () => {
@@ -56,7 +57,9 @@ describe("CreateGuideController", () => {
   });
 
   it("Should be able to create a new guide", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     await request(app.getExpress)

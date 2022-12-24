@@ -158,6 +158,21 @@ class MongoInMemoryDatabase {
       throw error;
     }
   }
+
+  public async createUser() {
+    try {
+      const user = mongoose.connection.collection("users");
+      user.insertOne({
+        uid: "123",
+        name: "Joao",
+        email: "Joao@email.com",
+      });
+    } catch (error) {
+      console.log("Failed to launch database collections.");
+      console.log(error);
+      throw error;
+    }
+  }
 }
 
 export const mongoInMemoryDatabase = MongoInMemoryDatabase.getInstance();

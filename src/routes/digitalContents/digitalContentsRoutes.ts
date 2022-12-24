@@ -13,13 +13,18 @@ import { getByCategoryIdDigitalContentRequestMiddleware } from "../../middleware
 import { bodyRequestMiddleware } from "../../middlewares/bodyRequestMiddleware.js";
 import { uploadFile } from "../../configs/multer/index.js";
 import { uploadErrorMiddleware } from "../../middlewares/uploadErrorMiddleware.js";
-import { validateTokenAccessMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
+import { authMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
+import { verifyUserExistsMiddleware } from "../../middlewares/auth/verifyUserExistsMiddleware.js";
+import { verifyUserPermissionDigitalContentMiddleware } from "../../middlewares/digitalContents/verifyUserPermissionsDigitalContentMiddleware.js";
+import { deleteLogicDigitalContentController } from "../../controllers/digitalContents/DeleteLogicDigitalContentController.js";
+import { adminPermissionsMiddleware } from "../../middlewares/auth/adminPermissionsMiddleware.js";
 
 const digitalContentsRouter = Router();
 
 digitalContentsRouter.post(
   "/",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  verifyUserExistsMiddleware,
   uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("post"),
@@ -39,7 +44,7 @@ digitalContentsRouter.get("/", getAllDigitalContentsController.handler);
 
 digitalContentsRouter.put(
   "/:id",
-  validateTokenAccessMiddleware,
+  authMiddleware,
   uploadFile,
   bodyRequestMiddleware, // <- Este middleware serve para capturar o conteúdo da variável "data" enviado do formdata e inserir no no body da requisição.
   digitalContentRequestValidator("put"),
@@ -55,9 +60,19 @@ digitalContentsRouter.get(
   getByCategoryIdDigitalContentController.handler,
 );
 
+digitalContentsRouter.patch(
+  "/delete/:id",
+  authMiddleware,
+  verifyUserPermissionDigitalContentMiddleware,
+  digitalContentRequestValidator("delete"),
+  deleteContentRequestMiddleware,
+  deleteLogicDigitalContentController.handler,
+);
+
 digitalContentsRouter.delete(
   "/:id",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  adminPermissionsMiddleware,
   digitalContentRequestValidator("delete"),
   deleteContentRequestMiddleware,
   deleteDigitalContentController.handler,

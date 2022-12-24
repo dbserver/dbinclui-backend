@@ -7,5 +7,6 @@ export interface DigitalContentRepository {
   findById(id: string): Promise<DigitalContentEntity | null>;
   findByCategoryId(id: string): Promise<DigitalContentEntity[]>;
   findByGuideId(id: string): Promise<DigitalContentEntity[]>;
+  deleteLogic(id: string, updatedBy: string): Promise<DigitalContentEntity | null>;
   delete(id: string): Promise<DigitalContentEntity | null>;
 }

@@ -1,3 +1,5 @@
+import { Schema } from "mongoose";
+
 export const guideSchemaSettings = {
   title: {
     type: String,
@@ -14,5 +16,18 @@ export const guideSchemaSettings = {
       publicId: String,
     },
     required: true,
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
+  deleted: {
+    type: Boolean,
+    default: false,
   },
 };

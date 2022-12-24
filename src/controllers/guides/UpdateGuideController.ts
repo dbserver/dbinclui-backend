@@ -9,6 +9,7 @@ import {
 import { UpdateGuideService } from "../../services/guides/UpdateGuideService.js";
 import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
 import { RequestFileProps } from "../interfaces/RequestProps.js";
+import { GuideEntity } from "../../entities/GuideEntity.js";
 
 class UpdateGuideController {
   async handler(req: Request, res: Response) {
@@ -28,7 +29,11 @@ class UpdateGuideController {
       const guideRepository = new GuideMongoRepository();
       const guideService = new UpdateGuideService(guideRepository);
 
-      const result = await guideService.execute(id, body, fileObj);
+      const result = await guideService.execute(
+        id,
+        { ...body, updatedBy: req.currentUser._id },
+        fileObj,
+      );
 
       if (result instanceof Error) {
         return clientErrorResponse(res, result);

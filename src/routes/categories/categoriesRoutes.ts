@@ -5,16 +5,21 @@ import { getAllCategoriesController } from "../../controllers/categories/GetAllC
 import { getByGuideIdCategoryController } from "../../controllers/categories/GetByGuideIdCategoryController.js";
 import { getByIdCategoryController } from "../../controllers/categories/GetByIdCategoryController.js";
 import { updateCategoryController } from "../../controllers/categories/UpdateCategoryController.js";
-import { validateTokenAccessMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
+import { authMiddleware } from "../../middlewares/auth/validateTokenAccessMiddleware.js";
 import { categoryRequestMiddleware } from "../../middlewares/categories/categoryRequestMiddleware.js";
 import { deleteCategoryRequestMiddleware } from "../../middlewares/categories/deleteCategoryRequestMiddleware.js";
 import { categoryRequestValidator } from "../../middlewares/categories/validators/categoryRequestValidator.js";
+import { verifyUserExistsMiddleware } from "../../middlewares/auth/verifyUserExistsMiddleware.js";
+import { verifyUserPermissionsCategoryMiddleware } from "../../middlewares/categories/verifyUserPermissionsCategoryMiddleware.js";
+import { deleteLogicCategoryController } from "../../controllers/categories/DeleteLogicCategoryController.js";
+import { adminPermissionsMiddleware } from "../../middlewares/auth/adminPermissionsMiddleware.js";
 
 const categoriesRouter = Router();
 
 categoriesRouter.post(
   "/",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  verifyUserExistsMiddleware,
   categoryRequestValidator("post"),
   categoryRequestMiddleware,
   createCategoryController.handler,
@@ -22,7 +27,8 @@ categoriesRouter.post(
 
 categoriesRouter.put(
   "/:id",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  verifyUserExistsMiddleware,
   categoryRequestValidator("put"),
   categoryRequestMiddleware,
   updateCategoryController.handler,
@@ -44,9 +50,19 @@ categoriesRouter.get(
   getByGuideIdCategoryController.handler,
 );
 
+categoriesRouter.patch(
+  "/delete/:id",
+  authMiddleware,
+  verifyUserPermissionsCategoryMiddleware,
+  categoryRequestValidator("delete"),
+  deleteCategoryRequestMiddleware,
+  deleteLogicCategoryController.handler,
+);
+
 categoriesRouter.delete(
   "/:id",
-  validateTokenAccessMiddleware,
+  authMiddleware,
+  adminPermissionsMiddleware,
   categoryRequestValidator("delete"),
   deleteCategoryRequestMiddleware,
   deleteCategoryController.handler,

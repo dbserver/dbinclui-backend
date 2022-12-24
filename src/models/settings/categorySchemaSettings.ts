@@ -14,4 +14,17 @@ export const categorySchemaSettings = {
     required: true,
     ref: "guide",
   },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+    required: true,
+  },
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
 };

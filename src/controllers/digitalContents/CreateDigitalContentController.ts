@@ -9,6 +9,7 @@ class CreateDigitalContentController {
     try {
       const body = req.body;
       const reqFiles: RequestFileProps[] = req.files as RequestFileProps[];
+      const userId = req.currentUser._id as any;
 
       const digitalContentRepository = new DigitalContentMongoRepository();
       const digitalContentService = new CreateDigitalContentService(digitalContentRepository);
@@ -24,7 +25,11 @@ class CreateDigitalContentController {
       }
 
       const result = await digitalContentService.execute({
-        ...body,
+        title: body.title,
+        shortDescription: body.shortDescription,
+        guide: body.guide,
+        category: body.category,
+        author: userId,
         filePaths: files,
       });
 
