@@ -5,7 +5,7 @@ import {
   serverErrorResponse,
   sucessfulResponse,
 } from "../../responses/appResponses.js";
-import { GetByUidService } from "../../services/users/GetByUidService.js";
+import { GetByUidService } from "../../services/users/GetByUidUserService.js";
 
 class GetByUidController {
   async handler(req: Request, res: Response) {

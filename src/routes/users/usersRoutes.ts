@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createUserController } from "../../controllers/users/CreateUserController.js";
-import { getByUidController } from "../../controllers/users/GetByUidController.js";
+import { getByUidController } from "../../controllers/users/GetByUidUserController.js";
 import { verifyUserByUidController } from "../../controllers/users/VerifyUserByUidController.js";
 import { authMiddleware } from "../../middlewares/auth/authMiddleware.js";
 
