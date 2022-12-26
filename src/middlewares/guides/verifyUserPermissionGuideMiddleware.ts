@@ -19,6 +19,10 @@ export const verifyUserPermissionGuideMiddleware = async (
     const guideRepository = new GuideMongoRepository();
     const guideResult = await guideRepository.findById(req.params["id"]);
 
+    if (!guideResult) {
+      return clientErrorResponse(res, new Error("Guide with this ID does not exists."));
+    }
+
     const isAdmin = userResult.admin;
     const isOwner = userResult.uid === guideResult?.author.uid;
 
