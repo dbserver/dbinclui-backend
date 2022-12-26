@@ -37,6 +37,10 @@ describe("UpdateGuideController", () => {
     fs.rmSync(filePath, { recursive: true, force: true });
   });
 
+  afterEach(() => {
+    verifyIdTokenMock.mockClear();
+  });
+
   const app = new App();
   let guide = {} as any;
 
@@ -82,7 +86,9 @@ describe("UpdateGuideController", () => {
   });
 
   it("Shouldn't be able to update if guide ID is invalid", async () => {
-    verifyIdTokenMock.mockReturnValue({});
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
     const token = "tokenValid";
 
     await request(app.getExpress)
@@ -91,7 +97,5 @@ describe("UpdateGuideController", () => {
       .field("data", JSON.stringify({ title: "Um outro titulo", content: "Uma outra descrição" }))
       .attach("file", fileMock)
       .expect(400);
-    guide = await mongoInMemoryDatabase.getGuide();
-    expect(guide.title).toBe(newTitle);
   });
 });
