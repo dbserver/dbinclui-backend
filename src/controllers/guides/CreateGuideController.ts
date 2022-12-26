@@ -13,7 +13,7 @@ class CreateGuideController {
       const fileObj = {
         filePath: reqFile.path,
         publicId: reqFile.filename,
-      };
+       };
 
       const guideRepository = new GuideMongoRepository();
       const guideService = new CreateGuideService(guideRepository);
