@@ -17,18 +17,21 @@ export class GuideMongoRepository implements GuideRepository {
   }
 
   async findById(id: string): Promise<GuideEntity | null> {
-    return this.database.findById(id).populate([
-      {
-        path: "author",
-        model: UserModel,
-        strictPopulate: true,
-      },
-      {
-        path: "updatedBy",
-        model: UserModel,
-        strictPopulate: true,
-      },
-    ]).exec();
+    return this.database
+      .findById(id)
+      .populate([
+        {
+          path: "author",
+          model: UserModel,
+          strictPopulate: true,
+        },
+        {
+          path: "updatedBy",
+          model: UserModel,
+          strictPopulate: true,
+        },
+      ])
+      .exec();
   }
 
   async findAll(): Promise<GuideEntity[]> {
