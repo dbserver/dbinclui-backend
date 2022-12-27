@@ -5,7 +5,7 @@ class MongoInMemoryDatabase {
   private mongoServer?: MongoMemoryServer;
   private static instance: MongoInMemoryDatabase;
 
-  private constructor() {}
+  private constructor() { }
 
   public static getInstance() {
     if (!MongoInMemoryDatabase.instance) {
@@ -186,12 +186,30 @@ class MongoInMemoryDatabase {
           name: "Usuario 1",
           email: "emailUm@email.com",
           admin: false,
-        },
+        }
       });
     } catch (error) {
       console.log("Something went wrong creating the User Expressions.");
       console.log(error);
       throw error;
+    }
+  }
+
+  public async createDBExpression() {
+    try {
+      const dbExpression = mongoose.connection.collection("dbExpressions");
+      dbExpression.insertOne({
+        expression: "Expressão de test",
+        author: {
+          _id: "1",
+          uid: "1",
+          name: "Usuario 1",
+          email: "emailUm@email.com",
+          admin: false,
+        }
+      });
+    } catch (error) {
+      console.log("Something went wrong creating the DB Expressions.");
     }
   }
 }
