@@ -16,10 +16,10 @@ class CreateDBExpressionController {
             const result = await dbExpressionService.execute({ expression, author });
 
             if (result instanceof Error) {
-                return clientErrorResponse(res, { data: result });
+                return clientErrorResponse(res, result);
             }
 
-            return sucessfulResponse(res, result);
+            return sucessfulResponse(res, { data: result });
         } catch (error) {
             return serverErrorResponse(res, error as Error);
         }

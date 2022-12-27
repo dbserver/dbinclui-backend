@@ -4,6 +4,7 @@ import { digitalContentsRouter } from "./digitalContents/digitalContentsRoutes.j
 import { guidesRouter } from "./guides/guidesRoutes.js";
 import { userExpressionsRouter } from "./usersExpressions/usersExpressionsRoutes.js";
 import { usersRouter } from "./users/usersRoutes.js";
+import { dbExpressionsRouter } from "./dbExpressions/dbExpressionsRoutes.js";
 
 const router = Router();
 
@@ -13,6 +14,7 @@ router.use("/categories", categoriesRouter);
 router.use("/digital-contents", digitalContentsRouter);
 router.use("/users", usersRouter);
 router.use("/usersExpressions", userExpressionsRouter);
+router.use("/dbExpressions", dbExpressionsRouter);
 router.get("*", (_, res) => res.json({ message: "Rota não encontrada" }));
 
 export { router };
