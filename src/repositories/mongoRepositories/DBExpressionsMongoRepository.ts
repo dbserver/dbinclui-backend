@@ -1,6 +1,6 @@
-import { DBExpressionEntity } from "../../entities/DBExpressionEntity";
-import { DBExpressionsModel } from "../../models/DBExpressionsModel";
-import { DBExpressionsRepository } from "../DBExpressionsRepository";
+import { DBExpressionEntity } from "../../entities/DBExpressionEntity.js";
+import { DBExpressionsModel } from "../../models/DBExpressionsModel.js";
+import { DBExpressionsRepository } from "../DBExpressionsRepository.js";
 
 export class DBExpressionsMongoRepository implements DBExpressionsRepository {
     database = DBExpressionsModel;

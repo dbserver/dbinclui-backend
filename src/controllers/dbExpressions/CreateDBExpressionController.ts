@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { DBExpressionsMongoRepository } from "../../repositories/mongoRepositories/DBExpressionsMongoRepository";
-import { CreateDBExpressionService } from "../../services/dbExpressions/CreateDBExpressionService";
-import { sucessfulResponse, serverErrorResponse, clientErrorResponse } from "../../responses/appResponses";
+import { DBExpressionsMongoRepository } from "../../repositories/mongoRepositories/DBExpressionsMongoRepository.js";
+import { CreateDBExpressionService } from "../../services/dbExpressions/CreateDBExpressionService.js";
+import { sucessfulResponse, serverErrorResponse, clientErrorResponse } from "../../responses/appResponses.js";
 import { UserEntity } from "../../entities/UserEntity";
 
 class CreateDBExpressionController {

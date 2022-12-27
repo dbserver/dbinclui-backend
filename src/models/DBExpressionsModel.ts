@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
-import { DBExpressionEntity } from "../entities/DBExpressionEntity";
-import { defaultSchemaSettings } from "./settings/defaultSchemaSettings";
-import { dbExpressionSchemaSettings } from "./settings/dbExpressionSchemaSettings";
+import { DBExpressionEntity } from "../entities/DBExpressionEntity.js";
+import { defaultSchemaSettings } from "./settings/defaultSchemaSettings.js";
+import { dbExpressionSchemaSettings } from "./settings/dbExpressionSchemaSettings.js";
 
 const dbExpressionSchema = new Schema<DBExpressionEntity>(
   dbExpressionSchemaSettings,
