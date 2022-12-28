@@ -1,6 +1,6 @@
-import { CategoryEntity } from "../entities/CategoryEntity";
-import { DigitalContentEntity } from "../entities/DigitalContentEntity";
-import { GuideEntity } from "../entities/GuideEntity";
+import { CategoryEntity } from "../entities/CategoryEntity.js";
+import { DigitalContentEntity } from "../entities/DigitalContentEntity.js";
+import { GuideEntity } from "../entities/GuideEntity.js";
 
 interface CategoriesAndContents extends CategoryEntity {
   digitalContents: DigitalContentEntity[];
