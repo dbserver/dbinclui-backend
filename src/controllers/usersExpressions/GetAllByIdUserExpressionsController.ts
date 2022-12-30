@@ -13,7 +13,7 @@ class GetAllByIdUserExpressionsController {
 
       const result = await userExpressionService.execute(id);
 
-      return sucessfulResponse(res, result);
+      return sucessfulResponse(res, {data: result});
     } catch (error) {
       return serverErrorResponse(res, error as Error);
     }
