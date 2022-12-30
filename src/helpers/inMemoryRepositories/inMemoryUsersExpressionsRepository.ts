@@ -66,6 +66,24 @@ export class InMemoryUsersExpressionsRepository implements UsersExpressionsRepos
     return result;
   }
 
+  async loadExpressionWithSameUser(length: number, id: string) {
+    for (let i = 0; i < length; i++) {
+      const expression: UserExpressionEntity = {
+        _id: String(i),
+        expression: `Expressão de test com o mesmo id numero: ${i}`,
+        author: {
+          _id: id,
+          uid: id,
+          name: `Usuario ${id}`,
+          email: `Usuario${id}@email.com`,
+          admin: false,
+        },
+      };
+
+      this.database.push(expression);
+    }
+  }
+
   async loadExpresionDefaultData(length: number) {
     for (let i = 0; i < length; i++) {
       const expression: UserExpressionEntity = {
