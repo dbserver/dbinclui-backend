@@ -1,13 +1,13 @@
 import { UserExpressionEntity } from "../../entities/UserExpressionEntity.js";
 import { UsersExpressionsRepository } from "../../repositories/UsersExpressionsRepository.js";
-import { UserEntity } from "../../entities/UserEntity";
+import { UserEntity } from "../../entities/UserEntity.js";
 
-export class inMemoryUsersExpressionsRepository implements UsersExpressionsRepository {
+export class InMemoryUsersExpressionsRepository implements UsersExpressionsRepository {
   database: UserExpressionEntity[] = [];
 
   userDatabase: UserEntity[] = [];
 
- async create(expression: UserExpressionEntity): Promise<UserExpressionEntity> {
+  async create(expression: UserExpressionEntity): Promise<UserExpressionEntity> {
     expression._id = String(this.database.length);
 
     this.database.push(expression);
@@ -24,6 +24,16 @@ export class inMemoryUsersExpressionsRepository implements UsersExpressionsRepos
     return user;
   }
 
+  async findById(id: string) {
+    const expression = this.database.find((expression) => expression._id === id);
+
+    if (!expression) {
+      return null;
+    }
+
+    return expression;
+  }
+
   async loadUserDefaultData(length: number) {
     for (let i = 0; i < length; i++) {
       const user: UserEntity = {
@@ -37,28 +47,24 @@ export class inMemoryUsersExpressionsRepository implements UsersExpressionsRepos
       this.userDatabase.push(user);
     }
   }
-  
-  async findById (id: string) {
-    return this.database.find(expression => expression._id === id);
-  }
 
   async findAllById(id: string) {
-    return this.database.filter(expression => expression.author._id === id);
+    return this.database.filter((expression) => expression.author._id === id);
   }
 
   async delete(id: string) {
     const result = await this.findById(id);
 
-  if (!result) {
-    throw new Error("Expression does not exists");
+    if (!result) {
+      throw new Error("Expression does not exists");
+    }
+
+    const index = this.database.indexOf(result);
+
+    this.database.splice(index, 1);
+
+    return result;
   }
-
-  const index = this.database.indexOf(result);
-
-  this.database.splice(index, 1);
-
-  return result;
-}
 
   async loadExpresionDefaultData(length: number) {
     for (let i = 0; i < length; i++) {

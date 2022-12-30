@@ -1,11 +1,11 @@
-import { inMemoryUsersExpressionsRepository } from "./inMemoryUsersExpressionsRepository.js";
-import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
+import { UserExpressionEntity } from "../../entities/UserExpressionEntity.js";
+import { InMemoryUsersExpressionsRepository } from "./InMemoryUsersExpressionsRepository.js";
 
 describe("inMemoruUsersExpressionsRepository", () => {
-  let repository: inMemoryUsersExpressionsRepository;
+  let repository: InMemoryUsersExpressionsRepository;
 
   beforeAll(() => {
-    repository = new inMemoryUsersExpressionsRepository();
+    repository = new InMemoryUsersExpressionsRepository();
   });
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe("inMemoruUsersExpressionsRepository", () => {
   });
 
   it("Should create a new user expression in the dabase", async () => {
-    const userExpression: ExpressionEntity = {
+    const userExpression: UserExpressionEntity = {
       _id: "3",
       expression: "Essa é uma expressão de teste",
       author: {
@@ -36,5 +36,4 @@ describe("inMemoruUsersExpressionsRepository", () => {
     expect(result.author.name).toBe("Alicia Alana");
     expect(result.author.email).toBe("aliciaAlana@gmail.com");
   });
-
 });
