@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { UsersExpressionsMongoRepository } from "../../repositories/mongoRepositories/UsersExpressionsMongoRepository";
-import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses";
-import { GetAllByIdUserExpressionsService } from "../../services/usersExpressions/GetAllByIdUserExpressionsService";
+import { UsersExpressionsMongoRepository } from "../../repositories/mongoRepositories/UsersExpressionsMongoRepository.js";
+import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses.js";
+import { GetAllByIdUserExpressionsService } from "../../services/usersExpressions/GetAllByIdUserExpressionsService.js";
 
 class GetAllByIdUserExpressionsController {
   async handler(req: Request, res: Response) {
