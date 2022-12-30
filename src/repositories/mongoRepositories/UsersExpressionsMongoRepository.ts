@@ -7,6 +7,14 @@ export class UsersExpressionsMongoRepository implements UsersExpressionsReposito
   database = UsersExpressionsModel;
 
   async create(expression: UserExpressionEntity): Promise<UserExpressionEntity> {
-    return this.database.create(expression);
+    return UsersExpressionsModel.create(expression);
+  }
+ 
+  async findAllById(id: string): Promise<UserExpressionEntity[]> {
+    return this.database.find({author: id});
+  }
+
+  async delete(id: string): Promise<UserExpressionEntity | null> {
+    return this.database.findOneAndDelete({_id: id});
   }
 }

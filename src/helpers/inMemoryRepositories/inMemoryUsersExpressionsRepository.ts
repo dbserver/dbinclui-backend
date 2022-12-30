@@ -1,13 +1,13 @@
-import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
+import { UserExpressionEntity } from "../../entities/UserExpressionEntity.js";
 import { UsersExpressionsRepository } from "../../repositories/UsersExpressionsRepository.js";
 import { UserEntity } from "../../entities/UserEntity";
 
 export class inMemoryUsersExpressionsRepository implements UsersExpressionsRepository {
-  database: ExpressionEntity[] = [];
+  database: UserExpressionEntity[] = [];
 
   userDatabase: UserEntity[] = [];
 
- async create(expression: ExpressionEntity): Promise<ExpressionEntity> {
+ async create(expression: UserExpressionEntity): Promise<UserExpressionEntity> {
     expression._id = String(this.database.length);
 
     this.database.push(expression);
@@ -37,10 +37,32 @@ export class inMemoryUsersExpressionsRepository implements UsersExpressionsRepos
       this.userDatabase.push(user);
     }
   }
+  
+  async findById (id: string) {
+    return this.database.find(expression => expression._id === id);
+  }
+
+  async findAllById(id: string) {
+    return this.database.filter(expression => expression.author._id === id);
+  }
+
+  async delete(id: string) {
+    const result = await this.findById(id);
+
+  if (!result) {
+    throw new Error("Expression does not exists");
+  }
+
+  const index = this.database.indexOf(result);
+
+  this.database.splice(index, 1);
+
+  return result;
+}
 
   async loadExpresionDefaultData(length: number) {
     for (let i = 0; i < length; i++) {
-      const expression: ExpressionEntity = {
+      const expression: UserExpressionEntity = {
         _id: String(i),
         expression: `Expressão de test numero: ${i}`,
         author: {
