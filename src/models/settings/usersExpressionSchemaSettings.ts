@@ -9,5 +9,9 @@ export const usersExpressionSchemaSettings = {
     type: Schema.Types.ObjectId,
     required: true,
     ref: "user",
-  },
-};
+   },
+   favorite: {
+    type: Boolean,
+    default: false,
+   }
+  };
