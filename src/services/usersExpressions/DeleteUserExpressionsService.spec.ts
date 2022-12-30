@@ -1,4 +1,4 @@
-import { InMemoryUsersExpressionsRepository } from "../../helpers/inMemoryRepositories/inMemoryUsersExpressionsRepository";
+import { InMemoryUsersExpressionsRepository } from "../../helpers/inMemoryRepositories/InMemoryUsersExpressionsRepository";
 import { DeleteUserExpressionsService } from "./DeleteUserExpressionsService";
 
 describe("DeleteUserExpressionService", () => {
@@ -12,6 +12,10 @@ describe("DeleteUserExpressionService", () => {
 
   beforeEach(async () => {
     repository.loadExpresionDefaultData(3);
+  });
+
+  afterEach(async () => {
+    repository.clearAllDatabases();
   });
 
   it("Should return an error if an expressionId does not exist", async () => {
