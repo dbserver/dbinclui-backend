@@ -57,7 +57,7 @@ class MongoInMemoryDatabase {
   public async createGuide() {
     try {
       const user = mongoose.connection.collection("users");
-      await mongoInMemoryDatabase.createUser();
+      await mongoInMemoryDatabase.createUser("123");
       const allUsers = await user.find().toArray();
 
       const guide = mongoose.connection.collection("guides");
@@ -98,7 +98,7 @@ class MongoInMemoryDatabase {
       const guides = mongoose.connection.collection("guides");
       const allGuides = await guides.find().toArray();
       const user = mongoose.connection.collection("users");
-      await mongoInMemoryDatabase.createUser();
+      await mongoInMemoryDatabase.createUser("123");
       const allUsers = await user.find().toArray();
 
       await category.insertOne({
@@ -138,7 +138,7 @@ class MongoInMemoryDatabase {
       const guides = mongoose.connection.collection("guides");
       const allGuides = await guides.find().toArray();
       const user = mongoose.connection.collection("users");
-      await mongoInMemoryDatabase.createUser();
+      await mongoInMemoryDatabase.createUser("123");
       const allUsers = await user.find().toArray();
 
       await digitalContent.insertOne({
@@ -175,11 +175,11 @@ class MongoInMemoryDatabase {
     }
   }
 
-  public async createUser() {
+  public async createUser(uid: string) {
     try {
       const user = mongoose.connection.collection("users");
       await user.insertOne({
-        uid: "123",
+        uid: uid,
         name: "Joao",
         email: "Joao@email.com",
         admin: true,
@@ -201,7 +201,7 @@ class MongoInMemoryDatabase {
   public async createUserExpression() {
     try {
       const user = mongoose.connection.collection("users");
-      await mongoInMemoryDatabase.createUser();
+      await mongoInMemoryDatabase.createUser("123");
       const allUsers = await user.find().toArray();
 
       const userExpression = mongoose.connection.collection("usersExpressions");
