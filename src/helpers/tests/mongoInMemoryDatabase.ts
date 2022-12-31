@@ -175,7 +175,8 @@ class MongoInMemoryDatabase {
     }
   }
 
-  public async createUser(uid: string) {
+  public async createUser(uid?: string) {
+    uid = uid ?? "123";
     try {
       const user = mongoose.connection.collection("users");
       await user.insertOne({
