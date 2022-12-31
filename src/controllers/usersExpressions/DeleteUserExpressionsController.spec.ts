@@ -26,7 +26,7 @@ describe("DeleteUserExpressionsController", () => {
   }, 60_000);
 
   beforeEach(async () => {
-    await mongoInMemoryDatabase.createUser();
+    await mongoInMemoryDatabase.createUser("123");
     await mongoInMemoryDatabase.createUserExpression();
   });
 
