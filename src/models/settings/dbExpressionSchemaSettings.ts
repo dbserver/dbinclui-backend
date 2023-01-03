@@ -12,7 +12,7 @@ export const dbExpressionSchemaSettings = {
   },
   deleted: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   favoriteOf: [
     {
