@@ -21,10 +21,10 @@ export class UpdateDigitalContentService {
       content.guide = contentRequest?.guide ?? content.guide;
       content.shortDescription = contentRequest?.shortDescription ?? content.shortDescription;
       content.filePaths = files.length > 0 ? files : content.filePaths;
+      content.updatedBy = contentRequest.updatedBy;
 
-      await this.repository.update(content);
+      const contentUpdated = await this.repository.update(content);
 
-      const contentUpdated = await this.repository.findById(id);
       return { contentUpdated, oldFiles };
     } catch (error) {
       throw new Error(error as string);

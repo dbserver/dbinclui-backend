@@ -5,7 +5,12 @@ import { mongoInMemoryDatabase } from "./../../helpers/tests/mongoInMemoryDataba
 describe("GetAllGuidesController", () => {
   beforeAll(async () => {
     await mongoInMemoryDatabase.open();
+    await mongoInMemoryDatabase.createGuide();
   }, 60_000);
+
+  afterEach(async () => {
+    await mongoInMemoryDatabase.clear();
+  });
 
   afterAll(async () => {
     await mongoInMemoryDatabase.close();
@@ -13,13 +18,11 @@ describe("GetAllGuidesController", () => {
 
   const app = new App();
   it("Should return 200 OK if get success in requisition", async () => {
-    await mongoInMemoryDatabase.createGuide();
     const { body } = await request(app.getExpress).get("/guides").expect(200);
     expect(body.data.length).toBe(1);
   });
 
-  it(`Should return 400 Bad request to requisition if there are no guides in database`, async () => {
-    await mongoInMemoryDatabase.clear();
+  it(`Should return an array empty and status 200`, async () => {
     const { body } = await request(app.getExpress).get("/guides");
     expect(body.data.length).toBe(0);
   });

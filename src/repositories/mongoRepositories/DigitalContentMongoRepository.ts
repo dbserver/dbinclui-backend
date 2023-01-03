@@ -2,6 +2,7 @@ import { DigitalContentEntity } from "../../entities/DigitalContentEntity.js";
 import { CategoryModel } from "../../models/CategoryModel.js";
 import { DigitalContentModel } from "../../models/DigitalContentModel.js";
 import { GuideModel } from "../../models/GuideModel.js";
+import { UserModel } from "../../models/UserModel.js";
 import { DigitalContentRepository } from "../DigitalContentRepository.js";
 
 export class DigitalContentMongoRepository implements DigitalContentRepository {
@@ -12,7 +13,7 @@ export class DigitalContentMongoRepository implements DigitalContentRepository {
   }
 
   async update(content: DigitalContentEntity): Promise<DigitalContentEntity | null> {
-    return this.database.findOneAndUpdate({ _id: content._id }, content);
+    return this.database.findOneAndUpdate({ _id: content._id }, content, { new: true });
   }
 
   async findById(id: string): Promise<DigitalContentEntity | null> {
@@ -25,6 +26,16 @@ export class DigitalContentMongoRepository implements DigitalContentRepository {
       {
         path: "category",
         model: CategoryModel,
+        strictPopulate: true,
+      },
+      {
+        path: "author",
+        model: UserModel,
+        strictPopulate: true,
+      },
+      {
+        path: "updatedBy",
+        model: UserModel,
         strictPopulate: true,
       },
     ]);
@@ -47,6 +58,16 @@ export class DigitalContentMongoRepository implements DigitalContentRepository {
         {
           path: "guide",
           model: GuideModel,
+          strictPopulate: true,
+        },
+        {
+          path: "author",
+          model: UserModel,
+          strictPopulate: true,
+        },
+        {
+          path: "updatedBy",
+          model: UserModel,
           strictPopulate: true,
         },
       ]);
@@ -73,20 +94,46 @@ export class DigitalContentMongoRepository implements DigitalContentRepository {
   }
 
   async findAll(): Promise<DigitalContentEntity[]> {
-    return this.database.find().populate([
-      {
-        path: "guide",
-        model: GuideModel,
-        strictPopulate: true,
-      },
-      {
-        path: "category",
-        model: CategoryModel,
-        strictPopulate: true,
-      },
-    ]);
+    return this.database
+      .find()
+      .where("deleted")
+      .equals(false)
+      .populate([
+        {
+          path: "guide",
+          model: GuideModel,
+          strictPopulate: true,
+        },
+        {
+          path: "category",
+          model: CategoryModel,
+          strictPopulate: true,
+        },
+        {
+          path: "author",
+          model: UserModel,
+          strictPopulate: true,
+        },
+        {
+          path: "updatedBy",
+          model: UserModel,
+          strictPopulate: true,
+        },
+      ]);
   }
 
+  async deleteLogic(id: string, updatedBy: string): Promise<DigitalContentEntity | null> {
+    return this.database.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          updatedBy: updatedBy,
+          deleted: true,
+        },
+      },
+      { new: true },
+    );
+  }
   async delete(id: string): Promise<DigitalContentEntity | null> {
     return this.database.findOneAndDelete({ _id: id });
   }

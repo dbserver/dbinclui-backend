@@ -3,6 +3,7 @@ import { GuideEntity } from "../../entities/GuideEntity.js";
 import { GuideCategoriesAndContentsInterface } from "../../interfaces/GuideCategoriesAndContentsInterface.js";
 import { GuideModel } from "../../models/GuideModel.js";
 import { GuideRepository } from "../GuideRepository.js";
+import { UserModel } from "../../models/UserModel.js";
 
 export class GuideMongoRepository implements GuideRepository {
   database = GuideModel;
@@ -12,15 +13,57 @@ export class GuideMongoRepository implements GuideRepository {
   }
 
   async update(guide: GuideEntity): Promise<GuideEntity | null> {
-    return this.database.findOneAndUpdate({ _id: guide._id }, guide);
+    return this.database.findOneAndUpdate({ _id: guide._id }, guide, { new: true });
   }
 
   async findById(id: string): Promise<GuideEntity | null> {
-    return this.database.findById(id);
+    return this.database
+      .findById(id)
+      .populate([
+        {
+          path: "author",
+          model: UserModel,
+          strictPopulate: true,
+        },
+        {
+          path: "updatedBy",
+          model: UserModel,
+          strictPopulate: true,
+        },
+      ])
+      .exec();
   }
 
   async findAll(): Promise<GuideEntity[]> {
-    return this.database.find();
+    return this.database
+      .find()
+      .where("deleted")
+      .equals(false)
+      .populate([
+        {
+          path: "author",
+          model: UserModel,
+          strictPopulate: true,
+        },
+        {
+          path: "updatedBy",
+          model: UserModel,
+          strictPopulate: true,
+        },
+      ]);
+  }
+
+  async deleteLogic(id: string, updatedBy: string): Promise<GuideEntity | null> {
+    return this.database.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          updatedBy: updatedBy,
+          deleted: true,
+        },
+      },
+      { new: true },
+    );
   }
 
   async delete(id: string): Promise<GuideEntity | null> {

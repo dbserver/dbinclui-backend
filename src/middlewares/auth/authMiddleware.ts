@@ -1,13 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { clientErrorResponse } from "../../responses/appResponses.js";
 import { FirebaseError } from "firebase-admin";
-import { FirebaseApplication } from "../../database/Firebase.js";
+import { FirebaseApplication } from "../../controllers/Firebase.js";
 
-export const validateTokenAccessMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.header("Authorization")?.substring(7);
 
@@ -20,7 +16,7 @@ export const validateTokenAccessMiddleware = async (
     const decoded = await auth.verifyIdToken(token);
 
     req.body.decoded = decoded;
-
+    
     next();
   } catch (e) {
     const error = e as FirebaseError;

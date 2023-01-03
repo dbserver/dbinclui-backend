@@ -7,11 +7,15 @@ class CreateCategoryController {
   async handler(req: Request, res: Response) {
     try {
       const body = req.body;
+      const userId = req.currentUser._id as any;
 
       const categoryRepository = new CategoryMongoRepository();
       const categoryService = new CreateCategoryService(categoryRepository);
 
-      const result = await categoryService.execute(body);
+      const result = await categoryService.execute({
+        ...body,
+        author: userId,
+      });
 
       return sucessfulResponse(res, { data: result });
     } catch (error) {

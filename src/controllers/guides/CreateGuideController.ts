@@ -8,6 +8,7 @@ class CreateGuideController {
   async handler(req: Request, res: Response) {
     try {
       const body = req.body;
+      const userId = req.currentUser._id as any;
       const reqFile = req.file as RequestFileProps;
 
       const fileObj = {
@@ -18,7 +19,12 @@ class CreateGuideController {
       const guideRepository = new GuideMongoRepository();
       const guideService = new CreateGuideService(guideRepository);
 
-      const result = await guideService.execute({ ...body, filePaths: fileObj });
+      const result = await guideService.execute({
+        title: body.title,
+        content: body.content,
+        filePaths: fileObj,
+        author: userId,
+      });
 
       return sucessfulResponse(res, { data: result });
     } catch (error) {

@@ -6,8 +6,15 @@ describe("InMemoryGuidesRepository", () => {
 
   beforeAll(async () => {
     repository = new InMemoryGuideRepository();
-    await repository.loadData(1);
+  });
+
+  beforeEach(async () => {
+    await repository.loadData(3);
     await repository.loadDataWithCategoriesandContents(3);
+  });
+
+  afterEach(async () => {
+    await repository.clearAllDatabases();
   });
 
   it("Should create and return an Guide entity", async () => {
@@ -18,11 +25,18 @@ describe("InMemoryGuidesRepository", () => {
         filePath: `www.image.com.br`,
         publicId: `uploads/image`,
       },
+      author: {
+        uid: "0",
+        name: "12",
+        email: `User "12346589`,
+        admin: false,
+      },
+      deleted: false,
     };
 
     const result = await repository.create(guideExample);
 
-    expect(repository.database[1]).toBe(result);
+    expect(repository.database[3]).toBe(result);
     expect(result.title).toBe("Título do guia");
   });
 
@@ -36,6 +50,13 @@ describe("InMemoryGuidesRepository", () => {
           filePath: `www.image.com.br`,
           publicId: `uploads/image`,
         },
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       guideExample2.title = "Título do guia modificado";
@@ -54,6 +75,13 @@ describe("InMemoryGuidesRepository", () => {
           filePath: `www.image.com.br`,
           publicId: `uploads/image`,
         },
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       guideExample2.title = "Título do guia modificado";
@@ -67,6 +95,7 @@ describe("InMemoryGuidesRepository", () => {
   it("Should return all guides", async () => {
     const result = await repository.findAll();
 
+    expect(result[0].deleted).toBeFalsy();
     expect(result.length).toEqual(2);
   });
 
@@ -74,7 +103,13 @@ describe("InMemoryGuidesRepository", () => {
     const result = await repository.delete("1");
 
     expect(result._id).toBe("1");
-    expect(repository.database.length).toEqual(1);
+    expect(repository.database.length).toEqual(2);
+  });
+
+  it("Should update deleted to true", async () => {
+    const result = await repository.deleteLogic("2");
+
+    expect(result?.deleted).toBeTruthy();
   });
 
   it("Should return a guide with categories and contents associate", async () => {

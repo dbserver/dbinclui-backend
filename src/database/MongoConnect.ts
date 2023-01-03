@@ -4,10 +4,10 @@ export class MongoDB {
   async connect() {
     try {
       const uri = process.env.MONGO_URL || "mongodb://localhost:27017/";
+      mongoose.set('strictQuery', false);
       await mongoose.connect(uri, {
         dbName: process.env.MONGO_DATABASE,
       });
-
       console.log("Conectado ao banco de dados com sucesso!");
     } catch (error) {
       throw new Error("Ocorreu um problema ao iniciar a conexão com o banco de dados");

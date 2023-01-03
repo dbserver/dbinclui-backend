@@ -9,5 +9,6 @@ export interface GuideRepository {
   findCategoriesAndContentsByGuideId(
     id: string,
   ): Promise<GuideCategoriesAndContentsInterface | null>;
+  deleteLogic(id: string, updatedBy: string): Promise<GuideEntity | null>;
   delete(id: string): Promise<GuideEntity | null>;
 }

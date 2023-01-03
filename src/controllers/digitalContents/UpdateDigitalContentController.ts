@@ -29,7 +29,11 @@ class UpdateDigitalContentController {
         files.push(obj);
       }
 
-      const result = await contentService.execute(id, body, files);
+      const result = await contentService.execute(
+        id,
+        { ...body, updatedBy: req.currentUser._id },
+        files,
+      );
 
       if (result instanceof Error) {
         return clientErrorResponse(res, result);

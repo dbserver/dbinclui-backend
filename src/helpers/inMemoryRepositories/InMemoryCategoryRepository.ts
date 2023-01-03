@@ -33,6 +33,22 @@ export class InMemoryCategoryRepository implements CategoryRepository {
     return this.database;
   }
 
+  async deleteLogic(id: string): Promise<CategoryEntity | null> {
+    const result = await this.findById(id);
+
+    if (!result) {
+      throw new Error("Category does not exists");
+    }
+
+    const index = this.database.indexOf(result);
+
+    result.deleted = true;
+
+    this.database[index] = result;
+
+    return this.database[index];
+  }
+
   async delete(id: string): Promise<CategoryEntity> {
     const result = await this.findById(id);
 
@@ -66,6 +82,18 @@ export class InMemoryCategoryRepository implements CategoryRepository {
           filePath: `www.image0.com.br`,
           publicId: `uploads/image0`,
         },
+        author: {
+          uid: String(this.database.length),
+          name: `User ${String(this.database.length)}`,
+          email: `User ${String(this.database.length)}`,
+          admin: false,
+        },
+      },
+      author: {
+        uid: String(this.database.length),
+        name: `User ${String(this.database.length)}`,
+        email: `User ${String(this.database.length)}`,
+        admin: false,
       },
     };
 
@@ -86,6 +114,18 @@ export class InMemoryCategoryRepository implements CategoryRepository {
             filePath: `www.image${i}.com.br`,
             publicId: `uploads/image${i}`,
           },
+          author: {
+            uid: String(this.database.length),
+            name: `User ${String(this.database.length)}`,
+            email: `User ${String(this.database.length)}`,
+            admin: false,
+          },
+        },
+        author: {
+          uid: String(this.database.length),
+          name: `User ${String(this.database.length)}`,
+          email: `User ${String(this.database.length)}`,
+          admin: false,
         },
       };
 
