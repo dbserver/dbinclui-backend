@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { clientErrorResponse } from "../../responses/appResponses.js";
 import { FirebaseError } from "firebase-admin";
-import { FirebaseApplication } from "../../controllers/Firebase.js";
+import { FirebaseApplication } from "../../database/Firebase.js";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
