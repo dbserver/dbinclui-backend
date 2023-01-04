@@ -17,7 +17,7 @@ dbExpressionsRouter.post(
 
 dbExpressionsRouter.get("/", getAllDBExpressionsController.handler);
 
-dbExpressionsRouter.put(
+dbExpressionsRouter.patch(
   "/:id",
   authMiddleware,
   verifyDBExpressionsPermissionsMiddleware,

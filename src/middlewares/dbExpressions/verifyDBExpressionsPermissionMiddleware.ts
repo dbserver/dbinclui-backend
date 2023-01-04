@@ -34,6 +34,8 @@ export const verifyDBExpressionsPermissionsMiddleware = async (
       );
     }
 
+    req.currentUser = userResult;
+
     next();
   } catch (error) {
     return serverErrorResponse(res, error as Error);
