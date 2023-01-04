@@ -1,5 +1,6 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
+import { UserEntity } from "../../entities/UserEntity";
 
 class MongoInMemoryDatabase {
   private mongoServer?: MongoMemoryServer;
@@ -192,11 +193,11 @@ class MongoInMemoryDatabase {
     }
   }
 
-  public async getUser() {
+  public async getUser(index?: number) {
     const user = mongoose.connection.collection("users");
     const userFinded = await user.find().toArray();
 
-    return userFinded[0];
+    return userFinded[index ?? 0];
   }
 
   public async createUserExpression() {
@@ -218,28 +219,33 @@ class MongoInMemoryDatabase {
   }
 
   public async getExpression() {
-    const user = mongoose.connection.collection("usersExpressions");
-    const expressionFinded = await user.find().toArray();
+    const expression = mongoose.connection.collection("usersExpressions");
+    const expressionFinded = await expression.find().toArray();
 
     return expressionFinded[0];
   }
 
   public async createDBExpression() {
     try {
+      const user = await this.getUser(0);
+
       const dbExpression = mongoose.connection.collection("dbExpressions");
-      dbExpression.insertOne({
-        expression: "Expressão de test",
-        author: {
-          _id: "1",
-          uid: "123",
-          name: "Usuario 1",
-          email: "emailUm@email.com",
-          admin: false,
-        },
+      await dbExpression.insertOne({
+        expression: "Expressão de test da DB",
+        author: user._id,
+        favoriteOf: [user._id],
+        deleted: false,
       });
     } catch (error) {
       console.log("Something went wrong creating the DB Expressions.");
     }
+  }
+
+  public async getDBExpression() {
+    const expression = mongoose.connection.collection("dbExpressions");
+    const expressionFinded = await expression.find().toArray();
+
+    return expressionFinded[0];
   }
 }
 
