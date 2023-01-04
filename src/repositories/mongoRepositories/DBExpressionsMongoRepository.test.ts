@@ -23,7 +23,7 @@ describe ("DBExpressionsMongoRepository", () => {
         await mongoInMemoryDatabase.close();
       });
 
-      describe ("create expression", () =>{
+      describe ("Create expression", () =>{
         it("Espera que crie uma expressão", async () => {
             const expression = {
                author: "63b5c66a1b506ae265806e6e" ,
