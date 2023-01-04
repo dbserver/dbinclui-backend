@@ -36,4 +36,30 @@ describe("inMemoruUsersExpressionsRepository", () => {
     expect(result.author.name).toBe("Alicia Alana");
     expect(result.author.email).toBe("aliciaAlana@gmail.com");
   });
+
+  it("Should update an userExpression", async () => {
+    const userExpression: UserExpressionEntity = {
+      _id: "1",
+      expression: "Expressão alterada",
+      author: {
+        uid: "0",
+        name: "Alicia Alana",
+        email: "aliciaAlana@gmail.com",
+        admin: false,
+      },
+    };
+
+    const result = await repository.update(userExpression);
+
+    expect(result.expression).toBe("Expressão alterada");
+  });
+
+  it("Should update an userExpression", async () => {
+    const result = await repository.findAllById("1");
+
+    expect(result[0]._id).toBe("1");
+    expect(result[0].expression).toBe("Expressão de test numero: 1");
+    expect(result[0].author).toHaveProperty("_id", "1");
+    expect(result[0].favorite).toBe(false);
+  });
 });

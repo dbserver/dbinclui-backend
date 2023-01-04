@@ -24,7 +24,7 @@ export class InMemoryUsersExpressionsRepository implements UsersExpressionsRepos
 
     this.database[index] = userExpression;
 
-    return result;
+    return this.database[index];
   }
 
   async findByUid(uid: string): Promise<UserEntity | null> {
