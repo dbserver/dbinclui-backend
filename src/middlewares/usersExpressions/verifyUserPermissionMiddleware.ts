@@ -28,7 +28,7 @@ export const verifyUserExpressionsPermissionsMiddleware = async (
     if (!isOwner) {
       return clientErrorResponse(
         res,
-        new Error("You don't have permission to delete this expression."),
+        new Error("You don't have permission to access this expression."),
       );
     }
 

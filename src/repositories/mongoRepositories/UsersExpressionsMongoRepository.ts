@@ -10,6 +10,9 @@ export class UsersExpressionsMongoRepository implements UsersExpressionsReposito
     return UsersExpressionsModel.create(expression);
   }
 
+  async update(expression: UserExpressionEntity): Promise<UserExpressionEntity | null> {
+    return this.database.findOneAndUpdate({ _id: expression._id }, expression, { new: true });
+  }
   async findById(id: string): Promise<UserExpressionEntity | null> {
     return this.database.findOne({ _id: id }).populate([
       {

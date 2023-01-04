@@ -13,6 +13,19 @@ export class InMemoryUsersExpressionsRepository implements UsersExpressionsRepos
     this.database.push(expression);
     return this.database[this.database.length - 1];
   }
+  async update(userExpression: UserExpressionEntity): Promise<UserExpressionEntity> {
+    const result = await this.findById(userExpression._id as string);
+
+    if (!result) {
+      throw new Error("Expression does not exists");
+    }
+
+    const index = this.database.indexOf(result);
+
+    this.database[index] = userExpression;
+
+    return result;
+  }
 
   async findByUid(uid: string): Promise<UserEntity | null> {
     const user = this.userDatabase.find((user) => user.uid === uid);
@@ -96,6 +109,7 @@ export class InMemoryUsersExpressionsRepository implements UsersExpressionsRepos
           email: `Usuario${i}@email.com`,
           admin: false,
         },
+        favorite: false,
       };
 
       this.database.push(expression);
