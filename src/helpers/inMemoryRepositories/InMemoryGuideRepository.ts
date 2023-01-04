@@ -23,7 +23,7 @@ export class InMemoryGuideRepository implements GuideRepository {
 
     this.database[index] = guide;
 
-    return this.database[index];
+    return result;
   }
 
   async findAll(): Promise<GuideEntity[]> {
