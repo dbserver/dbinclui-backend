@@ -24,6 +24,31 @@ export class DBExpressionsMongoRepository implements DBExpressionsRepository {
     ]);
   }
 
+  async favorite(expressionID: string, userID: string): Promise<DBExpressionEntity | null> {
+    return this.database.findOne({ _id: expressionID }).then(async (data) => {
+      if (!data) return null;
+
+      let index = -1;
+
+      const user = data.favoriteOf?.find((user, userIndex) => {
+        index = userIndex;
+        return user.toString() === userID.toString();
+      });
+
+      if (!user) {
+        const id = userID as any;
+        data.favoriteOf?.push(id);
+        await data.save();
+        return data;
+      }
+
+      data.favoriteOf?.splice(index, 1);
+
+      await data.save();
+      return data;
+    });
+  }
+
   async deleteLogic(id: string, updatedBy: string): Promise<DBExpressionEntity | null> {
     return this.database.findOneAndUpdate(
       { _id: id },
