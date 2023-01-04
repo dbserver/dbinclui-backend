@@ -23,4 +23,17 @@ export class DBExpressionsMongoRepository implements DBExpressionsRepository {
       },
     ]);
   }
+
+  async deleteLogic(id: string, updatedBy: string): Promise<DBExpressionEntity | null> {
+    return this.database.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          updatedBy: updatedBy,
+          deleted: true,
+        },
+      },
+      { new: true },
+    );
+  }
 }
