@@ -7,6 +7,6 @@ export class UsersExpressionsMongoRepository implements UsersExpressionsReposito
   database = UsersExpressionsModel;
 
   async create(expression: ExpressionEntity): Promise<ExpressionEntity> {
-    return this.database.create(expression);
+   return this.database.create(expression);
   }
 }

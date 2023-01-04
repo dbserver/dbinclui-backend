@@ -8,7 +8,7 @@ describe("UserMongoRepository", () => {
   beforeAll(async () => {
     await mongoInMemoryDatabase.open();
     repository = new UserMongoRepository();
-  });
+  }); 
 
   beforeEach(async () => {
     await mongoInMemoryDatabase.createUser("20");

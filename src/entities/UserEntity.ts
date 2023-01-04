@@ -1,4 +1,4 @@
-export interface UserEntity {
+export interface  UserEntity {
   _id?: string;
   uid: string;
   name: string;
