@@ -5,6 +5,6 @@ export interface DBExpressionEntity {
   expression: string;
   author: UserEntity;
   deleted?: boolean;
-  favoriteOf?: UserEntity[];
+  favoriteOf?: string[];
   updatedBy?: UserEntity;
 }
