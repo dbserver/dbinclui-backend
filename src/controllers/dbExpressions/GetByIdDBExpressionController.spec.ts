@@ -77,4 +77,17 @@ describe("GetByIdDBExpressionController", () => {
         expect(data.body.data).toHaveProperty("deleted", false);
       });
   });
+
+  it("Should return a status of 400 if the dbExpression does not exist", async () => {
+    verifyIdTokenMock.mockReturnValue({
+      uid: "123",
+    });
+
+    const token = "tokenValido";
+
+    await request(express.getExpress)
+      .get(`/dbExpressions/00b0ca0e854846b04e46fca0`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(400);
+  });
 });
