@@ -1,11 +1,11 @@
-import { GetByIdDBExpressionService } from "./../../services/dbExpressions/GetByIdDBExpressionService";
-import { DBExpressionsMongoRepository } from "./../../repositories/mongoRepositories/DBExpressionsMongoRepository";
 import { Request, Response } from "express";
+import { DBExpressionsMongoRepository } from "../../repositories/mongoRepositories/DBExpressionsMongoRepository.js";
 import {
   clientErrorResponse,
   serverErrorResponse,
   sucessfulResponse,
 } from "../../responses/appResponses.js";
+import { GetByIdDBExpressionService } from "../../services/dbExpressions/GetByIdDBExpressionService.js";
 
 class GetByIdDBExpressionController {
   async handler(req: Request, res: Response) {

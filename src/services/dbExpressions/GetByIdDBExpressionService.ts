@@ -1,4 +1,4 @@
-import { DBExpressionsRepository } from './../../repositories/DBExpressionsRepository';
+import { DBExpressionsRepository } from './../../repositories/DBExpressionsRepository.js';
 
 export class GetByIdDBExpressionService {
   constructor(private readonly repository: DBExpressionsRepository) {}
