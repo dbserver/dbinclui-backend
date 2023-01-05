@@ -77,6 +77,20 @@ export class inMemoryDBExpressionsRepository implements DBExpressionsRepository 
     return user;
   }
 
+  async delete(id: string): Promise<DBExpressionEntity | null> {
+    const result = await this.findById(id);
+
+    if (!result) {
+      return null;
+    }
+
+    const index = this.database.indexOf(result);
+
+    this.database.splice(index, 1);
+
+    return result;
+  }
+
   async loadUserDefaultData(length: number) {
     for (let i = 0; i < length; i++) {
       const user: UserEntity = {
@@ -97,6 +111,7 @@ export class inMemoryDBExpressionsRepository implements DBExpressionsRepository 
         _id: String(i),
         expression: `Expressão de test numero: ${i}`,
         favoriteOf: ["123"],
+        deleted: false,
         author: {
           _id: String(i),
           uid: String(i),

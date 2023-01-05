@@ -61,4 +61,8 @@ export class DBExpressionsMongoRepository implements DBExpressionsRepository {
       { new: true },
     );
   }
+
+  async delete(id: string): Promise<DBExpressionEntity | null> {
+    return this.database.findOneAndDelete({ _id: id }, { new: true });
+  }
 }

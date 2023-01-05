@@ -7,6 +7,8 @@ import { verifyDBExpressionsPermissionsMiddleware } from "../../middlewares/dbEx
 import { deleteLogicDBExpressionController } from "../../controllers/dbExpressions/DeleteLogicDBExpressionController.js";
 import { favoriteDBExpressionController } from "../../controllers/dbExpressions/FavoriteDBExpressionController.js";
 import { getByIdDBExpressionController } from "../../controllers/dbExpressions/GetByIdDBExpressionController.js";
+import { adminPermissionsMiddleware } from "../../middlewares/auth/adminPermissionsMiddleware.js";
+import { deleteDBExpressionController } from "../../controllers/dbExpressions/DeleteDBExpressionController.js";
 
 const dbExpressionsRouter = Router();
 
@@ -38,6 +40,13 @@ dbExpressionsRouter.patch(
   authMiddleware,
   verifyDBExpressionsPermissionsMiddleware,
   deleteLogicDBExpressionController.handler,
+);
+
+dbExpressionsRouter.delete(
+  "/:id",
+  authMiddleware,
+  adminPermissionsMiddleware,
+  deleteDBExpressionController.handler,
 );
 
 export { dbExpressionsRouter };
