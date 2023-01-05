@@ -6,6 +6,7 @@ import { getAllDBExpressionsController } from "../../controllers/dbExpressions/G
 import { verifyDBExpressionsPermissionsMiddleware } from "../../middlewares/dbExpressions/verifyDBExpressionsPermissionMiddleware.js";
 import { deleteLogicDBExpressionController } from "../../controllers/dbExpressions/DeleteLogicDBExpressionController.js";
 import { favoriteDBExpressionController } from "../../controllers/dbExpressions/FavoriteDBExpressionController.js";
+import { getByIdDBExpressionController } from "../../controllers/dbExpressions/GetByIdDBExpressionController.js";
 
 const dbExpressionsRouter = Router();
 
@@ -18,9 +19,12 @@ dbExpressionsRouter.post(
 
 dbExpressionsRouter.get("/", getAllDBExpressionsController.handler);
 
-//TODO
-// Rota procurar por id
-
+dbExpressionsRouter.get(
+  "/:id",
+  authMiddleware,
+  verifyUserExistsMiddleware,
+  getByIdDBExpressionController.handler,
+);
 
 dbExpressionsRouter.patch(
   "/favorite/:id",
