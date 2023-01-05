@@ -28,7 +28,6 @@ describe("DeleteLogicDBExpressionService", () => {
   it("Should delete a expression by ID and return a DBExpressionEntity expression", async () => {
     const result = (await dbExpressionService.execute("0", "1")) as DBExpressionEntity;
 
-    console.log(result);
     expect(result._id).toHaveProperty("0");
     expect(result).toHaveProperty("expression");
     expect(result).toHaveProperty("author");
