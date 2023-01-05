@@ -31,7 +31,7 @@ describe("DeleteLogicDBExpressionService", () => {
     expect(result._id).toHaveProperty("0");
     expect(result).toHaveProperty("expression");
     expect(result).toHaveProperty("author");
-    expect(result).toHaveProperty("deleted");
+    expect(result).toHaveProperty("deleted", true);
     expect(result).toHaveProperty("favoriteOf");
     expect(result).toHaveProperty("updatedBy");
   });
