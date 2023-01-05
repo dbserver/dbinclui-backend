@@ -15,8 +15,7 @@ export const verifyUserExistsMiddleware = async (
       return clientErrorResponse(res, new Error("User with this uid already exists."));
     }
 
-  
-    req.body.user = result;
+    req.currentUser = result;
 
     next();
   } catch (error) {

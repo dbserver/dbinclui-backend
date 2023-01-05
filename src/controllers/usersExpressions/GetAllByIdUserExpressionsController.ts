@@ -6,14 +6,14 @@ import { GetAllByIdUserExpressionsService } from "../../services/usersExpression
 class GetAllByIdUserExpressionsController {
   async handler(req: Request, res: Response) {
     try {
-      const id = req.body.user._id as string;
+      const id = req.currentUser._id as string;
 
       const userExpressionsRepository = new UsersExpressionsMongoRepository();
       const userExpressionService = new GetAllByIdUserExpressionsService(userExpressionsRepository);
 
       const result = await userExpressionService.execute(id);
 
-      return sucessfulResponse(res, {data: result});
+      return sucessfulResponse(res, { data: result });
     } catch (error) {
       return serverErrorResponse(res, error as Error);
     }

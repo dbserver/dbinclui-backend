@@ -12,7 +12,7 @@ class CreateUserExpressionController {
   async handler(req: Request, res: Response) {
     try {
       const expression = req.body.expression;
-      const author = req.body.user as UserEntity;
+      const author = req.currentUser;
 
       const usersExpressionsRepository = new UsersExpressionsMongoRepository();
       const userExpressionService = new CreateUserExpressionService(usersExpressionsRepository);
@@ -22,7 +22,7 @@ class CreateUserExpressionController {
       if (result instanceof Error) {
         return clientErrorResponse(res, result);
       }
-      return sucessfulResponse(res, {data: result} );
+      return sucessfulResponse(res, { data: result });
     } catch (error) {
       return serverErrorResponse(res, error as Error);
     }
