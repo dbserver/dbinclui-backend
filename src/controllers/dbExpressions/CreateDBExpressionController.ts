@@ -6,7 +6,6 @@ import {
   serverErrorResponse,
   clientErrorResponse,
 } from "../../responses/appResponses.js";
-import { UserEntity } from "../../entities/UserEntity";
 
 class CreateDBExpressionController {
   async handler(req: Request, res: Response) {

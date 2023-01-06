@@ -1,6 +1,5 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
-import { UserEntity } from "../../entities/UserEntity";
 
 class MongoInMemoryDatabase {
   private mongoServer?: MongoMemoryServer;
