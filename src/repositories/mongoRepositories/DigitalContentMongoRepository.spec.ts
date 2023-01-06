@@ -35,4 +35,6 @@ describe("DigitalContentMongoRepository", () => {
   afterAll(async () => {
     await mongoInMemoryDatabase.close();
   });
+
+  it("description", () => {});
 });
