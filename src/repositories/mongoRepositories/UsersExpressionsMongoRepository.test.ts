@@ -27,9 +27,9 @@ describe("UsersExpressionsMongoRepository", () => {
 
       const result = await repository.create(userExpression);
 
-      expect(result._id).not.toBeNull;
+      expect(result._id).not.toBeNull();
       expect(result.expression).toBe("Bom dia");
-      expect(result.author).not.toBeNull;
+      expect(result.author).not.toBeNull();
     });
   });
 });
