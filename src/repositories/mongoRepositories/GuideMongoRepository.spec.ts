@@ -85,8 +85,9 @@ describe("GuideMongoRepository", () => {
       expect(result).toHaveProperty("_id", guideID);
       expect(result).toHaveProperty("title", "Título alterado");
       expect(result).toHaveProperty("content", "Descrição alterada");
-      expect(result).toHaveProperty("guide");
       expect(result).toHaveProperty("author");
+      expect(result).toHaveProperty("deleted", false);
+      expect(result).toHaveProperty("filePaths");
     });
   });
 });
