@@ -1,22 +1,25 @@
 import { Request, Response } from "express";
 import { DBExpressionsMongoRepository } from "../../repositories/mongoRepositories/DBExpressionsMongoRepository.js";
-import { CreateDBExpressionService } from "../../services/dbExpressions/CreateDBExpressionService.js";
 import {
-  sucessfulResponse,
-  serverErrorResponse,
   clientErrorResponse,
+  serverErrorResponse,
+  sucessfulResponse,
 } from "../../responses/appResponses.js";
+import { DeleteLogicDBExpressionService } from "../../services/dbExpressions/DeleteLogicDBExpressionService.js";
 
-class CreateDBExpressionController {
+class DeleteLogicDBExpressionController {
   async handler(req: Request, res: Response) {
     try {
-      const expression = req.body.expression;
-      const author = req.currentUser;
+      const id = req.params["id"];
 
       const dbExpressionsRepository = new DBExpressionsMongoRepository();
-      const dbExpressionService = new CreateDBExpressionService(dbExpressionsRepository);
+      const dbExpressionsService = new DeleteLogicDBExpressionService(dbExpressionsRepository);
 
-      const result = await dbExpressionService.execute({ expression, author });
+      if (!req.currentUser._id) {
+        return clientErrorResponse(res, "User ID not found");
+      }
+
+      const result = await dbExpressionsService.execute(id, req.currentUser._id);
 
       if (result instanceof Error) {
         return clientErrorResponse(res, result);
@@ -29,4 +32,4 @@ class CreateDBExpressionController {
   }
 }
 
-export const createDBExpressionController = new CreateDBExpressionController();
+export const deleteLogicDBExpressionController = new DeleteLogicDBExpressionController();
