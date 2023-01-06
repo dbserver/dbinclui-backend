@@ -1,5 +1,7 @@
 import { mongoInMemoryDatabase } from "../../helpers/tests/mongoInMemoryDatabase";
 import { GuideMongoRepository } from "./GuideMongoRepository";
+import { CategoryMongoRepository } from "./CategoryMongoRepository";
+import { DigitalContentMongoRepository } from "./DigitalContentMongoRepository";
 import { GuideEntity } from "../../entities/GuideEntity";
 
 const guideMock = {
@@ -161,9 +163,19 @@ describe("GuideMongoRepository", () => {
     });
   });
 
-  describe("FindCategoriesAndContentsByGuideId",  () =>{})
-  it("Should find categories and digital contents", async () =>{
-    const result = await repository.findCategoriesAndContentsByGuideId("")
-  
-  })
+  describe("FindCategoriesAndContentsByGuideId", () => {
+    it("Should find categories and digital contents", async () => {
+      let guideID = (await repository.findAll())[0]._id;
+
+      const result = await repository.findCategoriesAndContentsByGuideId(guideID as string);
+
+      expect(result).toHaveProperty("_id");
+      expect(result).toHaveProperty("title");
+      expect(result).toHaveProperty("content");
+      expect(result).toHaveProperty("author");
+      expect(result).toHaveProperty("deleted", false);
+      expect(result).toHaveProperty("filePaths");
+      expect(result).toHaveProperty("categories");
+    });
+  });
 });
