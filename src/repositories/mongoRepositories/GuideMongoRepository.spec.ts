@@ -31,4 +31,6 @@ describe("GuideMongoRepository", () => {
   afterAll(async () => {
     await mongoInMemoryDatabase.close();
   });
+
+  it("description", () => {});
 });
