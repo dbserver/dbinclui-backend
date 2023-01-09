@@ -1,0 +1,220 @@
+{
+    "openapi":"3.0.0",
+    "info":{
+        "title":"DBInclui",
+        "description":"O web app é destinado para todas as pessoas que desejam aprender LIBRAS e entender um pouco mais sobre Inclusão de PCD's na sociedade. O web app aproveita o Guia de Acessibilidade e a Apostila de Libras como fonte para informação de inclusão, assim como, utiliza a API VLIBRAS para as funcionalidades específicas.",
+        "termsOfService": "http://localgost:3001/terms",
+        "contact":{
+            "email":"info@dbserver.com.br"
+        },
+        "version":"1.0.0"
+    },
+    "servers":[
+        {
+            "url":"http://localhost:3001/v1",
+            "description": "API de test"    
+        }
+    ],
+    "paths": {
+        "/guides": {
+            "post" : {
+                "summary":"Criação de Guia",
+                "description": "Essa rota será responsável por cadastrar um novo produto",
+                "tags" :["Guides"],
+                "requestBody":{
+                    "content": {
+                        "muiltipart/form-data": {
+                            "schema" : {
+                                 "$ref":"#/components/schemas/Guide"
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "400":{
+                        "description": "Dados requeridos não encontrados no corpo da requisição",
+                        "content":{
+                            "muiltipart/form-data":{
+                                "schema":{
+                                    "$ref":"#/components/schemas/Guide"
+                                }
+                            }
+                        }
+                    },
+                    "200":{
+                        "description": "Guia Criado com Sucesso",
+                        "message": "Guia Criado com Sucesso",
+                        "content":{
+                            "muiltipart/form-data":{
+                                "schema": {
+                                    "$ref":"#/components/schemas/Guide"
+                                }
+                            }
+                        } 
+                    }
+                }   
+            },
+            "get":{
+                "summary":"Requisição de guia",
+                "description": "Essa rota é responsável por requerer todos os guias do servidor",
+                "tags" :["Guides"],
+                "requestBody" : {
+                    "content": {
+                        "application/json":{
+                            "schema" : {
+                            }
+                        }
+                    }
+                }
+                
+            }
+        },
+        "/guides/id":{
+            "get": {
+                "tags": ["Guides"],
+                "summary": "Busca Guia por ID",
+                "description": "Busca Guia por ID",
+                "parameters": [ 
+                    {
+                    "name": "id",
+                    "in": "path",
+                    "description": "ID da postagem",
+                    "required": true,
+                    "type": "string"
+                    } 
+                ],
+                "responses": {
+                    "200": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/ResponsePost"
+                          }
+                        }
+                      }
+                    },
+                    "404": {
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/Error404Response"
+                          }
+                        }
+                      }
+                    }
+                  }
+            },
+            "put":{
+                "summary" : "Edição de guia através do ID",
+                "description" : "Essa rota é responsável por editar um guia",
+                "tags" : ["Guides"],
+                "requestBody": {
+                    "content":{
+                        "muiltipart/form-data":{
+                            "schema" : {
+                                "$ref":"#/components/schemas/Guide"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "summary": "Apagar Guia através do ID",
+                "description" : "Essa rota é responsável por apagar uma guia",
+                "tags" : ["Guides"],
+                "parameters": [
+                    {
+                      "name": "id",
+                      "in": "path",
+                      "description": "ID da Guia",
+                      "required": true,
+                      "type": "string"
+                    }
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "Postagem deletada com sucesso",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/Guides"
+                          }
+                        }
+                      }
+                    },
+                    "404": {
+                      "description": "Postagem não encontrada",
+                      "content": {
+                        "application/json": {
+                          "schema": {
+                            "$ref": "#/components/schemas/Error404Response"
+                          }
+                        }
+                      }
+                    }
+                }
+            }
+        }
+    },
+    "components":{
+        "schemas":{
+            "Guide": {
+                "type":"object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "maxlength": 32,
+                        "example": "Guia de Acessibilidade"
+                      },
+                      "content": {
+                        "type": "string",
+                        "example":"Este Guia fala sobre Acessibilidade"
+                      },
+                      "filePaths":{
+                        "type":"object",
+                        "properties":{
+                            "filePath":{
+                                "type":"string"
+                            },
+                            "publicId":{
+                                "type":"string"
+                            }
+                        }
+                      },
+                      "deleted": {
+                        "type": "boolean",
+                        "default": "false"
+                        }
+                },
+                "required":[
+                    "id",
+                    "title",
+                    "content",
+                    "filePaths",
+                    "deleted"
+                ]
+            },
+            "Error400Response": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Falha na requisição",
+                    "example": "Dados incompleto ou inválido"
+                  }
+                }
+            },
+              "Error404Response": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "description": "Falha na requisição",
+                    "example": "Guia não encontrada"
+                  }
+                }
+            }
+        }
+    }
+}
+
