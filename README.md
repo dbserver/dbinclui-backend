@@ -33,7 +33,7 @@ $ npm install
 ### Configurando as variáveis de ambiente
 
 ```
-Para configurar as variáveis de ambiente, você precisará criar na raíz do projeto o arquivo **.env**, configurando variáveis localmente.
+Para configurar as variáveis de ambiente, você precisará criar na raíz do projeto o arquivo __.env__, configurando variáveis localmente.
 ```
 
 ## Fluxo de versionamento 🖥️
