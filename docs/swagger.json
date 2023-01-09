@@ -23,7 +23,7 @@
                 "tags" :["Guides"],
                 "requestBody":{
                     "content": {
-                        "muiltipart/form-data": {
+                        "multipart/form-data": {
                             "schema" : {
                                  "$ref":"#/components/schemas/Guide"
                             }
@@ -34,7 +34,7 @@
                     "400":{
                         "description": "Dados requeridos não encontrados no corpo da requisição",
                         "content":{
-                            "muiltipart/form-data":{
+                            "multipart/form-data":{
                                 "schema":{
                                     "$ref":"#/components/schemas/Guide"
                                 }
@@ -45,7 +45,7 @@
                         "description": "Guia Criado com Sucesso",
                         "message": "Guia Criado com Sucesso",
                         "content":{
-                            "muiltipart/form-data":{
+                            "multipart/form-data":{
                                 "schema": {
                                     "$ref":"#/components/schemas/Guide"
                                 }
@@ -110,7 +110,7 @@
                 "tags" : ["Guides"],
                 "requestBody": {
                     "content":{
-                        "muiltipart/form-data":{
+                        "multipart/form-data":{
                             "schema" : {
                                 "$ref":"#/components/schemas/Guide"
                             }
@@ -209,8 +209,7 @@
                 "properties": {
                   "message": {
                     "type": "string",
-                    "description": "Falha na requisição",
-                    "example": "Guia não encontrada"
+                    "description": "Falha na requisição"
                   }
                 }
             }
