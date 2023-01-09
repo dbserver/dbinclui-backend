@@ -19,7 +19,7 @@ A Biblioteca/Framework principal utilizada será ReactJS.
 | Multer | https://expressjs.com/en/resources/middleware/multer.html | https://www.npmjs.com/package/multer | 
 | Cloudinary | https://cloudinary.com/documentation/cloudinary_get_started | https://www.npmjs.com/~cloudinary
 | Firebase | https://cloud.google.com/firestore/docs/client/get-firebase | https://www.npmjs.com/package/firebase |
-| Mongo Memory Server| https://www.npmjs.com/package/mongodb-memory-server |
+| Mongo Memory Server| https://github.com/nodkz/mongodb-memory-server | https://www.npmjs.com/package/mongodb-memory-server |
 
 
 ## Executando o Projeto 💻
