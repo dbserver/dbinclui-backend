@@ -78,7 +78,7 @@ export const swaggerConfig: swaggerUI.JsonObject = {
               },
             },
           },
-          ...responses
+          ...responses,
         },
       },
       get: {
@@ -151,7 +151,7 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             in: "path",
             description: "ID do guia",
             required: true,
-          }
+          },
         ],
         requestBody: {
           content: {
@@ -162,7 +162,7 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             },
           },
         },
-        responses:{
+        responses: {
           200: {
             description: "Guia Editado com Sucesso",
             message: "Guia Editado com Sucesso",
@@ -179,12 +179,11 @@ export const swaggerConfig: swaggerUI.JsonObject = {
               },
             },
           },
-          ...responses
-  
-        }
+          ...responses,
+        },
       },
-      delete:{
-        tags:["Guides"],
+      delete: {
+        tags: ["Guides"],
         summary: "Deletar por ID",
         description: "Deleta uma guia baseado no ID passado como parametro",
         parameters: [
@@ -194,9 +193,9 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             in: "path",
             description: "ID do guia",
             required: true,
-          }
+          },
         ],
-        responses:{
+        responses: {
           200: {
             description: "Guia Deletado com Sucesso",
             message: "Guia Deletado  com Sucesso",
@@ -213,14 +212,13 @@ export const swaggerConfig: swaggerUI.JsonObject = {
               },
             },
           },
-          ...responses
-        }
-      }
-      
+          ...responses,
+        },
+      },
     },
-    "/guides/delete/{id}":{
-      patch:{
-        tags:["Guides"],
+    "/guides/delete/{id}": {
+      patch: {
+        tags: ["Guides"],
         summary: "Realiza o Delete Lógico pelo ID",
         description: "Essa rota deleta logicamente um guia baseado no parâmetro passado",
         parameters: [
@@ -230,9 +228,9 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             in: "path",
             description: "ID do guia",
             required: true,
-          }
+          },
         ],
-        responses:{
+        responses: {
           200: {
             description: "Guia Deletado Logicamente com Sucesso",
             message: "Guia Deletado Logicamente  com Sucesso",
@@ -249,12 +247,23 @@ export const swaggerConfig: swaggerUI.JsonObject = {
               },
             },
           },
-          ...responses
-        }
-      }
-    }
+          ...responses,
+        },
+      },
+    },
   },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
   components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    },
     schemas: {
       guides: {
         body: {
