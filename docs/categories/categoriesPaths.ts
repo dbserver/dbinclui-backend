@@ -64,5 +64,32 @@ export const categoriesPaths = {
         400: responses[400],
       },
     },
+    put: {
+      tags: ["Categories"],
+      summary: "Edita um categoria através do ID",
+      description: "Essa rota edita um categoria baseado no parâmetro passado",
+      parameters: [
+        {
+          type: "string",
+          name: "id",
+          in: "path",
+          description: "ID da categoria",
+          required: true,
+        },
+      ],
+      requestBody: {
+        content: {
+          "application/json": {
+            schema: categoriesSchemas.content,
+          },
+        },
+      },
+      responses: {
+        200: responses[200].category,
+        400: responses[400],
+        401: responses[401],
+        403: responses[403],
+      },
+    },
   },
 };
