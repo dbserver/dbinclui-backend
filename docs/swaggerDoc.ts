@@ -1,3 +1,4 @@
+import { response } from "express";
 import swaggerUI from "swagger-ui-express";
 
 const responses = {
@@ -77,7 +78,7 @@ export const swaggerConfig: swaggerUI.JsonObject = {
               },
             },
           },
-          ...responses,
+          ...responses
         },
       },
       get: {
@@ -138,6 +139,49 @@ export const swaggerConfig: swaggerUI.JsonObject = {
           },
           400: responses[400],
         },
+      },
+      put: {
+        tags: ["Guides"],
+        summary: "Edita um guia através do ID",
+        description: "Essa rota edita um guia baseado no parâmetro passado",
+        parameters: [
+          {
+            type: "string",
+            name: "id",
+            in: "path",
+            description: "ID do guia",
+            required: true,
+          }
+        ],
+        requestBody: {
+          content: {
+            "multipart/form-data": {
+              schema: {
+                $ref: "#/components/schemas/guides/body",
+              },
+            },
+          },
+        },
+        responses:{
+          200: {
+            description: "Guia Editado com Sucesso",
+            message: "Guia Editado com Sucesso",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    data: {
+                      $ref: "#/components/schemas/guides/status200",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          ...responses
+  
+        }
       },
     },
   },
