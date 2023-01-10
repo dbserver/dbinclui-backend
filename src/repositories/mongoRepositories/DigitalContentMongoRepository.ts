@@ -5,6 +5,12 @@ import { GuideModel } from "../../models/GuideModel.js";
 import { UserModel } from "../../models/UserModel.js";
 import { DigitalContentRepository } from "../DigitalContentRepository.js";
 
+interface MediaProps {
+  public_id: string;
+  newFilePath: string;
+  newPublicId: string;
+}
+
 export class DigitalContentMongoRepository implements DigitalContentRepository {
   database = DigitalContentModel;
 
@@ -77,20 +83,22 @@ export class DigitalContentMongoRepository implements DigitalContentRepository {
     return this.database.findOne({ "filePaths.filename": id });
   }
 
-  async updateMediaByPublicId(public_id: string, newPath: string, newFilename: string) {
-    const result = await this.database.updateOne(
-      { "filePaths.filename": public_id },
+  async updateMediaByPublicId({ public_id, newFilePath, newPublicId }: MediaProps) {
+    const result = await this.database.findOneAndUpdate(
+      { "filePaths.publicId": public_id },
       {
         $set: {
           "filePaths.$": {
-            // _id: id,
-            path: newPath,
-            filename: newFilename,
+            filePath: newFilePath,
+            publicId: newPublicId,
           },
         },
       },
+      {
+        new: true,
+      },
     );
-    return result.modifiedCount;
+    return result;
   }
 
   async findAll(): Promise<DigitalContentEntity[]> {
