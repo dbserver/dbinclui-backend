@@ -1,42 +1,35 @@
 import swaggerUI from "swagger-ui-express";
-import { GuideEntity } from "../src/entities/GuideEntity";
 
-const guide = {
-  tag: ["Guides"],
-  contentType: {
-    "multipart/form-data": {
-      schema: {
-        $ref: "#components/schemas/guides",
+const responses = {
+  400: {
+    description: "Dados requeridos não encontrados no corpo da requisição",
+    content: {
+      "application/json": {
+        schema: {
+          $ref: "#/components/schemas/status400",
+        },
       },
     },
   },
-  schema: {
-    type: "object",
-    properties: {
-      data: {
-        type: "object",
-        properties: {
-          title: {
-            type: "string",
-            maxLength: 32,
-            example: "Guia de acessibilidade",
-          },
-          content: {
-            type: "string",
-            example: "Este Guia fala sobre Acessibilidade",
-          },
-          deleted: {
-            type: "boolean",
-            default: "false",
-          },
+  401: {
+    description: "Unauthorized, você precisa estar logado",
+    content: {
+      "application/json": {
+        schema: {
+          $ref: "#/components/schemas/status401",
         },
       },
-      file: {
-        type: "string",
-        format: "binary",
+    },
+  },
+  403: {
+    description: "Forbidden, você não tem privilégios suficientes para executar esta ação",
+    content: {
+      "application/json": {
+        schema: {
+          $ref: "#/components/schemas/status403",
+        },
       },
     },
-    required: ["data", "file"],
   },
 };
 
@@ -62,7 +55,7 @@ export const swaggerConfig: swaggerUI.JsonObject = {
           content: {
             "multipart/form-data": {
               schema: {
-                $ref: "#/components/schemas/guides",
+                $ref: "#/components/schemas/guides/body",
               },
             },
           },
@@ -74,21 +67,12 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/status200Guides",
+                  $ref: "#/components/schemas/guides/status200",
                 },
               },
             },
           },
-          400: {
-            description: "Dados requeridos não encontrados no corpo da requisição",
-            content: {
-              "application/json": {
-                schema: {
-                  $ref: "#/components/schemas/status400",
-                },
-              },
-            },
-          },
+          ...responses,
         },
       },
     },
@@ -96,48 +80,46 @@ export const swaggerConfig: swaggerUI.JsonObject = {
   components: {
     schemas: {
       guides: {
-        type: "object",
-        properties: {
-          data: {
-            type: "object",
-            properties: {
-              title: {
-                type: "string",
-                maxLength: 32,
-                example: "Guia de acessibilidade",
-              },
-              content: {
-                type: "string",
-                example: "Este Guia fala sobre Acessibilidade",
-              },
-              deleted: {
-                type: "boolean",
-                default: "false",
+        body: {
+          type: "object",
+          properties: {
+            data: {
+              type: "object",
+              properties: {
+                title: {
+                  type: "string",
+                  maxLength: 32,
+                  example: "Guia de acessibilidade",
+                },
+                content: {
+                  type: "string",
+                  example: "Este Guia fala sobre Acessibilidade",
+                },
               },
             },
+            file: {
+              type: "string",
+              format: "binary",
+            },
           },
-          file: {
-            type: "string",
-            format: "binary",
-          },
+          required: ["data", "file"],
         },
-        required: ["data", "file"],
-      },
-      status200Guides: {
-        type: "object",
-        properties: {
-          data: {
-            type: "string",
-            description: "Requisição concluída com sucesso",
-            example: {
-              _id: "123456",
-              title: "Título do guia",
-              content: "Descrição do guia",
-              author: "ID do autor",
-              deleted: "Status do guia",
-              filePaths: {
-                filePath: "www.host.com/olaEmLiBras",
-                publicId: "olaEmLibras",
+        status200: {
+          type: "object",
+          properties: {
+            data: {
+              type: "string",
+              description: "Requisição concluída com sucesso",
+              example: {
+                _id: "ID do guia",
+                title: "Título do guia",
+                content: "Descrição do guia",
+                author: "ID do autor",
+                deleted: "Status do guia",
+                filePaths: {
+                  filePath: "www.host.com/olaEmLiBras",
+                  publicId: "olaEmLibras",
+                },
               },
             },
           },
@@ -150,6 +132,26 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             type: "string",
             description: "Falha na requisição",
             example: "Dados incompleto ou inválido",
+          },
+        },
+      },
+      status401: {
+        type: "object",
+        properties: {
+          message: {
+            type: "string",
+            description: "Unauthorized",
+            example: "Você precisa estar logado",
+          },
+        },
+      },
+      status403: {
+        type: "object",
+        properties: {
+          message: {
+            type: "string",
+            description: "Forbidden",
+            example: "Você não tem privilégios suficiente para executar esta ação",
           },
         },
       },
