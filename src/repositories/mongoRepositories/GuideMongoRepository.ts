@@ -75,7 +75,7 @@ export class GuideMongoRepository implements GuideRepository {
   ): Promise<GuideCategoriesAndContentsInterface> {
     const [guide] = await this.database.aggregate([
       {
-        $match: { _id: new Types.ObjectId(id) },
+        $match: { _id: new Types.ObjectId(id), deleted: false },
       },
       {
         $lookup: {
@@ -85,6 +85,7 @@ export class GuideMongoRepository implements GuideRepository {
           pipeline: [
             {
               $match: {
+                deleted: false,
                 $expr: {
                   $eq: ["$$guideId", "$guide"],
                 },
@@ -97,6 +98,7 @@ export class GuideMongoRepository implements GuideRepository {
                 pipeline: [
                   {
                     $match: {
+                      deleted: false,
                       $expr: {
                         $eq: ["$$categoryId", "$category"],
                       },
