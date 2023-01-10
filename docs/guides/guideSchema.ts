@@ -1,5 +1,5 @@
 export const guideSchema = {
-  body: {
+  content: {
     type: "object",
     properties: {
       data: {
@@ -22,7 +22,7 @@ export const guideSchema = {
       },
     },
   },
-  status200: {
+  dataResponse: {
     type: "object",
     description: "Requisição concluída com sucesso",
     example: {

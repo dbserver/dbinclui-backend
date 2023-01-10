@@ -1,6 +1,6 @@
 import swaggerUI from "swagger-ui-express";
-import { guidePaths } from "./guides/paths.js";
-import { guideSchema } from "./guides/schema.js";
+import { guidePaths } from "./guides/guidePaths.js";
+import { guideSchema } from "./guides/guideSchema.js";
 
 export const swaggerConfig: swaggerUI.JsonObject = {
   openapi: "3.0.3",
@@ -28,38 +28,6 @@ export const swaggerConfig: swaggerUI.JsonObject = {
         scheme: "bearer",
       },
     },
-    schemas: {
-      guides: guideSchema,
-      status400: {
-        type: "object",
-        properties: {
-          message: {
-            type: "string",
-            description: "Falha na requisição",
-            example: "Dados incompleto ou inválido",
-          },
-        },
-      },
-      status401: {
-        type: "object",
-        properties: {
-          message: {
-            type: "string",
-            description: "Unauthorized",
-            example: "Você precisa estar logado",
-          },
-        },
-      },
-      status403: {
-        type: "object",
-        properties: {
-          message: {
-            type: "string",
-            description: "Forbidden",
-            example: "Você não tem privilégios suficiente para executar esta ação",
-          },
-        },
-      },
-    },
+    schemas: {},
   },
 };

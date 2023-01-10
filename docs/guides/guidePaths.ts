@@ -1,5 +1,5 @@
-import { errorsResponses } from "../responses/errorsResponses.js";
-import { status200Post } from "./responses/status200Post.js";
+import { responses } from "../responses/responses.js";
+import { guideSchema } from "./guideSchema.js";
 
 export const guidePaths = {
   "/guides": {
@@ -10,15 +10,15 @@ export const guidePaths = {
       requestBody: {
         content: {
           "multipart/form-data": {
-            schema: {
-              $ref: "#/components/schemas/guides/body",
-            },
+            schema: guideSchema.content,
           },
         },
       },
       responses: {
-        200: status200Post,
-        ...errorsResponses,
+        200: responses[200].guide,
+        400: responses[400],
+        401: responses[401],
+        403: responses[403],
       },
     },
     get: {
@@ -35,9 +35,7 @@ export const guidePaths = {
                 properties: {
                   data: {
                     type: "array",
-                    items: {
-                      $ref: "#/components/schemas/guides/status200",
-                    },
+                    items: guideSchema.dataResponse,
                   },
                 },
               },
@@ -62,22 +60,8 @@ export const guidePaths = {
         },
       ],
       responses: {
-        200: {
-          description: "Guia encontrado com sucesso",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  data: {
-                    $ref: "#/components/schemas/guides/status200",
-                  },
-                },
-              },
-            },
-          },
-        },
-        400: errorsResponses[400],
+        200: responses[200].guide,
+        400: responses[400],
       },
     },
     put: {
@@ -96,36 +80,21 @@ export const guidePaths = {
       requestBody: {
         content: {
           "multipart/form-data": {
-            schema: {
-              $ref: "#/components/schemas/guides/body",
-            },
+            schema: guideSchema.content,
           },
         },
       },
       responses: {
-        200: {
-          description: "Guia Editado com Sucesso",
-          message: "Guia Editado com Sucesso",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  data: {
-                    $ref: "#/components/schemas/guides/status200",
-                  },
-                },
-              },
-            },
-          },
-        },
-        ...errorsResponses,
+        200: responses[200].guide,
+        400: responses[400],
+        401: responses[401],
+        403: responses[403],
       },
     },
     delete: {
       tags: ["Guides"],
       summary: "Deletar por ID",
-      description: "Deleta uma guia baseado no ID passado como parametro",
+      description: "Deleta uma guia baseado no ID passado como parâmetro",
       parameters: [
         {
           type: "string",
@@ -136,23 +105,10 @@ export const guidePaths = {
         },
       ],
       responses: {
-        200: {
-          description: "Guia Deletado com Sucesso",
-          message: "Guia Deletado  com Sucesso",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  data: {
-                    $ref: "#/components/schemas/guides/status200",
-                  },
-                },
-              },
-            },
-          },
-        },
-        ...errorsResponses,
+        200: responses[200].guide,
+        400: responses[400],
+        401: responses[401],
+        403: responses[403],
       },
     },
   },
@@ -171,23 +127,10 @@ export const guidePaths = {
         },
       ],
       responses: {
-        200: {
-          description: "Guia Deletado Logicamente com Sucesso",
-          message: "Guia Deletado Logicamente  com Sucesso",
-          content: {
-            "application/json": {
-              schema: {
-                type: "object",
-                properties: {
-                  data: {
-                    $ref: "#/components/schemas/guides/status200",
-                  },
-                },
-              },
-            },
-          },
-        },
-        ...errorsResponses,
+        200: responses[200].guide,
+        400: responses[400],
+        401: responses[401],
+        403: responses[403],
       },
     },
   },
