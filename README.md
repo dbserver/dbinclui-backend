@@ -1,6 +1,6 @@
 <h2>Descrição do Projeto </h2>
 
-Web app que dissemina a cultura de inclusão dentro da DBServer, com foco na cultura surda. É destinado para todas as pessoas que desejam aprender LIBRAS e enteder um pouco mais sobre inclusão de PCD's na sociedade. O web app aproveita o guia de acessibilidade e a apostila de Libras como fonte de informação de inclusão, assim como utiliza a API VLibras para as funcionalidades específicas.
+Web app que dissemina a cultura de inclusão dentro da DBServer, com foco na cultura surda. É destinado para todas as pessoas que desejam aprender LIBRAS e entender um pouco mais sobre inclusão de PCD's na sociedade. O web app aproveita o guia de acessibilidade e a apostila de Libras como fonte de informação de inclusão, assim como utiliza a API VLibras para as funcionalidades específicas.
 
 ## Mapa de Tecnologias 📰
 
