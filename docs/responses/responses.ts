@@ -1,3 +1,4 @@
+import { categoriesSchemas } from "../categories/categoriesSchemas.js";
 import { guideSchemas } from "../guides/guidesSchemas.js";
 
 const errorsSchema = {
@@ -44,6 +45,20 @@ export const responses = {
             type: "object",
             properties: {
               data: guideSchemas.dataResponse,
+            },
+          },
+        },
+      },
+    },
+    category: {
+      description: "Ação realizada com Sucesso",
+      message: "Ação realizada com Sucesso",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              data: categoriesSchemas.dataResponse,
             },
           },
         },
