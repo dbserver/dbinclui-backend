@@ -218,6 +218,41 @@ export const swaggerConfig: swaggerUI.JsonObject = {
       }
       
     },
+    "/guides/delete/{id}":{
+      patch:{
+        tags:["Guides"],
+        summary: "Realiza o Delete Lógico pelo ID",
+        description: "Essa rota deleta logicamente um guia baseado no parâmetro passado",
+        parameters: [
+          {
+            type: "string",
+            name: "id",
+            in: "path",
+            description: "ID do guia",
+            required: true,
+          }
+        ],
+        responses:{
+          200: {
+            description: "Guia Deletado Logicamente com Sucesso",
+            message: "Guia Deletado Logicamente  com Sucesso",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    data: {
+                      $ref: "#/components/schemas/guides/status200",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          ...responses
+        }
+      }
+    }
   },
   components: {
     schemas: {
