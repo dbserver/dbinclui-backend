@@ -4,8 +4,6 @@ Web app que dissemina a cultura de inclusão dentro da DBServer, com foco na cul
 
 ## Mapa de Tecnologias 📰
 
-A Biblioteca/Framework principal utilizada será ReactJS.
-
 | Nome | Documentação | Links dos pacotes |
 | :-: | :-: | :-: |
 | Typescript | https://www.typescriptlang.org/docs/ | https://www.npmjs.com/package/typescript |
@@ -33,7 +31,7 @@ $ npm install
 ### Configurando as variáveis de ambiente
 
 ```
-Para configurar as variáveis de ambiente, você precisará criar na raíz do projeto o arquivo .env, configurando variáveis localmente.
+Para configurar as variáveis de ambiente você precisará criar, na raíz do projeto, o arquivo .env; assim configurando variáveis localmente.
 ```
 
 ## Fluxo de versionamento 🖥️
