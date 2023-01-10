@@ -1,4 +1,5 @@
-import { guideSchema } from "../guides/guideSchema.js";
+import { categoriesSchemas } from "../categories/categoriesSchemas.js";
+import { guideSchemas } from "../guides/guidesSchemas.js";
 
 const errorsSchema = {
   status400: {
@@ -43,7 +44,21 @@ export const responses = {
           schema: {
             type: "object",
             properties: {
-              data: guideSchema.dataResponse,
+              data: guideSchemas.dataResponse,
+            },
+          },
+        },
+      },
+    },
+    category: {
+      description: "Ação realizada com Sucesso",
+      message: "Ação realizada com Sucesso",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            properties: {
+              data: categoriesSchemas.dataResponse,
             },
           },
         },

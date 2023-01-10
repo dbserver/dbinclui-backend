@@ -1,4 +1,4 @@
-export const guideSchema = {
+export const guideSchemas = {
   content: {
     type: "object",
     properties: {
@@ -29,7 +29,7 @@ export const guideSchema = {
       _id: "ID do guia",
       title: "Título do guia",
       content: "Descrição do guia",
-      author: "ID do autor",
+      author: "Referência do autor",
       deleted: "Status do guia",
       filePaths: {
         filePath: "www.host.com/olaEmLiBras",

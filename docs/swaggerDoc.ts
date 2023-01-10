@@ -1,6 +1,6 @@
 import swaggerUI from "swagger-ui-express";
-import { guidePaths } from "./guides/guidePaths.js";
-import { guideSchema } from "./guides/guideSchema.js";
+import { guidePaths } from "./guides/guidesPaths.js";
+import { categoriesPaths } from "./categories/categoriesPaths.js";
 
 export const swaggerConfig: swaggerUI.JsonObject = {
   openapi: "3.0.3",
@@ -15,6 +15,7 @@ export const swaggerConfig: swaggerUI.JsonObject = {
   },
   paths: {
     ...guidePaths,
+    ...categoriesPaths,
   },
   security: [
     {
