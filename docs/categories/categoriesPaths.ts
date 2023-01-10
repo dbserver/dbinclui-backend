@@ -21,5 +21,48 @@ export const categoriesPaths = {
         403: responses[403],
       },
     },
+    get: {
+      tags: ["Categories"],
+      summary: "Retorna todas as categorias",
+      description: "Rota para retornar todas as categorias",
+      responses: {
+        200: {
+          description: "Categorias da aplicação",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  data: {
+                    type: "array",
+                    items: categoriesSchemas.dataResponse,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/categories/{id}": {
+    get: {
+      tags: ["Categories"],
+      summary: "Retorna uma categoria por ID",
+      description: "Rota para retornar uma categoria por ID",
+      parameters: [
+        {
+          type: "string",
+          name: "id",
+          in: "path",
+          description: "ID da categoria",
+          required: true,
+        },
+      ],
+      responses: {
+        200: responses[200].category,
+        400: responses[400],
+      },
+    },
   },
 };
