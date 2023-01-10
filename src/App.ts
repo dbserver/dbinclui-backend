@@ -2,14 +2,9 @@ import { router } from "./routes/router.js";
 import cors from "cors";
 import express from "express";
 import morgan from "morgan";
-import swaggerUI from "swagger-ui-express"
-import { createRequire } from 'node:module';
-
-const require = createRequire(import.meta.url);
-const swaggerDocs = require("../docs/swagger.json");
-
+import swaggerUI from "swagger-ui-express";
+import { swaggerConfig } from "../docs/swaggerDoc.js";
 export class App {
-  
   private express: express.Express;
   private port?: string;
   private environment?: string;
@@ -22,6 +17,7 @@ export class App {
     this.express = express();
     this.setVariables();
     this.middlewares();
+    this.documentation();
     this.routes();
   }
 
@@ -36,7 +32,10 @@ export class App {
     this.express.use(express.json());
     this.express.use(cors());
     this.express.use(morgan("dev"));
-    this.express.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs))
+  }
+
+  private documentation() {
+    this.express.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerConfig));
   }
 
   private routes() {
