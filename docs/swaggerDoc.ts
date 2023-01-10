@@ -48,9 +48,9 @@ export const swaggerConfig: swaggerUI.JsonObject = {
   paths: {
     "/guides": {
       post: {
+        tags: ["Guides"],
         summary: "Criação de Guia",
         description: "Essa rota será responsável por cadastrar um novo produto",
-        tags: ["Guides"],
         requestBody: {
           content: {
             "multipart/form-data": {
@@ -67,12 +67,42 @@ export const swaggerConfig: swaggerUI.JsonObject = {
             content: {
               "application/json": {
                 schema: {
-                  $ref: "#/components/schemas/guides/status200",
+                  type: "object",
+                  properties: {
+                    data: {
+                      $ref: "#/components/schemas/guides/status200",
+                    },
+                  },
                 },
               },
             },
           },
           ...responses,
+        },
+      },
+      get: {
+        tags: ["Guides"],
+        summary: "Requisição de guia",
+        description: "Essa rota é responsável por requerer todos os guias do servidor",
+        responses: {
+          200: {
+            description: "Guias da aplicação",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    data: {
+                      type: "array",
+                      items: {
+                        $ref: "#/components/schemas/guides/status200",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -106,21 +136,16 @@ export const swaggerConfig: swaggerUI.JsonObject = {
         },
         status200: {
           type: "object",
-          properties: {
-            data: {
-              type: "string",
-              description: "Requisição concluída com sucesso",
-              example: {
-                _id: "ID do guia",
-                title: "Título do guia",
-                content: "Descrição do guia",
-                author: "ID do autor",
-                deleted: "Status do guia",
-                filePaths: {
-                  filePath: "www.host.com/olaEmLiBras",
-                  publicId: "olaEmLibras",
-                },
-              },
+          description: "Requisição concluída com sucesso",
+          example: {
+            _id: "ID do guia",
+            title: "Título do guia",
+            content: "Descrição do guia",
+            author: "ID do autor",
+            deleted: "Status do guia",
+            filePaths: {
+              filePath: "www.host.com/olaEmLiBras",
+              publicId: "olaEmLibras",
             },
           },
         },
