@@ -183,6 +183,40 @@ export const swaggerConfig: swaggerUI.JsonObject = {
   
         }
       },
+      delete:{
+        tags:["Guides"],
+        summary: "Deletar por ID",
+        description: "Deleta uma guia baseado no ID passado como parametro",
+        parameters: [
+          {
+            type: "string",
+            name: "id",
+            in: "path",
+            description: "ID do guia",
+            required: true,
+          }
+        ],
+        responses:{
+          200: {
+            description: "Guia Deletado com Sucesso",
+            message: "Guia Deletado  com Sucesso",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    data: {
+                      $ref: "#/components/schemas/guides/status200",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          ...responses
+        }
+      }
+      
     },
   },
   components: {
