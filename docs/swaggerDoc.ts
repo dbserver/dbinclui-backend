@@ -106,6 +106,40 @@ export const swaggerConfig: swaggerUI.JsonObject = {
         },
       },
     },
+    "/guides/{id}": {
+      get: {
+        tags: ["Guides"],
+        summary: "Buscar guia por ID",
+        description: "Buscar um guia por um ID",
+        parameters: [
+          {
+            type: "string",
+            name: "id",
+            in: "path",
+            description: "ID do guia",
+            required: true,
+          },
+        ],
+        responses: {
+          200: {
+            description: "Guia encontrado com sucesso",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    data: {
+                      $ref: "#/components/schemas/guides/status200",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          400: responses[400],
+        },
+      },
+    },
   },
   components: {
     schemas: {
@@ -132,7 +166,6 @@ export const swaggerConfig: swaggerUI.JsonObject = {
               format: "binary",
             },
           },
-          required: ["data", "file"],
         },
         status200: {
           type: "object",
