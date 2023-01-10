@@ -1,5 +1,5 @@
 import { responses } from "../responses/responses.js";
-import { guideSchema } from "./guideSchema.js";
+import { guideSchemas } from "./guidesSchemas.js";
 
 export const guidePaths = {
   "/guides": {
@@ -10,7 +10,7 @@ export const guidePaths = {
       requestBody: {
         content: {
           "multipart/form-data": {
-            schema: guideSchema.content,
+            schema: guideSchemas.content,
           },
         },
       },
@@ -35,7 +35,7 @@ export const guidePaths = {
                 properties: {
                   data: {
                     type: "array",
-                    items: guideSchema.dataResponse,
+                    items: guideSchemas.dataResponse,
                   },
                 },
               },
@@ -80,7 +80,7 @@ export const guidePaths = {
       requestBody: {
         content: {
           "multipart/form-data": {
-            schema: guideSchema.content,
+            schema: guideSchemas.content,
           },
         },
       },

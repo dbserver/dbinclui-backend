@@ -1,4 +1,4 @@
-import { guideSchema } from "../guides/guideSchema.js";
+import { guideSchemas } from "../guides/guidesSchemas.js";
 
 const errorsSchema = {
   status400: {
@@ -43,7 +43,7 @@ export const responses = {
           schema: {
             type: "object",
             properties: {
-              data: guideSchema.dataResponse,
+              data: guideSchemas.dataResponse,
             },
           },
         },

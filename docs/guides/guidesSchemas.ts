@@ -1,4 +1,4 @@
-export const guideSchema = {
+export const guideSchemas = {
   content: {
     type: "object",
     properties: {
