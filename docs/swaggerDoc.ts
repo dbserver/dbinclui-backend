@@ -8,7 +8,6 @@ export const swaggerConfig: swaggerUI.JsonObject = {
     title: "DBInclui",
     description:
       "O web app é destinado para todas as pessoas que desejam aprender LIBRAS e entender um pouco mais sobre Inclusão de PCD's na sociedade. O web app aproveita o Guia de Acessibilidade e a Apostila de Libras como fonte para informação de inclusão, assim como, utiliza a API VLIBRAS para as funcionalidades específicas.",
-    termsOfService: "http://localgost:3001/terms",
     contact: {
       email: "info@dbserver.com.br",
     },
