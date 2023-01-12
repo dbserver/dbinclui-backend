@@ -16,5 +16,4 @@ router.use("/users", usersRouter);
 router.use("/usersExpressions", userExpressionsRouter);
 router.use("/dbExpressions", dbExpressionsRouter);
 router.get("*", (_, res) => res.json({ message: "Rota não encontrada" }));
-
 export { router };

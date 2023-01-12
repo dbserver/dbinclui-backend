@@ -20,6 +20,13 @@ describe("UpdateGuideService", () => {
         filePath: `wwww.image${1}.com.br`,
         publicId: `uploads/${1}`,
       },
+      author: {
+        uid: "0",
+        name: "12",
+        email: `User "12346589`,
+        admin: false,
+      },
+      deleted: false,
     };
 
     const result = await guideService.execute(guideExample._id as string, guideExample);
@@ -35,6 +42,13 @@ describe("UpdateGuideService", () => {
         filePath: `wwww.image${1}.com.br`,
         publicId: `uploads/${1}`,
       },
+      author: {
+        uid: "0",
+        name: "12",
+        email: `User "12346589`,
+        admin: false,
+      },
+      deleted: false,
     };
 
     const { guideUpdated } = (await guideService.execute(

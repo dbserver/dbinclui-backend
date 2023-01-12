@@ -10,4 +10,18 @@ export const dbExpressionSchemaSettings = {
     required: true,
     ref: "user",
   },
+  deleted: {
+    type: Boolean,
+    default: false,
+  },
+  favoriteOf: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
+  updatedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "users",
+  },
 };

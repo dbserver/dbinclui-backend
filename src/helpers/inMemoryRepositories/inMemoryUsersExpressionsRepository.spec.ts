@@ -1,11 +1,11 @@
-import { inMemoryUsersExpressionsRepository } from "./inMemoryUsersExpressionsRepository.js";
-import { ExpressionEntity } from "../../entities/ExpressionEntity.js";
+import { UserExpressionEntity } from "../../entities/UserExpressionEntity.js";
+import { InMemoryUsersExpressionsRepository } from "./InMemoryUsersExpressionsRepository.js";
 
 describe("inMemoruUsersExpressionsRepository", () => {
-  let repository: inMemoryUsersExpressionsRepository;
+  let repository: InMemoryUsersExpressionsRepository;
 
   beforeAll(() => {
-    repository = new inMemoryUsersExpressionsRepository();
+    repository = new InMemoryUsersExpressionsRepository();
   });
 
   beforeEach(() => {
@@ -17,7 +17,7 @@ describe("inMemoruUsersExpressionsRepository", () => {
   });
 
   it("Should create a new user expression in the dabase", async () => {
-    const userExpression: ExpressionEntity = {
+    const userExpression: UserExpressionEntity = {
       _id: "3",
       expression: "Essa é uma expressão de teste",
       author: {
@@ -37,4 +37,29 @@ describe("inMemoruUsersExpressionsRepository", () => {
     expect(result.author.email).toBe("aliciaAlana@gmail.com");
   });
 
+  it("Should update an userExpression", async () => {
+    const userExpression: UserExpressionEntity = {
+      _id: "1",
+      expression: "Expressão alterada",
+      author: {
+        uid: "0",
+        name: "Alicia Alana",
+        email: "aliciaAlana@gmail.com",
+        admin: false,
+      },
+    };
+
+    const result = await repository.update(userExpression);
+
+    expect(result.expression).toBe("Expressão alterada");
+  });
+
+  it("Should update an userExpression", async () => {
+    const result = await repository.findAllById("1");
+
+    expect(result[0]._id).toBe("1");
+    expect(result[0].expression).toBe("Expressão de test numero: 1");
+    expect(result[0].author).toHaveProperty("_id", "1");
+    expect(result[0].favorite).toBe(false);
+  });
 });

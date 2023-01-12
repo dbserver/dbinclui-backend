@@ -16,7 +16,7 @@ class UpdateCategoryController {
       const categoryRepository = new CategoryMongoRepository();
       const categoryService = new UpdateCategoryService(categoryRepository);
 
-      const result = await categoryService.execute(id, body);
+      const result = await categoryService.execute(id, { ...body, updatedBy: req.currentUser._id });
 
       if (result instanceof Error) {
         return clientErrorResponse(res, result);

@@ -33,6 +33,22 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
     return this.database;
   }
 
+  async deleteLogic(id: string): Promise<DigitalContentEntity | null> {
+    const result = await this.findById(id);
+
+    if (!result) {
+      throw new Error("Digital Content does not exists");
+    }
+
+    const index = this.database.indexOf(result);
+
+    result.deleted = true;
+
+    this.database[index] = result;
+
+    return this.database[index];
+  }
+
   async delete(id: string): Promise<DigitalContentEntity> {
     const result = await this.findById(id);
 
@@ -58,6 +74,13 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
         _id: String(this.database.length),
         title: `Título do conteúdo digital ${this.database.length}`,
         shortDescription: `Descrição do conteúdo digital`,
+        author: {
+          _id: String(this.database.length),
+          uid: String(this.database.length),
+          name: `User ${this.database.length}`,
+          email: `user${this.database.length}@email.com`,
+          admin: false,
+        },
         guide: {
           _id: String(this.database.length),
           title: `Título do guia ${this.database.length}`,
@@ -65,6 +88,13 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
           filePaths: {
             filePath: `www.image${this.database.length}.com.br`,
             publicId: `uploads/image${this.database.length}`,
+          },
+          author: {
+            _id: String(this.database.length),
+            uid: String(this.database.length),
+            name: `User ${this.database.length}`,
+            email: `user${this.database.length}@email.com`,
+            admin: false,
           },
         },
         category: {
@@ -79,6 +109,20 @@ export class InMemoryDigitalContentRepository implements DigitalContentRepositor
               filePath: `www.image${this.database.length}.com.br`,
               publicId: `uploads/image${this.database.length}`,
             },
+            author: {
+              _id: String(this.database.length),
+              uid: String(this.database.length),
+              name: `User ${this.database.length}`,
+              email: `user${this.database.length}@email.com`,
+              admin: false,
+            },
+          },
+          author: {
+            _id: String(this.database.length),
+            uid: String(this.database.length),
+            name: `User ${this.database.length}`,
+            email: `user${this.database.length}@email.com`,
+            admin: false,
           },
         },
         filePaths: [

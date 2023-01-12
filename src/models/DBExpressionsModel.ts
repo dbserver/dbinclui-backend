@@ -8,6 +8,6 @@ const dbExpressionSchema = new Schema<DBExpressionEntity>(
   defaultSchemaSettings,
 );
 
-const DBExpressionsModel = model<DBExpressionEntity>("dbExpression", dbExpressionSchema, "DBExpressions");
+const DBExpressionsModel = model<DBExpressionEntity>("dbExpression", dbExpressionSchema, "dbExpressions");
 
 export { DBExpressionsModel };

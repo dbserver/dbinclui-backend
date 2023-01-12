@@ -22,7 +22,21 @@ describe("InMemoryCategoryRepository", () => {
           filePath: `www.image.com.br`,
           publicId: `uploads/image`,
         },
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       },
+      author: {
+        uid: "0",
+        name: "12",
+        email: `User "12346589`,
+        admin: false,
+      },
+      deleted: false,
     };
 
     const result = await repository.create(categoryExample);
@@ -48,7 +62,21 @@ describe("InMemoryCategoryRepository", () => {
             filePath: `www.image.com.br`,
             publicId: `uploads/image`,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       await expect(async () => await repository.update(categoryExample)).rejects.toThrowError(
@@ -69,7 +97,21 @@ describe("InMemoryCategoryRepository", () => {
             filePath: `www.image.com.br`,
             publicId: `uploads/image`,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       const result = await repository.update(categoryExample);
@@ -107,6 +149,12 @@ describe("InMemoryCategoryRepository", () => {
       expect(result._id).toBe("5");
       expect(typeof result.title).toBe("string");
     });
+  });
+
+  it("Should update deleted to true", async () => {
+    const result = await repository.deleteLogic("2");
+
+    expect(result?.deleted).toBeTruthy();
   });
 
   it("Should return all category with same GuideID", async () => {

@@ -25,6 +25,13 @@ describe("description", () => {
             publicId: `arquivo${repository.database.length}`,
             filePath: `link.com/arquivo${repository.database.length}`,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
         category: {
           _id: String(repository.database.length),
@@ -38,7 +45,21 @@ describe("description", () => {
               publicId: `arquivo${repository.database.length}`,
               filePath: `link.com/arquivo${repository.database.length}`,
             },
+            author: {
+              uid: "0",
+              name: "12",
+              email: `User "12346589`,
+              admin: false,
+            },
+            deleted: false,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
         filePaths: [
           {
@@ -46,6 +67,13 @@ describe("description", () => {
             filePath: `link.com/arquivo${repository.database.length}`,
           },
         ],
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       const result = await repository.create(contentExample);
@@ -70,6 +98,13 @@ describe("description", () => {
             publicId: `arquivo${repository.database.length}`,
             filePath: `link.com/arquivo${repository.database.length}`,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
         category: {
           _id: String(repository.database.length),
@@ -83,7 +118,21 @@ describe("description", () => {
               publicId: `arquivo${repository.database.length}`,
               filePath: `link.com/arquivo${repository.database.length}`,
             },
+            author: {
+              uid: "0",
+              name: "12",
+              email: `User "12346589`,
+              admin: false,
+            },
+            deleted: false,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
         filePaths: [
           {
@@ -91,6 +140,13 @@ describe("description", () => {
             filePath: `link.com/arquivo${repository.database.length}`,
           },
         ],
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       await expect(async () => await repository.update(contentExample)).rejects.toThrowError(
@@ -111,6 +167,13 @@ describe("description", () => {
             publicId: `arquivo${repository.database.length}`,
             filePath: `link.com/arquivo${repository.database.length}`,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
         category: {
           _id: String(repository.database.length),
@@ -124,7 +187,21 @@ describe("description", () => {
               publicId: `arquivo${repository.database.length}`,
               filePath: `link.com/arquivo${repository.database.length}`,
             },
+            author: {
+              uid: "0",
+              name: "12",
+              email: `User "12346589`,
+              admin: false,
+            },
+            deleted: false,
           },
+          author: {
+            uid: "0",
+            name: "12",
+            email: `User "12346589`,
+            admin: false,
+          },
+          deleted: false,
         },
         filePaths: [
           {
@@ -132,6 +209,13 @@ describe("description", () => {
             filePath: `link.com/arquivo${repository.database.length}`,
           },
         ],
+        author: {
+          uid: "0",
+          name: "12",
+          email: `User "12346589`,
+          admin: false,
+        },
+        deleted: false,
       };
 
       const result = await repository.update(contentExample);
@@ -195,6 +279,12 @@ describe("description", () => {
       await expect(async () => await repository.delete("092022")).rejects.toThrowError(
         "Digital Content does not exists",
       );
+    });
+
+    it("Should update deleted to true", async () => {
+      const result = await repository.deleteLogic("2");
+
+      expect(result?.deleted).toBeTruthy();
     });
 
     it("Should delete and return a DigitalCotent deleted", async () => {

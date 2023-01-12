@@ -1,13 +1,13 @@
-import { inMemoryUsersExpressionsRepository } from "../../helpers/inMemoryRepositories/inMemoryUsersExpressionsRepository.js";
+import { InMemoryUsersExpressionsRepository } from "../../helpers/inMemoryRepositories/InMemoryUsersExpressionsRepository.js";
 import { UserEntity } from "../../entities/UserEntity.js";
 import { CreateUserExpressionService } from "../usersExpressions/CreateUserExpressionService.js";
 
 describe("inMemoruUsersExpressionsRepository", () => {
-  let repository: inMemoryUsersExpressionsRepository;
+  let repository: InMemoryUsersExpressionsRepository;
   let service: CreateUserExpressionService;
 
   beforeAll(() => {
-    repository = new inMemoryUsersExpressionsRepository();
+    repository = new InMemoryUsersExpressionsRepository();
     service = new CreateUserExpressionService(repository);
   });
 
