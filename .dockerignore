@@ -1,0 +1,13 @@
+#pastas 
+.jest/
+@types 
+./docs/
+./src/
+temps/
+
+#arquivos 
+.env.sample 
+.gitignore
+Dockerfile
+README.md
+docker-compose
