@@ -15,10 +15,6 @@ trigger:
     include:
       - "*"
   
-  paths:
-    include:
-      - dbinclui-api-envs-dev
-
 variables:
   - name: dockerRepository
     value: "dbinclui/backend"
