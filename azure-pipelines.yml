@@ -14,6 +14,11 @@ trigger:
   tags:
     include:
       - "*"
+  
+  paths:
+    include:
+      - dbinclui-api-envs-dev
+
 variables:
   - name: dockerRepository
     value: "dbinclui/backend"
@@ -32,6 +37,9 @@ variables:
   
   - name: branchName
     value: $(Build.SourceBranchName)
+  
+  - group: dbinclui-api-envs-dev
+  
 
 pool:
   vmImage: ubuntu-latest
