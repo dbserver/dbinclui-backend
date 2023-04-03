@@ -15,6 +15,12 @@ trigger:
     include:
       - "*"
 variables:
+  - name: dockerRepository
+    value: "dbinclui/backend"
+   
+  - name: acrServiceConnection
+    value: "docker-registry"
+
   - name: buildId
     value: $(Build.BuildId)
   
