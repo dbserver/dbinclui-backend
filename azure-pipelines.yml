@@ -45,12 +45,8 @@ stages:
           - task: Npm@1
             displayName: "install dependencies"
             inputs:
-              script: "install"
-          - task: Npm@1
-            inputs:
-              command: 'custom'
-              workingDir: './'
-             # customCommand: 'run test'
+              command: "install"
+
           - task: Npm@1
             displayName: "Build"
          #   condition: or(eq(variables['isTag'], 'true'), eq(variables['isMergePR'], 'true'))
