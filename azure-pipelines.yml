@@ -53,7 +53,7 @@ stages:
               customCommand: 'run test'
           - task: Npm@1
             displayName: "Build Prod"
-            condition: or(eq(variables['isTag'], 'true'), eq(variables['isMergePR'], 'true'))
+         #   condition: or(eq(variables['isTag'], 'true'), eq(variables['isMergePR'], 'true'))
             inputs:
               command: custom
               customCommand: "run build"
