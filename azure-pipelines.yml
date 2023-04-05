@@ -33,6 +33,18 @@ variables:
   
   - name: branchName
     value: $(Build.SourceBranchName)
+  
+  - name: k8sNamespace
+    value: dbinclui
+ 
+  - name: connectionType
+    value: Kubernetes Service Connection
+
+  - name: acrServiceConnection
+    value: "docker-registry"
+
+  - name: aksServiceConnection
+    value: "AKS-DBSERVER"
 
   
 
