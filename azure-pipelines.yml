@@ -38,10 +38,10 @@ variables:
     value: "dbserverregistry.azurecr.io/dbinclui/backend"
 
   - name: isTag
-    value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
+    value: $(startsWith(variables['Build.SourceBranch'],'refs/tags/')))
 
   - name: isMergePR
-    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
+    value: $((ne(variables['Build.Reason'], 'PullRequest')))
 
   
 
@@ -76,10 +76,10 @@ stages:
               repository: 'dbinclui/backend'
               command: 'buildAndPush'
               Dockerfile: '**/Dockerfile'
-              arguments: '--build-arg NODE_ENV=${NODE_ENV_DBINCLUI} --build-arg HOST=${HOST_DBINCLUI} --build-arg PORT=${PORT_DBINCLUI} --build-arg MONGO_URL=${MONGO_URL_DBINCLUI} --build-arg MONGO_DATABASE=${MONGO_DATABASE_DBINCLUI} --build-arg FIREBASE_TYPE=${FIREBASE_TYPE_DBINCLUI} --build-arg FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID_DBINCLUI} --build-arg FIREBASE_PRIVATE_KEY_ID=${FIREBASE_PRIVATE_KEY_ID_DBINCLUI} --build-arg FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY_DBINCLUI} --build-arg  FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL_DBINCLUI}  --build-arg FIREBASE_CLIENT_ID=${FIREBASE_CLIENT_ID_DBINCLUI} --build-arg FIREBASE_AUTH_URI=${FIREBASE_AUTH_URI_DBINCLUI} --build-arg FIREBASE_TOKEN_URI=${FIREBASE_TOKEN_URI_DBINCLUI} --build-arg FIREBASE_AUTH_PROVIDER_X509_CERT_URL=${FIREBASE_AUTH_PROVIDER_X509_CERT_URL_DBINCLUI} --build-arg FIREBASE_CLIENT_X509_CERT_URL=${FIREBASE_CLIENT_X509_CERT_URL_DBINCLUI}'
-             # ${{ if eq(variables['isTag'], 'true') }}:
+              arguments: '--build-arg NODE_ENV=$(NODE_ENV_DBINCLUI) --build-arg HOST=$(HOST_DBINCLUI) --build-arg PORT=$(PORT_DBINCLUI) --build-arg MONGO_URL=$(MONGO_URL_DBINCLUI) --build-arg MONGO_DATABASE=$(MONGO_DATABASE_DBINCLUI) --build-arg FIREBASE_TYPE=$(FIREBASE_TYPE_DBINCLUI) --build-arg FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID_DBINCLUI) --build-arg FIREBASE_PRIVATE_KEY_ID=$(FIREBASE_PRIVATE_KEY_ID_DBINCLUI) --build-arg FIREBASE_PRIVATE_KEY=$(FIREBASE_PRIVATE_KEY_DBINCLUI) --build-arg  FIREBASE_CLIENT_EMAIL=$(FIREBASE_CLIENT_EMAIL_DBINCLUI)  --build-arg FIREBASE_CLIENT_ID=$(FIREBASE_CLIENT_ID_DBINCLUI) --build-arg FIREBASE_AUTH_URI=$(FIREBASE_AUTH_URI_DBINCLUI) --build-arg FIREBASE_TOKEN_URI=$(FIREBASE_TOKEN_URI_DBINCLUI) --build-arg FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FIREBASE_AUTH_PROVIDER_X509_CERT_URL_DBINCLUI) --build-arg FIREBASE_CLIENT_X509_CERT_URL=$(FIREBASE_CLIENT_X509_CERT_URL_DBINCLUI)'
+             # $(( if eq(variables['isTag'], 'true') )):
               #  tags: $(branchName)
-             # ${{ else }}:
+             # $(( else )):
               #  tags: |
                #   $(buildId)
                 #  latest  
@@ -105,30 +105,32 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
           - task: Kubernetes@1
-            displayName: Create ConfigMap
+            displayName: Create Secret
             inputs:
+        
               connectionType: $(connectionType)
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              configMapName: "dbinclui-api-configmap-dev"
-              forceUpdateConfigMap: true
-              configMapArguments: >
-                --from-literal=MONGO_URL=${MONGO_URL_DBINCLUI}
-                --from-literal=MONGO_DATABASE=${MONGO_DATABASE_DBINCLUI}
-                --from-literal=FIREBASE_TYPE=${FIREBASE_TYPE_DBINCLUI}
-                --from-literal=FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID_DBINCLUI}
-                --from-literal=FIREBASE_PRIVATE_KEY_ID=${FIREBASE_PRIVATE_KEY_ID_DBINCLUI}
-                --from-literal=FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY_DBINCLUI}
-                --from-literal=FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL_DBINCLUI}
-                --from-literal=FIREBASE_CLIENT_ID=${FIREBASE_CLIENT_ID_DBINCLUI}
-                --from-literal=FIREBASE_AUTH_URI=${FIREBASE_AUTH_URI_DBINCLUI}
-                --from-literal=FIREBASE_TOKEN_URI=${FIREBASE_TOKEN_URI_DBINCLUI}
-                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=${FIREBASE_AUTH_PROVIDER_X509_CERT_URL_DBINCLUI}
-                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=${FIREBASE_CLIENT_X509_CERT_URL_DBINCLUI}
-                --from-literal=CLOUD_NAME=${CLOUD_NAME_DBINCLUI}
-                --from-literal=CLOUD_API_KEY=${CLOUD_API_KEY_DBINCLUI}
-                --from-literal=CLOUD_API_SECRET=${CLOUD_API_SECRE_DBINCLUI}
+              secretName: "dbinclui-backend-api-secret-dev"
+              forceUpdate: true
+              secretType: generic
+              secretArguments: >
+                --from-literal=MONGO_URL=$(MONGO_URL_DBINCLUI)
+                --from-literal=MONGO_DATABASE=$(MONGO_DATABASE_DBINCLUI)
+                --from-literal=FIREBASE_TYPE=$(FIREBASE_TYPE_DBINCLUI)
+                --from-literal=FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID_DBINCLUI)
+                --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FIREBASE_PRIVATE_KEY_ID_DBINCLUI)
+                --from-literal=FIREBASE_PRIVATE_KEY=$(FIREBASE_PRIVATE_KEY_DBINCLUI)
+                --from-literal=FIREBASE_CLIENT_EMAIL=$(FIREBASE_CLIENT_EMAIL_DBINCLUI)
+                --from-literal=FIREBASE_CLIENT_ID=$(FIREBASE_CLIENT_ID_DBINCLUI)
+                --from-literal=FIREBASE_AUTH_URI=$(FIREBASE_AUTH_URI_DBINCLUI)
+                --from-literal=FIREBASE_TOKEN_URI=$(FIREBASE_TOKEN_URI_DBINCLUI)
+                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FIREBASE_AUTH_PROVIDER_X509_CERT_URL_DBINCLUI)
+                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FIREBASE_CLIENT_X509_CERT_URL_DBINCLUI)
+                --from-literal=CLOUD_NAME=$(CLOUD_NAME_DBINCLUI)
+                --from-literal=CLOUD_API_KEY=$(CLOUD_API_KEY_DBINCLUI)
+                --from-literal=CLOUD_API_SECRET=$(CLOUD_API_SECRE_DBINCLUI)
 
                   - task: KubernetesManifest@0
                   displayName: Deploy to Kubernetes
