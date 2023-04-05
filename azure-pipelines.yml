@@ -16,27 +16,9 @@ trigger:
       - "*"
   
 variables:
-  - name: dockerRepository
-    value: "dbinclui/backend"
-   
-  - name: acrServiceConnection
-    value: "docker-registry"
-
-  - name: buildId
-    value: $(Build.BuildId)
-  
-  - name: isTag
-    value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
-
-  - name: isMergePR
-    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
-  
-  - name: branchName
-    value: $(Build.SourceBranchName)
-  
   - name: k8sNamespace
     value: dbinclui
- 
+
   - name: connectionType
     value: Kubernetes Service Connection
 
@@ -45,6 +27,21 @@ variables:
 
   - name: aksServiceConnection
     value: "AKS-DBSERVER"
+
+  - name: dockerRepository
+    value: "dbinclui/backend"
+
+  - name: branchName
+    value: $(Build.SourceBranchName)
+
+  - name: acrUrl
+    value: "dbserverregistry.azurecr.io/dbinclui/backend"
+
+  - name: isTag
+    value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
+
+  - name: isMergePR
+    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
 
   
 
