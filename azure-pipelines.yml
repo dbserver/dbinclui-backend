@@ -70,7 +70,7 @@ stages:
           
           - task: Docker@2
             displayName: "build and publish container docker registry"
-            condition: and(succeeded(), or(eq(variables['isMergePR'], 'true'), eq(variables['isTag'], 'true')))
+           # condition: and(succeeded(), or(eq(variables['isMergePR'], 'true'), eq(variables['isTag'], 'true')))
             inputs:
               containerRegistry: 'docker-registry'
               repository: 'dbinclui/backend'
