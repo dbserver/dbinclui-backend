@@ -115,7 +115,7 @@ stages:
               containerRegistryType: "Azure Container Registry"
               secretName: "dbinclui-backend-api-secret-dev"
               forceUpdate: true
-              secretType: generic
+              secretType: dockerRegistry
               secretArguments: >
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                 --from-literal=HOST=$(HostDBinclui)
