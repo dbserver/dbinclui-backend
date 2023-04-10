@@ -108,15 +108,13 @@ stages:
           - task: Kubernetes@1
             displayName: Create Secret
             inputs:
-        
               connectionType: $(connectionType)
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              secretName: "dbinclui-backend-api-secret-dev"
-              forceUpdate: true
-              secretType: dockerRegistry
-              secretArguments: >
+              configMapName: "dbinclui-api-configmap-env"
+              forceUpdateConfigMap: true
+              configMapArguments:: >
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                 --from-literal=HOST=$(HostDBinclui)
                 --from-literal=PORT=$(PortDBinclui)
