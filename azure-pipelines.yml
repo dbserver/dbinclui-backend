@@ -89,6 +89,7 @@ stages:
     condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - group: dbinclui-api-envs-dev
+      - group: dbinclui-api-envs-secret-dev
       - name: enviroment
         value: "dev"
 
@@ -116,21 +117,25 @@ stages:
               forceUpdate: true
               secretType: generic
               secretArguments: >
-                --from-literal=MONGO_URL=$(MONGO_URL_DBINCLUI)
-                --from-literal=MONGO_DATABASE=$(MONGO_DATABASE_DBINCLUI)
-                --from-literal=FIREBASE_TYPE=$(FIREBASE_TYPE_DBINCLUI)
-                --from-literal=FIREBASE_PROJECT_ID=$(FIREBASE_PROJECT_ID_DBINCLUI)
-                --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FIREBASE_PRIVATE_KEY_ID_DBINCLUI)
-                --from-literal=FIREBASE_PRIVATE_KEY=$(FIREBASE_PRIVATE_KEY_DBINCLUI)
-                --from-literal=FIREBASE_CLIENT_EMAIL=$(FIREBASE_CLIENT_EMAIL_DBINCLUI)
-                --from-literal=FIREBASE_CLIENT_ID=$(FIREBASE_CLIENT_ID_DBINCLUI)
-                --from-literal=FIREBASE_AUTH_URI=$(FIREBASE_AUTH_URI_DBINCLUI)
-                --from-literal=FIREBASE_TOKEN_URI=$(FIREBASE_TOKEN_URI_DBINCLUI)
-                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FIREBASE_AUTH_PROVIDER_X509_CERT_URL_DBINCLUI)
-                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FIREBASE_CLIENT_X509_CERT_URL_DBINCLUI)
-                --from-literal=CLOUD_NAME=$(CLOUD_NAME_DBINCLUI)
-                --from-literal=CLOUD_API_KEY=$(CLOUD_API_KEY_DBINCLUI)
-                --from-literal=CLOUD_API_SECRET=$(CLOUD_API_SECRE_DBINCLUI)
+                --from-literal=NODE_ENV=$(NodeEnvDBinclui)
+                --from-literal=HOST=$(HostDBinclui)
+                --from-literal=PORT=$(PortDBinclui)
+                --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+                --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
+                --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui)
+                --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+                --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+                --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+                --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
+                --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
+                --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
+                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
+                --from-literal=HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
+                --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
+                --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+                --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
 
                   - task: KubernetesManifest@0
                   displayName: Deploy to Kubernetes
