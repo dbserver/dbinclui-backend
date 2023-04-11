@@ -53,7 +53,7 @@ pool:
 
 stages:
   - stage: CI
-    variables:
+    #variables:
       # - group: dbinclui-api-env-dev
       # - group: dbinclui-api-env-secret-dev
     jobs:
