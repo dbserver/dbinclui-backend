@@ -148,7 +148,7 @@ stages:
                 ./kubernetes/deployment.yaml
                 ./kubernetes/service.yaml
               containers: |
-                $(acrUrl):latest
+                $(acrUrl):1048
 
           - task: Kubernetes@1
             displayName: Restart service
