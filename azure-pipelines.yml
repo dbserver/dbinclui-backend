@@ -16,6 +16,9 @@ trigger:
       - "*"
   
 variables:
+  - name: buildId
+    value: $(Build.BuildId)
+    
   - name: k8sNamespace
     value: dbinclui
 
