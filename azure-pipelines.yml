@@ -54,7 +54,8 @@ pool:
 stages:
   - stage: CI
     variables:
-      - group: dbinclui-api-envs-dev
+       - group: dbinclui-api-env-dev
+       - group: dbinclui-api-envs-secret-dev
     jobs:
       - job: CI
         displayName: Run tests, build and push image to ACR
@@ -109,7 +110,7 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
           - task: Kubernetes@1
-            displayName: Create Secret
+            displayName: Create configmap
             inputs:
               connectionType: $(connectionType)
               kubernetesServiceEndpoint: $(aksServiceConnection)
