@@ -16,6 +16,11 @@ trigger:
       - "*"
   
 variables:
+
+  - group: dbinclui-api-env-dev
+
+  - group: dbinclui-api-env-secret-dev
+
   - name: k8sNamespace
     value: dbinclui
 
@@ -43,8 +48,7 @@ variables:
   - name: isMergePR
     value: $((ne(variables['Build.Reason'], 'PullRequest')))
   
-  - group: dbinclui-api-env-dev
-  - group: dbinclui-api-env-secret-dev
+ 
 
   
 
