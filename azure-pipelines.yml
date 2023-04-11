@@ -16,11 +16,6 @@ trigger:
       - "*"
   
 variables:
-
-  - group: dbinclui-api-env-dev
-
-  - group: dbinclui-api-env-secret-dev
-
   - name: k8sNamespace
     value: dbinclui
 
@@ -57,9 +52,9 @@ pool:
 
 stages:
   - stage: CI
-    #variables:
-      # - group: dbinclui-api-env-dev
-      # - group: dbinclui-api-env-secret-dev
+    variables:
+       - group: dbinclui-api-env-dev
+       - group: dbinclui-api-env-secret-dev
     jobs:
       - job: CI
         displayName: Run tests, build and push image to ACR
@@ -96,8 +91,8 @@ stages:
     dependsOn: CI
    # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
-      # - group: dbinclui-api-env-secret-dev
-     # - group: dbinclui-api-env-dev
+      - group: dbinclui-api-env-secret-dev
+      - group: dbinclui-api-env-dev
       - name: enviroment
         value: "dev"
 
