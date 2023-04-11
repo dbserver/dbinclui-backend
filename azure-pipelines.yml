@@ -117,7 +117,7 @@ stages:
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              configMapName: "dbinclui-api-configmap-env"
+              configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
               configMapArguments:: >
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
