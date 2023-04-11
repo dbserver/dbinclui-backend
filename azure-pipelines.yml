@@ -42,6 +42,9 @@ variables:
 
   - name: isMergePR
     value: $((ne(variables['Build.Reason'], 'PullRequest')))
+  
+  - group: dbinclui-api-env-dev
+  - group: dbinclui-api-envs-secret-dev
 
   
 
@@ -88,6 +91,7 @@ stages:
     dependsOn: CI
    # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
+      - group: dbinclui-api-envs-secret-dev
       - group: dbinclui-api-envs-dev
       - name: enviroment
         value: "dev"
@@ -100,13 +104,6 @@ stages:
             inputs:
               targetType: 'inline'
               script: env
-          - task: AzureKeyVault@2
-            displayName: "add key vault"
-            inputs:
-              azureSubscription: 'Pago pelo Uso (0bba6b89-6bb9-4025-b898-9d17d2164b10)'
-              KeyVaultName: 'dbinclui-api-env-dev'
-              SecretsFilter: '*'
-              RunAsPreJob: false
           - task: ShellScript@2
             displayName: Changing yaml's variables
             inputs:
