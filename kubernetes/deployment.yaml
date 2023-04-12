@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: dbinclui-api-${env}
-          image: "dbserverregistry.azurecr.io/dbinclui/backend"
+          image: "dbserverregistry.azurecr.io/dbinclui/backend:latest"
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
