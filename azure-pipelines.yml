@@ -107,6 +107,13 @@ stages:
             displayName: Changing yaml's variables
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: 'Pago pelo Uso (0bba6b89-6bb9-4025-b898-9d17d2164b10)'
+              KeyVaultName: 'dbinclui-api-env-dev'
+              SecretsFilter: '*'
+              RunAsPreJob: false
+              
           - task: Kubernetes@1
             displayName: Create configmap
             inputs:
