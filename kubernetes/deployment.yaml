@@ -18,7 +18,7 @@ spec:
           image: "dbserverregistry.azurecr.io/dbinclui/backend"
           imagePullPolicy: Always
           ports:
-            - containerPort: 3000
+            - containerPort: 8080
           envFrom:
             - configMapRef:
                 name: dbinclui-api-configmap-${env}
@@ -26,7 +26,7 @@ spec:
             httpGet:
               path: /health/liveness
               port: 8080
-            initialDelaySeconds: 5
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 10
             failureThreshold: 3
@@ -34,7 +34,7 @@ spec:
             httpGet:
               port: 8080
               path: /health/readiness
-            initialDelaySeconds: 5
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 10
             failureThreshold: 3
