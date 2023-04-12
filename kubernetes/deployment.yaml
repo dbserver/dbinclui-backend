@@ -18,7 +18,7 @@ spec:
           image: "dbserverregistry.azurecr.io/dbinclui/backend"
           imagePullPolicy: Always
           ports:
-            - containerPort: 8080
+            - containerPort: 3000
           envFrom:
             - configMapRef:
                 name: dbinclui-api-configmap-${env}
