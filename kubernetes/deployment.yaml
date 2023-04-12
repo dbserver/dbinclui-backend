@@ -22,19 +22,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: dbinclui-api-configmap-${env}
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 10
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              port: 8080
-              path: /
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            timeoutSeconds: 10
-            failureThreshold: 3
