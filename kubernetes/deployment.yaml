@@ -24,7 +24,7 @@ spec:
                 name: dbinclui-api-configmap-${env}
           livenessProbe:
             httpGet:
-              path: /health/liveness
+              path: /
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 10
@@ -33,7 +33,7 @@ spec:
           readinessProbe:
             httpGet:
               port: 8080
-              path: /health/readiness
+              path: /
             initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 10
