@@ -1,7 +1,7 @@
 # Node.js
 # Build a general Node.js project with npm.
 # Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+# https://docs.microsoft.com/azure/prdops/pipelines/languages/javascript
 
 pr: 
   branches:
@@ -87,7 +87,7 @@ stages:
     dependsOn: CI
    # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
-      #- group: dbinclui-api-env-secret-dev
+      - group: dbinclui-api-env-secret-dev
       - group: dbinclui-api-env-dev
       - name: enviroment
         value: "dev"
@@ -104,13 +104,6 @@ stages:
             displayName: Changing yaml's variables
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
-          - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: 'Pago pelo Uso (0bba6b89-6bb9-4025-b898-9d17d2164b10)'
-              KeyVaultName: 'dbinclui-api-env-dev'
-              SecretsFilter: '*'
-              RunAsPreJob: false
-              
           - task: Kubernetes@1
             displayName: Create configmap
             inputs:
@@ -120,7 +113,7 @@ stages:
               containerRegistryType: "Azure Container Registry"
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
-              configMapArguments:: >
+              configMapArguments: >
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                 --from-literal=HOST=$(HostDBinclui)
                 --from-literal=PORT=$(PortDBinclui)
@@ -161,3 +154,94 @@ stages:
               namespace: $(k8sNamespace)
               command: "rollout"
               arguments: "restart deploy dbinclui-app-dev"
+
+
+       - stage: DeployToProduction
+    #condition: eq(variables['isTag'], 'true')
+    variables:
+      - group: dbinclui-api-env-secret-prd
+      - group: dbinclui-api-env-prd
+      - name: enviroment
+        value: "prd"
+    jobs:
+      - job: PrepareDockerImage
+        displayName: Re-tag docker image to production
+        steps:
+          - task: Docker@0
+            displayName: "Pull docker image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryConnection: "docker-registry"
+              action: "Run a Docker command"
+              customCommand: "pull $(acrUrl):latest"
+          - task: Docker@0
+            displayName: "Retague docker image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryConnection: "docker-registry"
+              action: "Run a Docker command"
+              customCommand: "image tag $(acrUrl):latest $(acrUrl):$(branchName)"
+
+          - task: Docker@0
+            displayName: "Push new image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryConnection: "docker-registry"
+              action: "Run a Docker command"
+              customCommand: "image push $(acrUrl):$(branchName)"
+      - job: ApplyManifests
+        dependsOn: PrepareDockerImage
+        displayName: Applying kubernetes manifests
+        steps:
+          - task: ShellScript@2
+            displayName: Changing yaml's variables
+            inputs:
+              scriptPath: "./kubernetes/change_variables.sh"
+          - task: Kubernetes@1
+            displayName: Create ConfigMap
+            inputs:
+              connectionType: $(connectionType)
+              kubernetesServiceEndpoint: $(aksServiceConnection)
+              namespace: $(k8sNamespace)
+              containerRegistryType: "Azure Container Registry"
+              configMapName: "dbinclui-api-configmap-prd"
+              forceUpdateConfigMap: true
+              configMapArguments: >
+                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
+                --from-literal=HOST=$(HostDBinclui)
+                --from-literal=PORT=$(PortDBinclui)
+                --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+                --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
+                --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui)
+                --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+                --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+                --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+                --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
+                --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
+                --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
+                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
+                --from-literal=HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
+                --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
+                --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+                --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes
+            inputs:
+              action: deploy
+              namespace: $(k8sNamespace)
+              kubernetesServiceConnection: $(aksServiceConnection)
+              manifests: |
+                ./kubernetes/deployment.yaml
+                ./kubernetes/service.yaml
+              containers: |
+                $(acrUrl):$(branchName)
+          - task: Kubernetes@1
+            displayName: Restart service
+            inputs:
+              connectionType: $(connectionType)
+              kubernetesServiceEndpoint: $(aksServiceConnection)
+              namespace: $(k8sNamespace)
+              command: "rollout"
+              arguments: "restart deploy dbinclui-api-prd"
