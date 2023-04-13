@@ -107,14 +107,7 @@ stages:
             displayName: Changing yaml's variables
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
-          
-          - task: AzureKeyVault@2
-            inputs:
-              azureSubscription: 'Pago pelo Uso (0bba6b89-6bb9-4025-b898-9d17d2164b10)'
-              KeyVaultName: 'dbinclui-api-env-dev'
-              SecretsFilter: '*'
-              RunAsPreJob: false
-              
+                      
           - task: Kubernetes@1
             displayName: Create configmap
             inputs:
@@ -122,7 +115,7 @@ stages:
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              configMapName: 'dbinclui-api-configmap-dev'
+              configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
               configMapArguments: >
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
@@ -144,10 +137,6 @@ stages:
                 --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
                 --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
                 --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
-
-                
-          
-
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
