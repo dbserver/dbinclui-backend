@@ -207,7 +207,7 @@ stages:
               configMapName: "dbinclui-api-configmap-prd"
               forceUpdateConfigMap: true
               configMapArguments: >
-                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
+                --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                 --from-literal=HOST=$(HostDBinclui)
                 --from-literal=PORT=$(PortDBinclui)
                 --from-literal=MONGO_URL=$(MongoUrlDBinclui)
