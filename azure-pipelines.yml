@@ -156,7 +156,7 @@ stages:
               arguments: "restart deploy dbinclui-app-dev"
 
 
-       - stage: DeployToProduction
+  - stage: DeployToProduction
     #condition: eq(variables['isTag'], 'true')
     variables:
       - group: dbinclui-api-env-secret-prd
