@@ -201,7 +201,7 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
           - task: Kubernetes@1
-            displayName: Create ConfigMap
+            displayName: Create configmap
             inputs:
               connectionType: $(connectionType)
               kubernetesServiceEndpoint: $(aksServiceConnection)
