@@ -92,6 +92,7 @@ stages:
    # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - group: dbinclui-api-env-dev
+      - group: dbinclui-api-env-secret-dev
       - name: enviroment
         value: "dev"
       
