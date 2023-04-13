@@ -16,6 +16,10 @@ trigger:
       - "*"
   
 variables:
+
+  - name: connectionType
+    value: Kubernetes Service Connection
+
   - name: buildId
     value: $(Build.BuildId)
     
@@ -113,7 +117,7 @@ stages:
               containerRegistryType: "Azure Container Registry"
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
-              configMapArguments:: >
+              configMapArguments: >
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                 --from-literal=HOST=$(HostDBinclui)
                 --from-literal=PORT=$(PortDBinclui)
