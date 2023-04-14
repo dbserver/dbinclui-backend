@@ -93,7 +93,7 @@ stages:
     variables:
       - name: enviroment
         value: "dev"
-      - group: dbinclui-api-env-secret-dev
+     # - group: dbinclui-api-env-secret-dev
       - group: dbinclui-api-env-dev
     jobs:
       - job: ApplyManifests
@@ -108,6 +108,12 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
 
+          - task: AzureKeyVault@2
+            inputs:
+              azureSubscription: 'Pago pelo Uso (0bba6b89-6bb9-4025-b898-9d17d2164b10)'
+              KeyVaultName: 'dbinclui-api-env-dev'
+              SecretsFilter: '*'
+              RunAsPreJob: false
           - task: Kubernetes@1
             displayName: secretType generic with pipeline variables
             inputs:
