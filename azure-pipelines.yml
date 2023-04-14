@@ -93,8 +93,6 @@ stages:
     variables:
       - name: enviroment
         value: "dev"
-        
-      - group: dbinclui-api-env-dev
       - group: dbinclui-api-env-secret-dev
       
     jobs:
