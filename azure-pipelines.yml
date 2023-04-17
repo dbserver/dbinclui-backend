@@ -122,7 +122,7 @@ stages:
                 --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) 
                 --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) 
               
-                          - task: KubernetesManifest@0
+          - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
               action: deploy
