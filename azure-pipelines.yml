@@ -114,25 +114,6 @@ stages:
               KeyVaultName: 'dbinclui-api-env-dev'
               SecretsFilter: '*'
               RunAsPreJob: false
-          - task: Kubernetes@1
-            displayName: secretType generic with pipeline variables
-            inputs:
-              connectionType: $(connectionType)
-              kubernetesServiceEndpoint: $(aksServiceConnection)
-              namespace: $(k8sNamespace)
-              containerRegistryType: "Azure Container Registry"
-              secretType: generic
-              customCommand: apply
-              secretArguments: >
-                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui) 
-                  
-                  # --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) 
-                  # --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) 
-                  # --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui) 
-                  # --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui) 
-                  # --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
-              secretName: "dbinclui-api-secrets-dev"
 
           - task: Kubernetes@1
             displayName: Create configmap
@@ -144,6 +125,13 @@ stages:
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
               configMapArguments: 
+                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui) 
+                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) 
+                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) 
+                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui) 
+                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui) 
+                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
                   --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                   --from-literal=HOST=$(HostDBinclui)
                   --from-literal=PORT=$(PortDBinclui)
