@@ -89,7 +89,7 @@ stages:
                 
   - stage: DeployToDevelopment
    # dependsOn: CI
-   # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
+   ## condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
         value: "dev"
