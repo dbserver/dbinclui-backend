@@ -124,7 +124,7 @@ stages:
               containerRegistryType: "Azure Container Registry"
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
-              configMapArguments: 
+              configMapArguments: >
                   --from-literal=MONGO_URL=$(MongoUrlDBinclui)
                   --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui) 
                   --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) 
