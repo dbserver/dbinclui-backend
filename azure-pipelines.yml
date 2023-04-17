@@ -88,7 +88,7 @@ stages:
   #                 latest
                 
   - stage: DeployToDevelopment
-    dependsOn: CI
+   # dependsOn: CI
    # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
