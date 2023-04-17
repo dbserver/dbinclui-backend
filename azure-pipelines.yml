@@ -117,8 +117,7 @@ stages:
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
               configMapArguments: >
-                --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-                --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+                --from-literal=MONGO_URL='teste'
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
