@@ -120,7 +120,11 @@ stages:
                 --from-literal=MONGO_URL=$(MongoUrlDBinclui)
                 --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                 --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) 
-          - task: KubernetesManifest@0
+                --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) 
+                --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui) 
+                --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui) 
+                --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+                          - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
               action: deploy
