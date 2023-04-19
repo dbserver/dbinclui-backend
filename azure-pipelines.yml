@@ -121,6 +121,17 @@ stages:
                 --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                 --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) 
                 --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) 
+                --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+                --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+                --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
+                --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
+                --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
+                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
+                --from-literal=HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
+                --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
+                --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+                --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
               
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
@@ -133,6 +144,7 @@ stages:
                 ./kubernetes/service.yaml
               containers: |
                 $(acrUrl):latest
+
 
           - task: Kubernetes@1
             displayName: Restart service
