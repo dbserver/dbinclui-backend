@@ -59,6 +59,9 @@ pool:
 
 stages:
   - stage: CI
+    variables:
+      - group: dbinclui-api-env-secret-dev
+      - group: dbinclui-api-env-dev
     jobs:
       - job: CI
         displayName: Run tests, build and push image to ACR
