@@ -1,17 +1,15 @@
 FROM node:alpine
 
 ## setting container
-
-ENV WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
 COPY *.json ./
 
-RUN apk add --no-cache curl
-
 RUN npm install
 
-COPY . . 
+COPY --chown=node:node . ./
+
+EXPOSE 8080
 
 CMD ["node", "./dist/src/index.js"]
 
-EXPOSE 8080
