@@ -68,8 +68,9 @@ stages:
             inputs:
               command: "install"
 
-          - task: CmdLine@2
-            inputs:
+          - script: 
+              npm run build
+            displayName: "teste build"
             env:
               NODE_ENV: $(NodeEnvDBinclui) 
               HOST: $(HostDBinclui)
@@ -90,8 +91,6 @@ stages:
               CLOUD_NAME: $(CloudinaryNameDBinclui)
               CLOUD_API_KEY: $(CloudinaryApiKeyDBinclui)
               CLOUD_API_SECRET: $(CloudinaryApiSecretDBinclui)
-              
-              script: 'npm run build'
           
           - task: Docker@2
             displayName: Building docker image and pushing to ACR
