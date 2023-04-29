@@ -70,6 +70,26 @@ stages:
 
           - task: Npm@1
             displayName: "Build"
+            env:
+              NODE_ENV: $(NodeEnvDBinclui) 
+              HOST: $(HostDBinclui)
+              PORT: $(PortDBinclui)
+              MONGO_URL: $(MongoUrlDBinclui)
+              MONGO_DATABASE: $(MongoDatabaseDBinclui)
+              FIREBASE_TYPE: $(FirebaseTypeDBinclui)
+              FIREBASE_PROJECT_ID: $(FirebaseProjectIdDBinclui)
+              FIREBASE_PRIVATE_KEY_ID: $(FirebasePrivateKeyIdDBinclui)
+              FIREBASE_PRIVATE_KEY: $(FirebasePrivateKeyDBinclui)
+              FIREBASE_CLIENT_EMAIL: $(FirebaseClientEmailDBinclui)
+              FIREBASE_CLIENT_ID: $(FirebaseClientIdDBinclui)
+              FIREBASE_AUTH_URI: $(FirebaseAuthUriDBinclui)
+              FIREBASE_TOKEN_URI: $(FirebaseTokenUriDBinclui)
+              FIREBASE_CLIENT_X509_CERT_URL: $(FirebaseClientX509CertUrlDBinclui)
+              FIREBASE_AUTH_PROVIDER_X509_CERT_URL: $(FirebaseAuthProviderX509CertUrlDBinclui)
+              HOST_UPLOAD: $(CloudinaryHostUploadDBinclui)
+              CLOUD_NAME: $(CloudinaryNameDBinclui)
+              CLOUD_API_KEY: $(CloudinaryApiKeyDBinclui)
+              CLOUD_API_SECRET: $(CloudinaryApiSecretDBinclui)
          #   condition: or(eq(variables['isTag'], 'true'), eq(variables['isMergePR'], 'true'))
             inputs:
               command: custom
@@ -108,35 +128,35 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
           
-          - task: Kubernetes@1
-            displayName: Create configmap
-            inputs:
-              connectionType: $(connectionType)
-              kubernetesServiceEndpoint: $(aksServiceConnection)
-              namespace: $(k8sNamespace)
-              containerRegistryType: "Azure Container Registry"
-              configMapName: "dbinclui-api-configmap-dev"
-              forceUpdateConfigMap: true
-              configMapArguments: >
-                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
-                  --from-literal=NODE_ENV=$(NodeEnvDBinclui)
-                  --from-literal=HOST=$(HostDBinclui)
-                  --from-literal=PORT=$(PortDBinclui)
-                  --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
-                  --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui)
-                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
-                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
-                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
-                  --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
-                  --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
-                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
-                  --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
-                  --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
-                  --from-literal=HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
-                  --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
-                  --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
-                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+          # - task: Kubernetes@1
+          #   displayName: Create configmap
+          #   inputs:
+          #     connectionType: $(connectionType)
+          #     kubernetesServiceEndpoint: $(aksServiceConnection)
+          #     namespace: $(k8sNamespace)
+          #     containerRegistryType: "Azure Container Registry"
+          #     configMapName: "dbinclui-api-configmap-dev"
+          #     forceUpdateConfigMap: true
+          #     configMapArguments: >
+          #         --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+          #         --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+          #         --from-literal=NODE_ENV=$(NodeEnvDBinclui)
+          #         --from-literal=HOST=$(HostDBinclui)
+          #         --from-literal=PORT=$(PortDBinclui)
+          #         --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
+          #         --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui)
+          #         --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+          #         --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+          #         --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+          #         --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
+          #         --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
+          #         --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+          #         --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
+          #         --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
+          #         --from-literal=HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
+          #         --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
+          #         --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+          #         --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
