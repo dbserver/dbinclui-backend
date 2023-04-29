@@ -107,7 +107,7 @@ stages:
             displayName: Changing yaml's variables
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
-          -
+          
               
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
