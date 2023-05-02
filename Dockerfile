@@ -1,4 +1,4 @@
-FROM node:hydrogen-alpine@sha256:b4c7692301c870eaa572c96b12f28eb01e8c76731ed210a204d20d5c14e1f691
+FROM node:hydrogen-alpine
 
 ENV MONGO_URL=$(MongoUrlDBinclui)
 ARG MongoUrlDBinclui
