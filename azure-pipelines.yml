@@ -68,9 +68,8 @@ stages:
             inputs:
               command: "install"
 
-          - script: 
-              npm run build
-            displayName: "teste build"
+          - task: Npm@1
+            inputs:
             env:
               NODE_ENV: $(NodeEnvDBinclui) 
               HOST: $(HostDBinclui)
@@ -91,7 +90,10 @@ stages:
               CLOUD_NAME: $(CloudinaryNameDBinclui)
               CLOUD_API_KEY: $(CloudinaryApiKeyDBinclui)
               CLOUD_API_SECRET: $(CloudinaryApiSecretDBinclui)
-          
+              command: 'custom'
+              workingDir: './'
+              customCommand: 'run build'
+            
           - task: Docker@2
             displayName: Building docker image and pushing to ACR
             #condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
