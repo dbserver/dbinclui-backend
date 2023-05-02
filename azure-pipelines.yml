@@ -84,7 +84,6 @@ stages:
                 Dockerfile: "**/Dockerfile"
                 arguments: --burg-arg MONGO_URL=$(MongoUrlDBinclui) --burg-arg MONGO_DATABASE=$(MongoDatabaseDBinclui) --burg-arg NODE_ENV=$(NodeEnvDBinclui) --burg-arg HOST=$(HostDBinclui) --burg-arg PORT=$(PortDBinclui) --burg-arg FIREBASE_TYPE=$(FirebaseTypeDBinclui) --burg-arg FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui) --burg-arg FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui) --burg-arg FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) --burg-arg FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui) --burg-arg FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui) --burg-arg FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui) --burg-arg FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) --burg-arg FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui) --burg-arg FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui) --burg-arg HOST_UPLOAD=$(CloudinaryHostUploadDBinclui) --burg-arg CLOUD_NAME=$(CloudinaryNameDBinclui) --burg-arg CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui) --burg-arg CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
                 tags: |
-                  $(buildId)
                   latest
                 
   - stage: DeployToDevelopment
