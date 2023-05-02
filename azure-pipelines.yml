@@ -69,8 +69,7 @@ stages:
               command: "install"
 
           - task: Npm@1
-            inputs:
-              env:
+            env:
                 NODE_ENV: $(NodeEnvDBinclui) 
                 HOST: $(HostDBinclui)
                 PORT: $(PortDBinclui)
@@ -90,6 +89,7 @@ stages:
                 CLOUD_NAME: $(CloudinaryNameDBinclui)
                 CLOUD_API_KEY: $(CloudinaryApiKeyDBinclui)
                 CLOUD_API_SECRET: $(CloudinaryApiSecretDBinclui)
+            inputs:
                 command: 'custom'
                 workingDir: './'
                 customCommand: run build
