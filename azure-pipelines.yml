@@ -116,8 +116,6 @@ stages:
               secretName:  "dbinclui-api-configmap-dev"
               secretType: generic
               secretArguments:  >
-                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                   --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
                   --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
                   --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
@@ -133,6 +131,8 @@ stages:
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
               configMapArguments: >
+                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                   --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                   --from-literal=PORT=$(PortDBinclui)
                   --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
