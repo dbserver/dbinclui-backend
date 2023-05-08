@@ -131,6 +131,7 @@ stages:
                   --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
                   --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
                   --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+                  --from-literal=FIREBASE_PRIVATE_KEY=$("FirebasePrivateKeyDBinclui")
                   --from-literal=MONGO_URL=$(MongoUrlDBinclui)
                   --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                   --from-literal=NODE_ENV=$(NodeEnvDBinclui)
