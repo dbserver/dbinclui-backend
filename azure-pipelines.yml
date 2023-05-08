@@ -128,7 +128,6 @@ stages:
               forceUpdateConfigMap: true
               configMapArguments: >
                   --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
-                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
                   --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
                   --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
                   --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
