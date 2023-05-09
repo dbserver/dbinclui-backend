@@ -106,16 +106,23 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
           
-          # - task: Kubernetes@1
-          #   displayName: Create secret
-          #   inputs:
-          #     connectionType: $(connectionType)
-          #     kubernetesServiceEndpoint: $(aksServiceConnection)
-          #     namespace: $(k8sNamespace)
-          #     containerRegistryType: "Azure Container Registry"
-          #     secretName:  "dbinclui-api-configmap-dev"
-          #     secretType: generic
-          #     secretArguments:  >
+          - task: Kubernetes@1
+            displayName: Create secret
+            inputs:
+              connectionType: $(connectionType)
+              kubernetesServiceEndpoint: $(aksServiceConnection)
+              namespace: $(k8sNamespace)
+              containerRegistryType: "Azure Container Registry"
+              secretName:  "dbinclui-api-configmap-dev"
+              secretType: generic
+              secretArguments:  >
+                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                  
           - task: Kubernetes@1
             displayName: Create configmap
@@ -127,13 +134,6 @@ stages:
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
               configMapArguments: >
-                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
-                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
-                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
-                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
-                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
-                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
                   --from-literal=NODE_ENV=$(NodeEnvDBinclui)
                   --from-literal=PORT=$(PortDBinclui)
                   --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
