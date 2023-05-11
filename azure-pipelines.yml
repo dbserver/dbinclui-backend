@@ -206,6 +206,8 @@ stages:
                 customCommand: "image push $(acrUrl):$(branchName)"
 
   - stage: DeployToProduction
+    dependsOn: CI_Production
+    #condition: eq(variables['isTag'], 'true')
     variables:
       - group: dbinclui-api-env-secret-prd
       - group: dbinclui-api-env-prd
@@ -213,7 +215,6 @@ stages:
         value: "prd"
     jobs:
       - job: ApplyManifests
-        dependsOn: CI_Production
         displayName: Applying kubernetes manifests
         steps:
           - task: ShellScript@2
