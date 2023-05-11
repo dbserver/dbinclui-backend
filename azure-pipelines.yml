@@ -210,7 +210,7 @@ stages:
         value: "prd"
     jobs:
       - job: ApplyManifests
-        dependsOn: PrepareDockerImage
+        dependsOn: CI_Production
         displayName: Applying kubernetes manifests
         steps:
           - task: ShellScript@2
