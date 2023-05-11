@@ -156,7 +156,7 @@ stages:
 
   - stage: CI_Production
     jobs:
-      - job: CI
+      - job: CI_Production
     #condition: eq(variables['isTag'], 'true')
         displayName: Run tests, build and push image to ACR
         steps:
