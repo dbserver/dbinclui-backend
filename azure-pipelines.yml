@@ -182,20 +182,15 @@ stages:
               workingDir: "./"
               customCommand: run build
 
-          - task: Docker@0
-            displayName: "Pull docker image"
+          - task: Docker@2
+            displayName: Building docker image and pushing to ACR
             inputs:
-                containerregistrytype: "Container Registry"
-                dockerRegistryConnection: "docker-registry"
-                action: "Run a Docker command"
-                customCommand: "pull $(acrUrl):latest"
-          - task: Docker@0
-            displayName: "Retague docker image"
-            inputs:
-                containerregistrytype: "Container Registry"
-                dockerRegistryConnection: "docker-registry"
-                action: "Run a Docker command"
-                customCommand: "image tag $(acrUrl):latest $(acrUrl):$(branchName)"
+              containerRegistry: $(acrServiceConnection)
+              repository: $(dockerRepository)
+              command: "buildAndPush"
+              Dockerfile: "**/Dockerfile"
+              tags: |
+                $(branchName)
 
           - task: Docker@0
             displayName: "Push new image"
