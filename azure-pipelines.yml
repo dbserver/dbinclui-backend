@@ -155,6 +155,9 @@ stages:
   #         #     arguments: "restart deploy dbinclui-api-dev"
 
   - stage: CI_Production
+    variables:
+    - name: NODE_OPTIONS
+      value: --max-old-space-size=4096
     jobs:
       - job: CI_Production
     #condition: eq(variables['isTag'], 'true')
