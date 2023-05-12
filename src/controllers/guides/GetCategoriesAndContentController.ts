@@ -15,6 +15,7 @@ class GetCategoriesAndContentController {
 
       return sucessfulResponse(res, { data: result });
     } catch (error) {
+      console.log(error);
       return serverErrorResponse(res, error as Error);
     }
   }
