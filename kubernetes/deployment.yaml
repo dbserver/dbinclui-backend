@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbinclui-api-${env}
+  namespace: dbinclui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbinclui-api-${env}
+  template:
+    metadata:
+      labels:
+        app: dbinclui-api-${env}
+    spec:
+      containers:
+        - name: dbinclui-api-${env}
+          image: "dbserverregistry.azurecr.io/dbinclui/backend"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: dbinclui-api-configmap-${env}

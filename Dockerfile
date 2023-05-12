@@ -1,81 +1,74 @@
-FROM node:alpine
+FROM node:hydrogen-alpine
 
-#Ambiente de desenvolvimento
-ARG NODE_ENV
-ENV NODE_ENV=${NodeEnvDBinclui}
+# ENV MONGO_URL=$(MongoUrlDBinclui)
+# ARG MongoUrlDBinclui
 
-#Configuração do Servidor
-ARG HOST
-ENV HOST=${HostDBinclui}
+# ENV MONGO_DATABASE=$(MongoDatabaseDBinclui)
+# ARG MongoDatabaseDBinclui
 
-ARG PORT
-ENV PORT=${PortDBinclui}
+# ENV NODE_ENV=$(NodeEnvDBinclui)
+# ARG NodeEnvDBinclui
 
-#Configuração MongoDB
-ARG MONGO_URL
-ENV MONGO_URL=${MongoUrlDBinclui}
-#
-ARG MONGO_DATABASE
-ENV MONGO_DATABASE=${MongoDatabaseDBinclui}
+# ENV HOST=$(HostDBinclui)
+# ARG HostDBinclui
 
+# ENV PORT=$(PortDBinclui)
+# ARG PortDBinclui
 
-#Configurações Firebase Admin
-ARG FIREBASE_TYPE
-ENV FIREBASE_TYPE=${FirebaseTypeDBinclui}
-#
-ARG FIREBASE_PROJECT_ID
-ENV FIREBASE_PROJECT_ID=${FirebaseProjectIdDBinclui}
-#
-ARG FIREBASE_PRIVATE_KEY_ID
-ENV FIREBASE_PRIVATE_KEY_ID=${FirebasePrivateKeyIdDBinclui}
-#
-ARG FIREBASE_PRIVATE_KEY
-ENV FIREBASE_PRIVATE_KEY=${FirebasePrivateKeyDBinclui}
-#
-ARG FIREBASE_CLIENT_EMAIL
-ENV FIREBASE_CLIENT_EMAIL=${FirebaseClientEmailDBinclui}
-#
-ARG FIREBASE_CLIENT_ID
-ENV FIREBASE_CLIENT_ID=${FirebaseClientIdDBinclui}
-#
-ARG FIREBASE_AUTH_URI
-ENV FIREBASE_AUTH_URI=${FirebaseAuthUriDBinclui}
-#
-ARG FIREBASE_TOKEN_URI
-ENV FIREBASE_TOKEN_URI=${FirebaseTokenUriDBinclui}
-#
-ARG FIREBASE_AUTH_PROVIDER_X509_CERT_URL
-ENV FIREBASE_AUTH_PROVIDER_X509_CERT_URL=${FirebaseAuthProviderX509CertUrlDBinclui}
-#
-ARG FIREBASE_CLIENT_X509_CERT_URL
-ENV FIREBASE_CLIENT_X509_CERT_URL=${FirebaseClientX509CertUrlDBinclui}
+# ENV FIREBASE_TYPE=$(FirebaseTypeDBinclui)
+# ARG FirebaseTypeDBinclui
 
-#Configuração Cloudinary
-ARG HOST_UPLOAD
-ENV HOST_UPLOAD=${CloudinaryHostUploadDBinclui}
+# ENV FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui)
+# ARG FirebaseProjectIdDBinclui
 
-ARG CLOUD_NAME
-ENV CLOUD_NAME=${CloudinaryNameDBinclui}
+# ENV FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+# ARG FirebasePrivateKeyIdDBinclui
 
-ARG CLOUD_API_KEY
-ENV CLOUD_API_KEY=${CloudinaryApiKeyDBinclui}
+# ENV FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+# ARG FirebasePrivateKeyDBinclui
 
-ARG CLOUD_API_SECRET
-ENV CLOUD_API_SECRET=${CloudinaryApiSecretDBinclui}
+# ENV FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+# ARG FirebaseClientEmailDBinclui
+
+# ENV FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
+# ARG FirebaseClientIdDBinclui
+
+# ENV FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
+# ARG FirebaseAuthUriDBinclui
+
+# ENV FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+# ARG FirebaseTokenUriDBinclui
+
+# ENV FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
+# ARG FirebaseClientX509CertUrlDBinclui
+
+# ENV FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
+# ARG FirebaseAuthProviderX509CertUrlDBinclui
+
+# ENV HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
+# ARG CloudinaryHostUploadDBinclui
+
+# ENV CLOUD_NAME=$(CloudinaryNameDBinclui)
+# ARG CloudinaryNameDBinclui
+
+# ENV CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+# ARG CloudinaryApiKeyDBinclui
+
+# ENV CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+# ARG CloudinaryApiSecretDBinclui
+
 
 
 ## setting container
-
-ENV WORKDIR /usr/src/app
+WORKDIR /usr/src/app
 
 COPY *.json ./
 
-RUN apk add --no-cache curl
-
 RUN npm install
 
-COPY . . 
+COPY --chown=node:node . ./
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["node", "./dist/src/index.js"]
+
