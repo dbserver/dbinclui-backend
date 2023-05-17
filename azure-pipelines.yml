@@ -88,10 +88,14 @@ stages:
               repository: $(dockerRepository)
               command: "buildAndPush"
               Dockerfile: "**/Dockerfile"
-              # ${{ if eq(variables['isTag'], 'true') }}:
-              #   tags: $(branchName)
-              # ${{ else }}:
-              tags: |
+              ${{ if eq(variables['isTag'], 'true') }}:
+                variables: 
+                  - group: dbinclui-app-env-prd
+                tags: $(branchName)
+              ${{ else }}:
+                variables: 
+                  - group: dbinclui-app-env-dev
+                tags: |
                   $(buildId)
                   latest
 
