@@ -57,6 +57,9 @@ stages:
     jobs:
       - job: CI
         displayName: Run tests, build and push image to ACR
+        variables:
+          - name: NODE_OPTIONS
+            value: --max-old-space-size=4096
         steps:
           - task: Npm@1
             displayName: "Installing dependencies"
