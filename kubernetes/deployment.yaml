@@ -13,6 +13,8 @@ spec:
       labels:
         app: dbinclui-api-${env}
     spec:
+      strategy: 
+            type: Recreate
       containers:
         - name: dbinclui-api-${env}
           image: "dbserverregistry.azurecr.io/dbinclui/backend"
