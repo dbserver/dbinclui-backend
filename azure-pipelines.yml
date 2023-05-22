@@ -90,7 +90,7 @@ stages:
               Dockerfile: "**/Dockerfile"
               ${{ if eq(variables['isTag'], 'true') }}:
                 tags: $(branchName)
-              ${{ else }}:d
+              ${{ else }}:
                 tags: |
                     $(buildId)
                     latest
