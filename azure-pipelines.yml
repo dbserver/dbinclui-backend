@@ -100,7 +100,7 @@ stages:
 
 
   - stage: DeployToDevelopment
-    dependsOn: CI
+  #  dependsOn: CI
   #  condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
@@ -187,8 +187,8 @@ stages:
           #     arguments: "restart deploy dbinclui-api-dev"
 
   - stage: DeployToProduction
-    dependsOn: CI
-    condition: eq(variables['isTag'], 'true')
+  #  dependsOn: CI
+  #  condition: eq(variables['isTag'], 'true')
     variables:
       - group: dbinclui-api-env-secret-prd
       - group: dbinclui-api-env-prd
