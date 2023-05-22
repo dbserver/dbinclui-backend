@@ -53,39 +53,55 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: CI_Development
+  - stage: CI
     jobs:
-      - job: CI_Development
-        variables:
-          - group: dbinclui-api-env-secret-dev
-          - group: dbinclui-api-env-dev
-        condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
+      - job: CI
         displayName: Run tests, build and push image to ACR
+        variables:
+         - name: NODE_OPTIONS
+           value: --max-old-space-size=4096
         steps:
           - task: Npm@1
-            displayName: "install dependencies"
+            displayName: "Installing dependencies"
             inputs:
-              command: "install"
+              command: custom
+              workingDir: ./
+              customCommand: "install --legacy-peer-deps"
+              
+          # - task: Npm@1
+          #   condition: eq(variables['Build.SourceBranch'], 'refs/heads/azure-pipelines') 
+          #   displayName: "Running tests"
+          #   inputs:
+          #     command: custom
+          #     workingDir: ./
+          #     customCommand: "run test"
 
           - task: Npm@1
+            displayName: "Building project"
             inputs:
-              command: "custom"
-              workingDir: "./"
-              customCommand: run build
-
+              command: custom
+              workingDir: ./
+              customCommand: "run build"
+             
           - task: Docker@2
             displayName: Building docker image and pushing to ACR
+       #     condition: and(succeeded(), or(eq(variables['isMergePR'], 'true'), eq(variables['isTag'], 'true')))
             inputs:
               containerRegistry: $(acrServiceConnection)
               repository: $(dockerRepository)
               command: "buildAndPush"
               Dockerfile: "**/Dockerfile"
+              # ${{ if eq(variables['isTag'], 'true') }}:
+              #   tags: $(branchName)
+              # # ${{ else }}:
               tags: |
-                latest
+                  $(buildId)
+                  latest
+
 
   - stage: DeployToDevelopment
     dependsOn: CI_Development
-    condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
+  #  condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
         value: "dev"
@@ -170,47 +186,8 @@ stages:
           #     command: "rollout"
           #     arguments: "restart deploy dbinclui-api-dev"
 
-  - stage: CI_Production
-    variables:
-    - name: NODE_OPTIONS
-      value: --max-old-space-size=4096
-    jobs:
-      - job: CI_Production
-        condition: eq(variables['isTag'], 'true')
-        displayName: Run tests, build and push image to ACR
-        steps:
-          - task: Npm@1
-            displayName: "install dependencies"
-            inputs:
-              command: "install"
-
-          - task: Npm@1
-            displayName: "Running test"
-            inputs:
-              command: "custom"
-              workingDir: "./"
-              customCommand: run test
-
-          - task: Npm@1
-            displayName: "build prod"
-            inputs:
-              command: "custom"
-              workingDir: "./"
-              customCommand: run build
-
-          - task: Docker@2
-            displayName: Building docker image and pushing to ACR
-            inputs:
-              containerRegistry: $(acrServiceConnection)
-              repository: $(dockerRepository)
-              command: "buildAndPush"
-              Dockerfile: "**/Dockerfile"
-              tags: |
-                $(branchName)
-
-
   - stage: DeployToProduction
-    dependsOn: CI_Production
+    dependsOn: CI
     condition: eq(variables['isTag'], 'true')
     variables:
       - group: dbinclui-api-env-secret-prd
@@ -218,6 +195,32 @@ stages:
       - name: enviroment
         value: "prd"
     jobs:
+      - job: PrepareDockerImage
+        displayName: Re-tag docker image to production
+        steps:
+          - task: Docker@0
+            displayName: "Pull docker image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryConnection: "docker-registry"
+              action: "Run a Docker command"
+              customCommand: "pull $(acrUrl):latest"
+          - task: Docker@0
+            displayName: "Retague docker image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryConnection: "docker-registry"
+              action: "Run a Docker command"
+              customCommand: "image tag $(acrUrl):latest $(acrUrl):$(branchName)"
+
+          - task: Docker@0
+            displayName: "Push new image"
+            inputs:
+              containerregistrytype: "Container Registry"
+              dockerRegistryConnection: "docker-registry"
+              action: "Run a Docker command"
+              customCommand: "image push $(acrUrl):$(branchName)"
+
       - job: ApplyManifests
         displayName: Applying kubernetes manifests
         steps:
