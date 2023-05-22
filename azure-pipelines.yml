@@ -90,13 +90,13 @@ stages:
   #             Dockerfile: "**/Dockerfile"
   #             # ${{ if eq(variables['isTag'], 'true') }}:
   #             #   tags: $(branchName)
-  #             # ${{ else }}:
+  #             # ${{ else }}:d
   #             tags: |
   #                 $(buildId)
   #                 latest
 
   - stage: DeployToDevelopment
-    dependsOn: CI
+   # dependsOn: CI
    # condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
@@ -168,7 +168,7 @@ stages:
                 $(acrUrl):latest
   
   - stage: DeployToProduction
-    dependsOn: CI
+  #  dependsOn: CI
   #  condition: eq(variables['isTag'], 'true')
     variables:
       - group: dbinclui-api-env-secret-prd
