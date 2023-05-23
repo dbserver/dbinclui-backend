@@ -6,11 +6,11 @@
 pr:
   branches:
     include:
-      - main
+      - azure-pipelines
 trigger:
   branches:
     include:
-      - main
+      - azure-pipelines
   tags:
     include:
       - "*"
@@ -88,16 +88,16 @@ stages:
               repository: $(dockerRepository)
               command: "buildAndPush"
               Dockerfile: "**/Dockerfile"
-              ${{ if eq(variables['isTag'], 'true') }}:
-                tags: $(branchName)
-              ${{ else }}:
-                tags: |
+              # ${{ if eq(variables['isTag'], 'true') }}:
+              #   tags: $(branchName)
+              # ${{ else }}:
+              tags: |
                     $(buildId)
                     latest
 
   - stage: DeployToDevelopment
     dependsOn: CI
-    condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
+ #   condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
         value: "dev"
@@ -133,6 +133,10 @@ stages:
                   --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
                   --from-literal=MONGO_URL=$(MongoUrlDBinclui)
                   --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_ACCOUNT_NAME=$(BlobStorageAccountNameDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_CONTAINER_NAME=$(BlobStorageContainerNameDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_ACCOUNT_KEY=$(BlobStorageAccountKeyDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_CONNECTION_STRING=$(BlobStorageConnectionStringDBinclui)
 
           - task: Kubernetes@1
             displayName: Create configmap
