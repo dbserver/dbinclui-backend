@@ -2,19 +2,19 @@ import { Request, Response } from "express";
 import { GuideMongoRepository } from "../../repositories/mongoRepositories/GuideMongoRepository.js";
 import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses.js";
 import { CreateGuideService } from "../../services/guides/CreateGuideService.js";
-import { RequestFileProps } from "../interfaces/RequestProps.js";
+import { AzureBlobStorageResponse } from "../interfaces/RequestProps.js";
 
 class CreateGuideController {
   async handler(req: Request, res: Response) {
     try {
       const body = req.body;
       const userId = req.currentUser._id as any;
-      const reqFile = req.file as RequestFileProps;
+      const reqFile = req.file as unknown as AzureBlobStorageResponse;
 
       const fileObj = {
-        filePath: reqFile.path,
-        publicId: reqFile.filename,
-       };
+        filePath: reqFile.url,
+        publicId: reqFile.blobName,
+      };
 
       const guideRepository = new GuideMongoRepository();
       const guideService = new CreateGuideService(guideRepository);

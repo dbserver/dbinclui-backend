@@ -7,8 +7,8 @@ import {
   sucessfulResponse,
 } from "../../responses/appResponses.js";
 import { UpdateGuideService } from "../../services/guides/UpdateGuideService.js";
-import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
-import { RequestFileProps } from "../interfaces/RequestProps.js";
+import { deleteFilesFromAzureBlobStorage } from "../../utils/deleteFileFromAzureBlobStorage.js";
+import { AzureBlobStorageResponse } from "../interfaces/RequestProps.js";
 import { GuideEntity } from "../../entities/GuideEntity.js";
 
 class UpdateGuideController {
@@ -16,15 +16,13 @@ class UpdateGuideController {
     try {
       const id = req.params["id"];
       const body = req.body;
-      const reqFile = req.file as RequestFileProps;
 
-      let fileObj;
-      if (reqFile) {
-        fileObj = {
-          filePath: reqFile.path,
-          publicId: reqFile.filename,
-        };
-      }
+      const reqFile = req.file as unknown as AzureBlobStorageResponse;
+
+      const fileObj = {
+        filePath: reqFile.url,
+        publicId: reqFile.blobName,
+      };
 
       const guideRepository = new GuideMongoRepository();
       const guideService = new UpdateGuideService(guideRepository);
@@ -39,8 +37,7 @@ class UpdateGuideController {
         return clientErrorResponse(res, result);
       }
 
-      // <--- Remove content from the database (Cloudinary) --->
-      deleteContentCloudinary(result.oldFile);
+      deleteFilesFromAzureBlobStorage(result.oldFile);
 
       return sucessfulResponse(res, { data: result.guideUpdated });
     } catch (error) {
