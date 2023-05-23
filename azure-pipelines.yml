@@ -6,11 +6,11 @@
 pr:
   branches:
     include:
-      - azure-pipelines
+      - main
 trigger:
   branches:
     include:
-      - azure-pipelines
+      - main
   tags:
     include:
       - "*"
@@ -88,16 +88,16 @@ stages:
               repository: $(dockerRepository)
               command: "buildAndPush"
               Dockerfile: "**/Dockerfile"
-              # ${{ if eq(variables['isTag'], 'true') }}:
-              #   tags: $(branchName)
-              # ${{ else }}:
-              tags: |
-                    $(buildId)
-                    latest
+              ${{ if eq(variables['isTag'], 'true') }}:
+                tags: $(branchName)
+              ${{ else }}:
+                tags: |
+                      $(buildId)
+                      latest
 
   - stage: DeployToDevelopment
     dependsOn: CI
- #   condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
+    condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
         value: "dev"
