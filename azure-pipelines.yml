@@ -93,10 +93,6 @@ stages:
                 tags: |
                       $(buildId)
                       latest
-              ${{ else }}
-                tags: |
-                    $(buildId)
-                    latest
 
   - stage: DeployToDevelopment
     dependsOn: CI
