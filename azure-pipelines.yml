@@ -93,11 +93,7 @@ stages:
                 tags: |
                       $(buildId)
                       latest
-              ${{ else }}:d
-                tags: |
-                    $(buildId)
-                    latest
-
+  
   - stage: DeployToDevelopment
     dependsOn: CI
     condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
