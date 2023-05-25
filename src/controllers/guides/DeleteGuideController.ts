@@ -6,7 +6,7 @@ import {
   sucessfulResponse,
 } from "../../responses/appResponses.js";
 import { DeleteGuideService } from "../../services/guides/DeleteGuideService.js";
-import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
+import { deleteFilesFromAzureBlobStorage } from "../../utils/deleteFileFromAzureBlobStorage.js";
 
 class DeleteGuideController {
   async handler(req: Request, res: Response) {
@@ -22,8 +22,7 @@ class DeleteGuideController {
         return clientErrorResponse(res, result);
       }
 
-      // <--- Remove content from the database (Cloudinary) --->
-      deleteContentCloudinary([result.filePaths]);
+      deleteFilesFromAzureBlobStorage([result.filePaths]);
 
       return sucessfulResponse(res, { data: result });
     } catch (error) {

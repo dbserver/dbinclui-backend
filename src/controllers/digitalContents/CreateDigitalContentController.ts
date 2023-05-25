@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import { DigitalContentMongoRepository } from "../../repositories/mongoRepositories/DigitalContentMongoRepository.js";
 import { serverErrorResponse, sucessfulResponse } from "../../responses/appResponses.js";
 import { CreateDigitalContentService } from "../../services/digitalContents/CreateDigitalContentService.js";
-import { RequestFileProps } from "../interfaces/RequestProps.js";
+import { AzureBlobStorageResponse } from "../interfaces/RequestProps.js";
 
 class CreateDigitalContentController {
   async handler(req: Request, res: Response) {
     try {
       const body = req.body;
-      const reqFiles: RequestFileProps[] = req.files as RequestFileProps[];
+      const reqFiles = req.files as unknown as AzureBlobStorageResponse[];
       const userId = req.currentUser._id as any;
 
       const digitalContentRepository = new DigitalContentMongoRepository();
@@ -17,8 +17,8 @@ class CreateDigitalContentController {
       let files = [];
       for (let file of reqFiles) {
         const obj = {
-          filePath: file.path,
-          publicId: file.filename,
+          filePath: file.url,
+          publicId: file.blobName,
         };
 
         files.push(obj);

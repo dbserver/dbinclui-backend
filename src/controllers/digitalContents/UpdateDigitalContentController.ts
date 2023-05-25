@@ -6,15 +6,15 @@ import {
   sucessfulResponse,
 } from "../../responses/appResponses.js";
 import { UpdateDigitalContentService } from "../../services/digitalContents/UpdateDigitalContentService.js";
-import { RequestFileProps } from "../interfaces/RequestProps.js";
-import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
+import { AzureBlobStorageResponse } from "../interfaces/RequestProps.js";
+import { deleteFilesFromAzureBlobStorage } from "../../utils/deleteFileFromAzureBlobStorage.js";
 
 class UpdateDigitalContentController {
   async handler(req: Request, res: Response) {
     try {
       const id = req.params["id"];
       const body = req.body;
-      const reqFiles = (req.files as RequestFileProps[]) ?? [];
+      const reqFiles = (req.files as unknown as AzureBlobStorageResponse[]) ?? [];
 
       const contentRepository = new DigitalContentMongoRepository();
       const contentService = new UpdateDigitalContentService(contentRepository);
@@ -22,8 +22,8 @@ class UpdateDigitalContentController {
       let files = [];
       for (let file of reqFiles) {
         const obj = {
-          filePath: file.path,
-          publicId: file.filename,
+          filePath: file.url,
+          publicId: file.blobName,
         };
 
         files.push(obj);
@@ -39,8 +39,7 @@ class UpdateDigitalContentController {
         return clientErrorResponse(res, result);
       }
 
-      // <--- Remove content from the database (Cloudinary) --->
-      deleteContentCloudinary(result.oldFiles);
+      deleteFilesFromAzureBlobStorage(result.oldFiles);
 
       return sucessfulResponse(res, { data: result.contentUpdated });
     } catch (error) {
