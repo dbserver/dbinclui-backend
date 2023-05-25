@@ -169,7 +169,7 @@ stages:
               containers: |
                 $(acrUrl):latest
 
-- stage: DeployToProduction
+  - stage: DeployToProduction
     dependsOn: CI
     condition: eq(variables['isTag'], 'true')
     variables:
