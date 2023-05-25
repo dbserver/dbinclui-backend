@@ -82,7 +82,6 @@ stages:
           - task: Docker@2
             displayName: Building docker image and pushing to ACR
             condition: and(succeeded(), or(eq(variables['isMergePR'], 'true'), eq(variables['isTag'], 'true')))
-
             inputs:
               containerRegistry: $(acrServiceConnection)
               repository: $(dockerRepository)
@@ -94,6 +93,10 @@ stages:
                 tags: |
                       $(buildId)
                       latest
+              ${{ else }}:d
+                tags: |
+                    $(buildId)
+                    latest
 
   - stage: DeployToDevelopment
     dependsOn: CI
