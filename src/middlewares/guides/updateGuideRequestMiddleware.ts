@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { FileRequest } from "../../interfaces/FileRequest.js";
 import { clientErrorResponse } from "../../responses/appResponses.js";
-import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
+import { deleteFilesFromAzureBlobStorage } from "../../utils/deleteFileFromAzureBlobStorage.js";
 
 export const updateGuideRequestMiddleware = async (
   req: Request,
@@ -17,7 +17,7 @@ export const updateGuideRequestMiddleware = async (
       publicId: fileRequest.filename,
     };
 
-    deleteContentCloudinary([fileObj]);
+    deleteFilesFromAzureBlobStorage([fileObj]);
     const errorsMessage = errors.array();
     return clientErrorResponse(res, errorsMessage);
   }

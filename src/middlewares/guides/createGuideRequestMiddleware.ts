@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import { clientErrorResponse } from "../../responses/appResponses.js";
-import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
 import { FileRequest } from "../../interfaces/FileRequest.js";
+import { AzureBlobStorageResponse } from "../../controllers/interfaces/RequestProps.js";
+import { deleteFilesFromAzureBlobStorage } from "../../utils/deleteFileFromAzureBlobStorage.js";
 
 export const createGuideRequestMiddleware = (req: Request, res: Response, next: NextFunction) => {
   if (!req.file) {
@@ -12,13 +13,13 @@ export const createGuideRequestMiddleware = (req: Request, res: Response, next: 
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    const fileRequest = req.file as FileRequest;
+    const fileRequest = req.file as unknown as AzureBlobStorageResponse;
     const fileObj = {
-      filePath: fileRequest.path,
-      publicId: fileRequest.filename,
+      filePath: fileRequest.url,
+      publicId: fileRequest.blobName,
     };
 
-    deleteContentCloudinary([fileObj]);
+    deleteFilesFromAzureBlobStorage([fileObj]);
     const errorMessage = errors.array();
     return clientErrorResponse(res, errorMessage);
   }
