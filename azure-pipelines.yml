@@ -6,11 +6,11 @@
 pr:
   branches:
     include:
-      - main
+      - main@{1day}
 trigger:
   branches:
     include:
-      - main
+      - main@{1day}
   tags:
     include:
       - "*"
@@ -46,7 +46,8 @@ variables:
   - name: isTag
     value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
 
-    IsPR: $[eq(variables['Build.Reason'], 'PullRequest')]
+  - name: isMergePR
+    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
 
 
 pool:
@@ -72,7 +73,7 @@ stages:
           #     customCommand: "run test"
           
           - task: Npm@1
-            condition: or(eq(variables['isTag'], 'true'), eq(variables['isPR'], 'true'))
+            condition: or(eq(variables['isTag'], 'true'), eq(variables['isMergePR'], 'true'))
             displayName: "Building project"
             inputs:
               command: custom
