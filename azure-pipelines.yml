@@ -82,7 +82,7 @@ stages:
              
           - task: Docker@2
             displayName: Building docker image and pushing to ACR
-            condition: and(succeeded(), or(eq(variables['isMergePR'], 'true'), eq(variables['isTag'], 'true')))
+            condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
             inputs:
               containerRegistry: $(acrServiceConnection)
               repository: $(dockerRepository)
