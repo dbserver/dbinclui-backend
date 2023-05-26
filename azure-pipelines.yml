@@ -96,6 +96,7 @@ stages:
                       $(buildId)
                       latest
   
+  
   - stage: DeployToDevelopment
     dependsOn: CI
     condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
