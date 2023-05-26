@@ -24,3 +24,5 @@ spec:
           envFrom:
             - configMapRef:
                 name: dbinclui-api-configmap-${env}
+            - secretRef:
+                name: dbinclui-api-secret-${env}
