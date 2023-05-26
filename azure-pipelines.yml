@@ -44,10 +44,10 @@ variables:
     value: "dbserverregistry.azurecr.io/dbinclui/backend"
 
   - name: isTag
-    value: $(startsWith(variables['Build.SourceBranch'],'refs/tags/')))
+    value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
 
   - name: isMergePR
-    value: $((ne(variables['Build.Reason'], 'PullRequest')))
+    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
 
 pool:
   vmImage: ubuntu-latest
