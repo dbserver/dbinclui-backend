@@ -6,11 +6,11 @@
 pr:
   branches:
     include:
-      - main@{1day}
+      - chore/docker
 trigger:
   branches:
     include:
-      - main@{1day}
+      - chore/docker
   tags:
     include:
       - "*"
