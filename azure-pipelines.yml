@@ -125,7 +125,7 @@ stages:
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              secretName:  "dbinclui-api-configmap-dev"
+              secretName:  "dbinclui-api-secret-dev"
               secretType: generic
               secretArguments:  >
                   --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
