@@ -6,11 +6,11 @@
 pr:
   branches:
     include:
-      - main
+      - chore/docker
 trigger:
   branches:
     include:
-      - main
+      - chore/docker
   tags:
     include:
       - "*"
@@ -44,47 +44,60 @@ variables:
     value: "dbserverregistry.azurecr.io/dbinclui/backend"
 
   - name: isTag
-    value: $(startsWith(variables['Build.SourceBranch'],'refs/tags/')))
+    value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
 
   - name: isMergePR
-    value: $((ne(variables['Build.Reason'], 'PullRequest')))
+    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
+
 
 pool:
   vmImage: ubuntu-latest
 
 stages:
-  - stage: CI_Development
+  - stage: CI
     jobs:
-      - job: CI_Development
-        variables:
-          - group: dbinclui-api-env-secret-dev
-          - group: dbinclui-api-env-dev
-        condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
+      - job: CI
         displayName: Run tests, build and push image to ACR
         steps:
           - task: Npm@1
-            displayName: "install dependencies"
+            displayName: "Installing dependencies"
             inputs:
+              workingDir: ./
               command: "install"
-
+ 
+          # - task: Npm@1
+          #   displayName: "Running tests"
+          #   inputs:
+          #     command: custom
+          #     workingDir: ./
+          #     customCommand: "run test"
+          
           - task: Npm@1
+            condition: or(eq(variables['isTag'], 'true'), eq(variables['isMergePR'], 'true'))
+            displayName: "Building project"
             inputs:
-              command: "custom"
-              workingDir: "./"
-              customCommand: run build
-
+              command: custom
+              workingDir: ./
+              customCommand: "run build"
+             
+             
           - task: Docker@2
             displayName: Building docker image and pushing to ACR
+            condition: and(succeeded(), or(eq(variables['isMergePR'], 'true'), eq(variables['isTag'], 'true')))
             inputs:
               containerRegistry: $(acrServiceConnection)
               repository: $(dockerRepository)
               command: "buildAndPush"
               Dockerfile: "**/Dockerfile"
-              tags: |
-                latest
-
+              ${{ if eq(variables['isTag'], 'true') }}:
+                tags: $(branchName)
+              ${{ else }}:
+                tags: |
+                      $(buildId)
+                      latest
+  
   - stage: DeployToDevelopment
-    dependsOn: CI_Development
+    dependsOn: CI
     condition: and(succeeded(), eq(variables['isMergePR'], 'true'), ne(variables['isTag'], 'true'))
     variables:
       - name: enviroment
@@ -104,23 +117,27 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
 
-          # - task: Kubernetes@1
-          #   displayName: Create secret
-          #   inputs:
-          #     connectionType: $(connectionType)
-          #     kubernetesServiceEndpoint: $(aksServiceConnection)
-          #     namespace: $(k8sNamespace)
-          #     containerRegistryType: "Azure Container Registry"
-          #     secretName:  "dbinclui-api-configmap-dev"
-          #     secretType: generic
-          #     secretArguments:  >
-          #         --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
-          #         --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
-          #         --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
-          #         --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
-          #         --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
-          #         --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-          #         --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+          - task: Kubernetes@1
+            displayName: Create secret
+            inputs:
+              connectionType: $(connectionType)
+              kubernetesServiceEndpoint: $(aksServiceConnection)
+              namespace: $(k8sNamespace)
+              containerRegistryType: "Azure Container Registry"
+              secretName:  "dbinclui-api-configmap-dev"
+              secretType: generic
+              secretArguments:  >
+                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_ACCOUNT_NAME=$(BlobStorageAccountNameDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_CONTAINER_NAME=$(BlobStorageContainerNameDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_ACCOUNT_KEY=$(BlobStorageAccountKeyDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_CONNECTION_STRING=$(BlobStorageConnectionStringDBinclui)
+
 
           - task: Kubernetes@1
             displayName: Create configmap
@@ -131,8 +148,15 @@ stages:
               containerRegistryType: "Azure Container Registry"
               configMapName: "dbinclui-api-configmap-dev"
               forceUpdateConfigMap: true
-              configMapArguments: >
-                --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui) --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui) --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui) --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui) --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui) --from-literal=MONGO_URL=$(MongoUrlDBinclui) --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui) --from-literal=NODE_ENV=$(NodeEnvDBinclui) --from-literal=PORT=$(PortDBinclui) --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui) --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui) --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui) --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui) --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui) --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui) --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui) --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+              configMapArguments: > 
+                --from-literal=NODE_ENV=$(NodeEnvDBinclui) 
+                --from-literal=PORT=$(PortDBinclui) 
+                --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui) 
+                --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui) 
+                --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui) 
+                --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui) 
+                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui) 
+                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui) 
 
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
@@ -145,56 +169,9 @@ stages:
                 ./kubernetes/service.yaml
               containers: |
                 $(acrUrl):latest
-          # - task: Kubernetes@1
-          #   displayName: Restart service
-          #   inputs:
-          #     connectionType: $(connectionType)
-          #     kubernetesServiceEndpoint: $(aksServiceConnection)
-          #     namespace: $(k8sNamespace)
-          #     command: "rollout"
-          #     arguments: "restart deploy dbinclui-api-dev"
-
-  - stage: CI_Production
-    variables:
-    - name: NODE_OPTIONS
-      value: --max-old-space-size=4096
-    jobs:
-      - job: CI_Production
-        condition: eq(variables['isTag'], 'true')
-        displayName: Run tests, build and push image to ACR
-        steps:
-          - task: Npm@1
-            displayName: "install dependencies"
-            inputs:
-              command: "install"
-
-          - task: Npm@1
-            displayName: "Running test"
-            inputs:
-              command: "custom"
-              workingDir: "./"
-              customCommand: run test
-
-          - task: Npm@1
-            displayName: "build prod"
-            inputs:
-              command: "custom"
-              workingDir: "./"
-              customCommand: run build
-
-          - task: Docker@2
-            displayName: Building docker image and pushing to ACR
-            inputs:
-              containerRegistry: $(acrServiceConnection)
-              repository: $(dockerRepository)
-              command: "buildAndPush"
-              Dockerfile: "**/Dockerfile"
-              tags: |
-                $(branchName)
-
 
   - stage: DeployToProduction
-    dependsOn: CI_Production
+    dependsOn: CI
     condition: eq(variables['isTag'], 'true')
     variables:
       - group: dbinclui-api-env-secret-prd
@@ -210,23 +187,23 @@ stages:
             inputs:
               scriptPath: "./kubernetes/change_variables.sh"
 
-      # - task: Kubernetes@1
-              #   displayName: Create secret
-              #   inputs:
-              #     connectionType: $(connectionType)
-              #     kubernetesServiceEndpoint: $(aksServiceConnection)
-              #     namespace: $(k8sNamespace)
-              #     containerRegistryType: "Azure Container Registry"
-              #     secretName:  "dbinclui-api-configmap-dev"
-              #     secretType: generic
-              #     secretArguments:  >
-              #         --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
-              #         --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
-              #         --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
-              #         --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
-              #         --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
-              #         --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-              #         --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+          - task: Kubernetes@1
+            displayName: Create secret
+            inputs:
+              connectionType: $(connectionType)
+              kubernetesServiceEndpoint: $(aksServiceConnection)
+              namespace: $(k8sNamespace)
+              containerRegistryType: "Azure Container Registry"
+              secretName:  "dbinclui-api-configmap-dev"
+              secretType: generic
+              secretArguments:  >
+                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
+                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
+                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
+                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
+                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
+                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
           - task: Kubernetes@1
             displayName: Create configmap
             inputs:
@@ -236,26 +213,17 @@ stages:
               containerRegistryType: "Azure Container Registry"
               configMapName: "dbinclui-api-configmap-prd"
               forceUpdateConfigMap: true
-              configMapArguments: >
-                  --from-literal=MONGO_URL=$(MongoUrlDBinclui)
-                  --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
-                  --from-literal=NODE_ENV=$(NodeEnvDBinclui)
-                  --from-literal=HOST=$(HostDBinclui)
-                  --from-literal=PORT=$(PortDBinclui)
-                  --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui)
-                  --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui)
-                  --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
-                  --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
-                  --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
-                  --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui)
-                  --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui)
-                  --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
-                  --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui)
-                  --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui)
-                  --from-literal=HOST_UPLOAD=$(CloudinaryHostUploadDBinclui)
-                  --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui)
-                  --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
-                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
+              configMapArguments: > 
+                --from-literal=NODE_ENV=$(NodeEnvDBinclui) 
+                --from-literal=PORT=$(PortDBinclui) 
+                --from-literal=FIREBASE_TYPE=$(FirebaseTypeDBinclui) 
+                --from-literal=FIREBASE_PROJECT_ID=$(FirebaseProjectIdDBinclui) 
+                --from-literal=FIREBASE_CLIENT_ID=$(FirebaseClientIdDBinclui) 
+                --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui) 
+                --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui) 
+                --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui) 
+                --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui) 
+                --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
@@ -267,11 +235,3 @@ stages:
                 ./kubernetes/service.yaml
               containers: |
                 $(acrUrl):$(branchName)
-          # - task: Kubernetes@1
-          #   displayName: Restart service
-          #   inputs:
-          #     connectionType: $(connectionType)
-          #     kubernetesServiceEndpoint: $(aksServiceConnection)
-          #     namespace: $(k8sNamespace)
-          #     command: "rollout"
-          #     arguments: "restart deploy dbinclui-api-prd"

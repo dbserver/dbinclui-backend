@@ -6,7 +6,7 @@ import { GuideMongoRepository } from "../../repositories/mongoRepositories/Guide
 import { clientErrorResponse } from "../../responses/appResponses.js";
 import { GetByIdCategoryService } from "../../services/categories/GetByIdCategoryService.js";
 import { GetByIdGuideService } from "../../services/guides/GetByIdGuideService.js";
-import { deleteContentCloudinary } from "../../utils/cloudinary/deleteContentCloudinary.js";
+import { deleteFilesFromAzureBlobStorage } from "../../utils/deleteFileFromAzureBlobStorage.js";
 
 export const updateDigitalContentMiddleware = async (
   req: Request,
@@ -28,7 +28,7 @@ export const updateDigitalContentMiddleware = async (
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    deleteContentCloudinary(files);
+    deleteFilesFromAzureBlobStorage(files);
     const errorMessage = errors.array();
     return clientErrorResponse(res, errorMessage);
   }
@@ -41,7 +41,7 @@ export const updateDigitalContentMiddleware = async (
 
     const result = await categoryService.execute(category);
     if (result instanceof Error) {
-      deleteContentCloudinary(files);
+      deleteFilesFromAzureBlobStorage(files);
       return clientErrorResponse(res, result);
     }
   }
@@ -52,7 +52,7 @@ export const updateDigitalContentMiddleware = async (
 
     const result = await guideService.execute(guide);
     if (result instanceof Error) {
-      deleteContentCloudinary(files);
+      deleteFilesFromAzureBlobStorage(files);
       return clientErrorResponse(res, result);
     }
   }

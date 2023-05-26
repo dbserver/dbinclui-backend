@@ -1,12 +1,9 @@
 import multer from "multer";
 
-import { Cloudinary } from "../../../database/Cloudinary.js";
+import { azureStorage } from "../../../database/AzureBlobStorage.js";
 
-const database = new Cloudinary();
-
-const storage = database.storage();
-
-const multerCloudinaryConfig: multer.Options = {
+const storage = azureStorage;
+const multerAzureBlobStorageConfig: multer.Options = {
   fileFilter: (_, file, callback) => {
     const allowedMimes = ["image/jpeg", "image/pjpeg", "image/jpg", "image/png"];
 
@@ -22,4 +19,4 @@ const multerCloudinaryConfig: multer.Options = {
   },
 };
 
-export const guideUploadCloudinary = multer(multerCloudinaryConfig);
+export const guideUploadAzureBlobStorage = multer(multerAzureBlobStorageConfig);
