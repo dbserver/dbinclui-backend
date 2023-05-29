@@ -195,7 +195,7 @@ stages:
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              secretName:  "dbinclui-api-secret-dev"
+              secretName:  "dbinclui-api-secret-prd"
               secretType: generic
               secretArguments:  >
                   --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
@@ -216,7 +216,7 @@ stages:
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              configMapName: "dbinclui-api-configmap-dev"
+              configMapName: "dbinclui-api-configmap-prd"
               forceUpdateConfigMap: true
               configMapArguments: > 
                 --from-literal=NODE_ENV=$(NodeEnvDBinclui) 
