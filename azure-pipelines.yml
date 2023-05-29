@@ -44,10 +44,11 @@ variables:
     value: "dbserverregistry.azurecr.io/dbinclui/backend"
 
   - name: isTag
-    value: $(startsWith(variables['Build.SourceBranch'],'refs/tags/')))
+    value: ${{startsWith(variables['Build.SourceBranch'],'refs/tags/')}}
 
   - name: isMergePR
-    value: $((ne(variables['Build.Reason'], 'PullRequest')))
+    value: ${{ne(variables['Build.Reason'], 'PullRequest')}}
+
 
 pool:
   vmImage: ubuntu-latest
@@ -94,6 +95,7 @@ stages:
                 tags: |
                       $(buildId)
                       latest
+  
   
   - stage: DeployToDevelopment
     dependsOn: CI
@@ -193,16 +195,20 @@ stages:
               kubernetesServiceEndpoint: $(aksServiceConnection)
               namespace: $(k8sNamespace)
               containerRegistryType: "Azure Container Registry"
-              secretName:  "dbinclui-api-configmap-dev"
+              secretName:  "dbinclui-api-secret-prd"
               secretType: generic
               secretArguments:  >
                   --from-literal=FIREBASE_PRIVATE_KEY=$(FirebasePrivateKeyDBinclui)
                   --from-literal=FIREBASE_PRIVATE_KEY_ID=$(FirebasePrivateKeyIdDBinclui)
                   --from-literal=FIREBASE_CLIENT_EMAIL=$(FirebaseClientEmailDBinclui)
                   --from-literal=FIREBASE_TOKEN_URI=$(FirebaseTokenUriDBinclui)
-                  --from-literal=CLOUD_API_SECRET=$(CloudinaryApiSecretDBinclui)
                   --from-literal=MONGO_URL=$(MongoUrlDBinclui)
                   --from-literal=MONGO_DATABASE=$(MongoDatabaseDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_ACCOUNT_NAME=$(BlobStorageAccountNameDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_CONTAINER_NAME=$(BlobStorageContainerNameDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_ACCOUNT_KEY=$(BlobStorageAccountKeyDBinclui)
+                  --from-literal=AZURE_BLOB_STORAGE_CONNECTION_STRING=$(BlobStorageConnectionStringDBinclui)
+
           - task: Kubernetes@1
             displayName: Create configmap
             inputs:
@@ -221,8 +227,7 @@ stages:
                 --from-literal=FIREBASE_AUTH_URI=$(FirebaseAuthUriDBinclui) 
                 --from-literal=FIREBASE_CLIENT_X509_CERT_URL=$(FirebaseClientX509CertUrlDBinclui) 
                 --from-literal=FIREBASE_AUTH_PROVIDER_X509_CERT_URL=$(FirebaseAuthProviderX509CertUrlDBinclui) 
-                --from-literal=CLOUD_NAME=$(CloudinaryNameDBinclui) 
-                --from-literal=CLOUD_API_KEY=$(CloudinaryApiKeyDBinclui)
+
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes
             inputs:
